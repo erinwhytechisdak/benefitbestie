@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacy Cost Intelligence | WTW Health &amp; Benefits</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#5C2D91;--p2:#7B4DB5;--p3:#EDE7F6;
+  --t:#3BBFB2;--t2:#2A9E92;--t3:#E0F5F3;
+  --b:#4A7DB5;--b2:#2D5F99;--b3:#E3EDF8;
+  --tx:#1A1A2E;--tx2:#4A4A6A;--tx3:#7A7A9A;
+  --bg:#F7F6FA;--wh:#FFFFFF;--br:#E2DFF0;
+  --r:#C0392B;--a:#D4860B;--g:#1E7E5E;
+  --rb:#FDECEA;--ab:#FEF6E4;--gb:#E6F4EF;
+}
+body{background:var(--bg);color:var(--tx);font-family:'Source Sans 3',sans-serif;line-height:1.55;min-height:100vh}
+
+/* HEADER */
+.wtw-header{width:100%;overflow:hidden;background:var(--p)}
+.geo-grid{display:grid;grid-template-columns:68fr 32fr;min-height:300px}
+.geo-left{background:var(--p);padding:48px 0 48px 52px;display:flex;align-items:center}
+.geo-right{background:var(--t);background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.08) 0,rgba(255,255,255,.08) 1px,transparent 1px,transparent 16px)}
+.geo-bottom-bar{display:grid;grid-template-columns:58fr 20fr 22fr;height:14px}
+.geo-b1{background:#7B52A8}.geo-b2{background:#9B7DC0}.geo-b3{background:var(--b)}
+.header-box{background:var(--wh);padding:26px 32px 24px 26px;max-width:580px}
+.header-eyebrow{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.header-eyebrow::after{content:'';width:28px;height:2px;background:var(--t)}
+h1{font-family:'Playfair Display',serif;font-size:clamp(24px,3.2vw,40px);font-weight:700;line-height:1.1;color:var(--p);margin-bottom:12px}
+h1 em{font-style:italic;font-weight:400;color:var(--t2)}
+.header-sub{font-size:13px;color:var(--tx2);line-height:1.65;font-weight:300}
+.id-strip{background:#E8E8EC;display:flex;align-items:center;justify-content:space-between;padding:11px 52px;flex-wrap:wrap;gap:6px}
+.wtw-wm{font-family:'Source Sans 3',sans-serif;font-size:20px;font-weight:900;color:var(--p);letter-spacing:-.5px}
+.id-meta{font-size:10px;color:var(--tx3);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.id-meta a{color:var(--p);text-decoration:none}
+
+/* PAGE */
+.page{max-width:1160px;margin:0 auto;padding:32px 22px 80px}
+
+/* TABS */
+.tab-nav{display:flex;gap:2px;margin-bottom:28px;background:var(--wh);border:1px solid var(--br);border-radius:8px;padding:4px;overflow-x:auto;scrollbar-width:none;box-shadow:0 1px 4px rgba(92,45,145,.06)}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;padding:9px 16px;border:none;border-radius:6px;background:transparent;color:var(--tx3);font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab-btn.active{background:var(--p);color:#fff}
+.tab-btn:hover:not(.active){background:var(--p3);color:var(--p)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* STATS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;margin-bottom:24px;border:1px solid var(--br);border-radius:10px;overflow:hidden;background:var(--br);box-shadow:0 2px 8px rgba(92,45,145,.05)}
+.stat{background:var(--wh);padding:18px 16px}
+.stat-lbl{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3);margin-bottom:5px}
+.stat-val{font-family:'Playfair Display',serif;font-size:25px;line-height:1;margin-bottom:3px;color:var(--p)}
+.stat-note{font-size:11px;color:var(--tx3)}
+.stat-note.up{color:var(--r)}
+.stat-note.g{color:var(--g)}
+
+/* CARDS */
+.card{background:var(--wh);border:1px solid var(--br);border-radius:10px;padding:26px;margin-bottom:20px;position:relative;overflow:hidden;box-shadow:0 2px 10px rgba(92,45,145,.05)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--p),var(--t))}
+.card.t::before{background:linear-gradient(90deg,var(--t),var(--b))}
+.card.b::before{background:linear-gradient(90deg,var(--b),var(--p))}
+.card.a::before{background:var(--a)}
+.card.r::before{background:linear-gradient(90deg,var(--r),var(--p))}
+.card.g::before{background:linear-gradient(90deg,var(--g),var(--t))}
+.card-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--p);margin-bottom:4px}
+.card-sub{font-size:12px;color:var(--tx3);margin-bottom:20px;line-height:1.55}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr}}
+
+/* INSIGHT */
+.ins{padding:15px;border-radius:8px;border:1px solid var(--br);border-left:4px solid var(--t);background:var(--t3);margin-bottom:11px}
+.ins.a{border-left-color:var(--a);background:var(--ab)}
+.ins.r{border-left-color:var(--r);background:var(--rb)}
+.ins.g{border-left-color:var(--g);background:var(--gb)}
+.ins.p{border-left-color:var(--p);background:var(--p3)}
+.ins.b{border-left-color:var(--b);background:var(--b3)}
+.ins-icon{font-size:17px;margin-bottom:5px}
+.ins-head{font-size:12.5px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.ins-body{font-size:11.5px;color:var(--tx2);line-height:1.6}
+.ins-body strong{color:var(--tx)}
+
+/* DRUG LIST */
+.drug-hdr,.drug-row{display:grid;grid-template-columns:32px 1fr 100px 72px 138px;align-items:center;gap:10px;padding:9px 12px}
+.drug-hdr{border-bottom:2px solid var(--br);padding-bottom:7px}
+.drug-hdr span{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3)}
+.drug-row{border-bottom:1px solid var(--br);border-radius:4px;transition:background .15s}
+.drug-row:hover{background:var(--p3)}
+.drug-rank{font-family:'Playfair Display',serif;font-size:19px;color:var(--tx3);text-align:center}
+.drug-brand{font-size:13px;font-weight:700;color:var(--tx)}
+.drug-gen{font-size:10px;color:var(--tx3)}
+.drug-use{font-size:9.5px;color:var(--p);background:var(--p3);padding:2px 6px;border-radius:10px;display:inline-block;margin-top:2px;font-weight:600}
+.drug-spend{font-family:'Playfair Display',serif;font-size:14px;color:var(--p);font-weight:600}
+.drug-bar-bg{background:var(--br);border-radius:3px;height:5px;margin-bottom:2px}
+.drug-bar-fill{height:5px;border-radius:3px}
+.drug-yoy{font-size:11.5px;font-weight:700}
+.fl{font-size:10px;padding:3px 8px;border-radius:11px;font-weight:700;white-space:nowrap;display:inline-block}
+.fl-h{background:var(--rb);color:var(--r);border:1px solid rgba(192,57,43,.2)}
+.fl-w{background:var(--ab);color:var(--a);border:1px solid rgba(212,134,11,.2)}
+.fl-c{background:var(--gb);color:var(--g);border:1px solid rgba(30,126,94,.2)}
+.fl-n{background:var(--b3);color:var(--b2);border:1px solid rgba(74,125,181,.2)}
+
+/* CLIFF */
+.cliff-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.cliff-name{min-width:140px;text-align:right;flex-shrink:0}
+.cliff-name-main{font-size:11.5px;font-weight:700;color:var(--tx)}
+.cliff-name-spend{font-size:10px;color:var(--tx3);font-family:'Source Sans 3',monospace}
+.cliff-track{flex:1;position:relative;height:26px;background:var(--br);border-radius:4px;overflow:hidden}
+.cliff-fill{position:absolute;left:0;top:0;height:100%;border-radius:4px;display:flex;align-items:center;overflow:hidden;padding:0 7px}
+.cliff-fill-label{font-size:9px;font-weight:700;color:white;white-space:nowrap}
+.cliff-note{min-width:160px;font-size:10.5px;font-weight:600;flex-shrink:0}
+
+/* SVG */
+.ax{font-family:'Source Sans 3',sans-serif;font-size:10px;fill:#9090B0}
+.gl{stroke:#E8E4F0;stroke-width:1;stroke-dasharray:4,4}
+.yl{font-family:'Source Sans 3',sans-serif;font-size:10px;fill:#9090B0;text-anchor:end}
+
+/* TOOLTIP */
+#tt{position:fixed;background:var(--wh);border:1px solid var(--p);border-radius:8px;padding:12px 15px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:1000;min-width:175px;box-shadow:0 8px 32px rgba(92,45,145,.18);font-family:'Source Sans 3',sans-serif}
+#tt.on{opacity:1}
+#tt-h{font-family:'Playfair Display',serif;font-size:15px;color:var(--p);margin-bottom:7px}
+.tt-r{display:flex;justify-content:space-between;gap:12px;color:var(--tx3);margin-bottom:3px}
+.tt-v{color:var(--tx);font-weight:700}
+
+/* LEGEND */
+.leg{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.leg-i{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx2)}
+.leg-d{width:12px;height:4px;border-radius:2px;flex-shrink:0}
+
+/* VERDICT */
+.verdict{background:linear-gradient(135deg,var(--p3),var(--t3));border:1px solid var(--br);border-radius:10px;padding:24px;margin-bottom:20px;border-left:5px solid var(--p)}
+.verdict-q{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--p);margin-bottom:10px}
+.verdict-body{font-size:13px;color:var(--tx2);line-height:1.75}
+.verdict-body strong{color:var(--tx)}
+
+/* SECTION DIVIDER */
+.sdiv{display:flex;align-items:center;gap:14px;margin:28px 0 18px}
+.sdiv-lbl{font-family:'Playfair Display',serif;font-size:13px;font-style:italic;color:var(--p);white-space:nowrap}
+.sdiv-line{flex:1;height:1px;background:var(--br)}
+
+/* SOURCE */
+.src{font-size:10px;color:var(--tx3);margin-top:28px;padding-top:16px;border-top:1px solid var(--br);line-height:1.8}
+
+/* BOTTOM FOOTER */
+.bot-footer{background:#E8E8EC;border-top:4px solid var(--p)}
+.bot-inner{max-width:1160px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.bot-meta{font-size:10.5px;color:#6B7FA3;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.bot-meta a{color:var(--p);text-decoration:none;font-weight:700}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card,.stat-row,.verdict{animation:fadeUp .35s ease both}
+</style>
+</head>
+<body>
+
+<div id="tt"><div id="tt-h"></div><div id="tt-body"></div></div>
+
+<!-- HEADER -->
+<div class="wtw-header">
+  <div class="geo-grid">
+    <div class="geo-left">
+      <div class="header-box">
+        <div class="header-eyebrow">Health &amp; Benefits Advisory &bull; Pharmacy Intelligence</div>
+        <h1>The <em>Drug Cost</em> Story<br>Every Employer Needs to Know</h1>
+        <p class="header-sub">U.S. prescription drug spending hit <strong>$806 billion in 2024</strong> — a 10.2% single-year jump, the largest in 20 years. Pharmacy trend is running 2.5 points above already-elevated medical trend. This report maps the top drugs, what's driving the surge, and the patent cliff that may offer relief — eventually.</p>
+      </div>
+    </div>
+    <div class="geo-right"></div>
+  </div>
+  <div class="geo-bottom-bar"><div class="geo-b1"></div><div class="geo-b2"></div><div class="geo-b3"></div></div>
+  <div class="id-strip">
+    <div class="wtw-wm">wtw</div>
+    <div class="id-meta">
+      <span>Health &amp; Benefits Advisory</span>
+      <span>Erin Chisdak &bull; VP, Health &amp; Benefits</span>
+      <span><a href="mailto:Erin.Chisdak@newfront.com">Erin.Chisdak@newfront.com</a> &bull; (619) 813-5463</span>
+      <span>CA LIC # 0I37170</span>
+      <a href="https://wtwco.com" style="color:var(--p);font-weight:700;">wtwco.com</a>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page">
+
+  <!-- TABS -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('spend',this)">💊 Drug Spend Rankings</button>
+    <button class="tab-btn" onclick="switchTab('trend',this)">📈 Pharmacy Trend</button>
+    <button class="tab-btn" onclick="switchTab('glp1',this)">⚡ GLP-1 Deep Dive</button>
+    <button class="tab-btn" onclick="switchTab('cliff',this)">🏔️ Patent Cliff</button>
+    <button class="tab-btn" onclick="switchTab('employer',this)">🏢 Employer Takeaways</button>
+  </div>
+
+  <!-- ═══ TAB 1: DRUG SPEND ═══ -->
+  <div id="tab-spend" class="tab-panel active">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-lbl">Total U.S. Drug Spend 2024</div><div class="stat-val" style="color:var(--r)">$806B</div><div class="stat-note up">+10.2% — largest jump in 20 yrs</div></div>
+      <div class="stat"><div class="stat-lbl">Single-Year Dollar Increase</div><div class="stat-val">+$73B</div><div class="stat-note up">One year. One number.</div></div>
+      <div class="stat"><div class="stat-lbl">#1 Drug by Spend 2024</div><div class="stat-val">Ozempic</div><div class="stat-note">Semaglutide family: $54B</div></div>
+      <div class="stat"><div class="stat-lbl">Specialty Rx Share</div><div class="stat-val" style="color:var(--r)">~55%</div><div class="stat-note">3% of scripts. 55% of dollars.</div></div>
+      <div class="stat"><div class="stat-lbl">2025 Projected Growth</div><div class="stat-val" style="color:var(--a)">9–11%</div><div class="stat-note">IQVIA/PubMed consensus</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top 12 Drugs by Total U.S. Spend — 2024</div>
+      <div class="card-sub">Ranked by total expenditure across all payers. Sources: Becker's Hospital Review / IQVIA National Sales Perspectives 2024. Risk flags reflect employer group plan exposure.</div>
+      <div class="drug-hdr"><span></span><span>Drug / Indication</span><span>2024 U.S. Spend</span><span>YoY</span><span>Employer Signal</span></div>
+      <div id="drugList"></div>
+      <div style="margin-top:14px;padding:11px 13px;background:var(--p3);border-radius:6px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <span class="fl fl-h">🔥 High Exposure</span><span style="font-size:11px;color:var(--tx2)">Brand-only, expanding indications</span>
+        <span class="fl fl-w">👀 Watch</span><span style="font-size:11px;color:var(--tx2)">Patent expiring &lt;3 years</span>
+        <span class="fl fl-c">📉 Relief Coming</span><span style="font-size:11px;color:var(--tx2)">Biosimilars/generics entering</span>
+        <span class="fl fl-n">🏛️ IRA Negotiated</span><span style="font-size:11px;color:var(--tx2)">Medicare price effective 2026</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card t">
+        <div class="card-title">What Drove the $73B Single-Year Jump</div>
+        <div class="card-sub">IQVIA breakdown — it's utilization, not price increases</div>
+        <div>
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:600;">Utilization increase</span><span style="font-family:'Playfair Display',serif;font-size:17px;color:var(--p);">+7.9%</span></div>
+            <div style="background:var(--br);border-radius:3px;height:8px;"><div style="width:79%;height:8px;border-radius:3px;background:var(--p);"></div></div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:3px;">More people starting GLP-1s, biologics, specialty drugs</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:600;">New drug approvals</span><span style="font-family:'Playfair Display',serif;font-size:17px;color:var(--t2);">+2.5%</span></div>
+            <div style="background:var(--br);border-radius:3px;height:8px;"><div style="width:25%;height:8px;border-radius:3px;background:var(--t);"></div></div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:3px;">16 new biologics approved by FDA in 2024, including 9 cell/gene therapies</div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;font-weight:600;">Net price change</span><span style="font-family:'Playfair Display',serif;font-size:17px;color:var(--g);">-0.2%</span></div>
+            <div style="background:var(--br);border-radius:3px;height:8px;"><div style="width:2%;height:8px;border-radius:3px;background:var(--g);"></div></div>
+            <div style="font-size:11px;color:var(--tx3);margin-top:3px;">Biosimilar pressure kept net prices nearly flat — volume is the story</div>
+          </div>
+        </div>
+      </div>
+      <div class="card b">
+        <div class="card-title">Specialty vs. Traditional Rx Split</div>
+        <div class="card-sub">3% of prescriptions. 55% of total drug spend.</div>
+        <svg id="specialtyDonut" viewBox="0 0 260 190" style="width:100%;height:190px;overflow:visible;"></svg>
+        <div class="ins p" style="margin-top:10px;">
+          <div class="ins-body">Specialty drug share of employer plan spend has grown from ~17% in 2015 to an estimated <strong>27%+ in 2025</strong>. One high-cost claimant can move a small group's entire pharmacy trend for the year.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 2: PHARMACY TREND ═══ -->
+  <div id="tab-trend" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Pharmacy Trend vs. Medical Trend, 2017–2026</div>
+      <div class="card-sub">PwC "Behind the Numbers" actuarial data + IQVIA national spend. Pharmacy consistently outpaces medical trend. In 2026, pharmacy trend is projected at ~11% — 2.5 points above the already-elevated 8.5% medical trend. Hover data points for detail.</div>
+      <div class="leg">
+        <div class="leg-i"><div class="leg-d" style="background:var(--p)"></div>Pharmacy Trend</div>
+        <div class="leg-i"><div class="leg-d" style="background:var(--r)"></div>Medical Trend (Group)</div>
+        <div class="leg-i"><div class="leg-d" style="background:var(--a);opacity:.7;border-top:2px dashed var(--a);height:0;width:14px;margin-top:2px;"></div>CPI Inflation</div>
+      </div>
+      <svg id="pharmTrendChart" viewBox="0 0 900 320" style="width:100%;height:320px;overflow:visible;"></svg>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">3 Forces Pushing Pharmacy Trend Up</div>
+        <div class="card-sub">Structural drivers — not going away on their own</div>
+        <div class="ins p"><div class="ins-icon">🧬</div><div class="ins-head">Biologics Dominating Spend</div><div class="ins-body">Biologics represent nearly <strong>50% of national drug spending</strong> despite a tiny fraction of prescriptions. Each new FDA indication multiplies the eligible patient population overnight. 16 new biologics approved in 2024 alone.</div></div>
+        <div class="ins r"><div class="ins-icon">📋</div><div class="ins-head">Expanded Indications = Demand Multiplier</div><div class="ins-body">Semaglutide went from ~$2.6B in 2021 to <strong>$54B in 2024</strong>. One molecule. Three years. 20x. Each new FDA approval creates a new eligible population — and a new line item on your renewal.</div></div>
+        <div class="ins a"><div class="ins-icon">🏭</div><div class="ins-head">PBM Opacity and Rebate Walls</div><div class="ins-body">Brand manufacturers pay PBMs rebates to maintain formulary position — often making biosimilars harder to adopt even when they exist. Always ask: what's our <strong>net-of-rebate spend</strong>?</div></div>
+      </div>
+      <div class="card g">
+        <div class="card-title">2 Forces Holding It Back</div>
+        <div class="card-sub">The deflators — real, but insufficient alone</div>
+        <div class="ins g"><div class="ins-icon">🧪</div><div class="ins-head">Biosimilars: Finally Working at Scale</div><div class="ins-body">Humira adoption jumped 3% → 28% in 2024. Stelara biosimilars launched Jan 2025 at 80%+ discount. CBO projects expirations + biosimilars save <strong>$312B through 2035</strong>. But verify your plan is actually capturing the benefit — PBMs don't always pass it through automatically.</div></div>
+        <div class="ins g"><div class="ins-icon">🏛️</div><div class="ins-head">Medicare Price Negotiation (IRA)</div><div class="ins-body">First 10 negotiated prices effective January 2026 (Eliquis, Jardiance, Xarelto, Stelara, Januvia and others). Round 2 — including Ozempic and Wegovy — takes effect 2027. <strong>Watch for commercial pricing to shift 12–24 months after each Medicare negotiation closes.</strong></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 3: GLP-1 ═══ -->
+  <div id="tab-glp1" class="tab-panel">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-lbl">Semaglutide Family 2024</div><div class="stat-val" style="color:var(--r)">$54B</div><div class="stat-note up">From $2.6B in 2021 — 20x in 3 yrs</div></div>
+      <div class="stat"><div class="stat-lbl">Tirzepatide Family 2024</div><div class="stat-val" style="color:var(--a)">$31.7B</div><div class="stat-note up">Fastest revenue ramp in drug history</div></div>
+      <div class="stat"><div class="stat-lbl">Adults Currently on GLP-1</div><div class="stat-val">12%</div><div class="stat-note up">Up from 6% in May 2024 (KFF)</div></div>
+      <div class="stat"><div class="stat-lbl">Ever Used a GLP-1</div><div class="stat-val">18%</div><div class="stat-note">1 in 5 U.S. adults — March 2026</div></div>
+      <div class="stat"><div class="stat-lbl">List Price / Month</div><div class="stat-val" style="color:var(--r)">~$1,000</div><div class="stat-note">Ozempic/Wegovy, no insurance</div></div>
+      <div class="stat"><div class="stat-lbl">Large Employer Coverage</div><div class="stat-val" style="color:var(--a)">43%</div><div class="stat-note up">5,000+ employees — up from 28%</div></div>
+    </div>
+    <div class="card r">
+      <div class="card-title">GLP-1 Spend Explosion: Semaglutide + Tirzepatide, 2020–2025</div>
+      <div class="card-sub">Combined GLP-1 family spend reached $85.7B in 2024. Projections for 2025 approach $112B. Fastest revenue acceleration of any drug class in history — driven by expanded indications, not price alone.</div>
+      <svg id="glpChart" viewBox="0 0 900 280" style="width:100%;height:280px;overflow:visible;"></svg>
+    </div>
+    <div class="two-col">
+      <div class="card b">
+        <div class="card-title">The Indication Cascade — Why This Keeps Growing</div>
+        <div class="card-sub">Every new FDA approval multiplies the eligible population</div>
+        <div id="indicationCascade" style="display:flex;flex-direction:column;gap:8px;margin-top:4px;"></div>
+      </div>
+      <div class="card a">
+        <div class="card-title">What Employers Are Actually Experiencing</div>
+        <div class="card-sub">KFF 2025 Employer Health Benefits Survey — GLP-1 findings</div>
+        <div class="ins r"><div class="ins-icon">📊</div><div class="ins-head">Costs Are Exceeding Expectations</div><div class="ins-body"><strong>59%</strong> of largest employers say GLP-1 costs exceeded expectations. <strong>66%</strong> say the impact on prescription drug spending was "significant." One employer went from GLP-1s ranking #32 to <strong>#1 in drug spend — in a single plan year.</strong></div></div>
+        <div class="ins a"><div class="ins-icon">💸</div><div class="ins-head">A Real-World Employer Example (KFF)</div><div class="ins-body">"Before we knew it, we spent half a million dollars and we're projected to go up to $1.2 million the following year." That's a 140% increase, one year, on a single drug class — before any plan design changes.</div></div>
+        <div class="ins g"><div class="ins-icon">🔒</div><div class="ins-head">How Employers Are Responding</div><div class="ins-body"><strong>34%</strong> require dietitian or lifestyle program enrollment before coverage. Others add step therapy, BMI thresholds, or restrict to diabetes indication only. Some are narrowing or dropping weight-loss coverage for 2026 after cost shock in 2025.</div></div>
+      </div>
+    </div>
+    <div class="verdict">
+      <div class="verdict-q">When Does GLP-1 Relief Come? Honest Answer: Not Soon.</div>
+      <div class="verdict-body">Ozempic's core patent expires ~2026, but Novo Nordisk's extensive secondary patent filings push meaningful generic competition to <strong>2031–2033 at the earliest.</strong> Tirzepatide (Mounjaro/Zepbound) is protected to approximately <strong>2036.</strong> Compounded semaglutide was a workaround during FDA shortage — FDA ruled shortage over in 2024, banning most compounding. The Most Favored Nation executive order could theoretically compress U.S. prices toward European levels (~$60/month), but implementation timeline and legal viability remain uncertain. <strong>Treat GLP-1s as a permanent, growing cost category — not a transitional one.</strong></div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 4: PATENT CLIFF ═══ -->
+  <div id="tab-cliff" class="tab-panel">
+    <div class="stat-row">
+      <div class="stat"><div class="stat-lbl">Annual Sales at Risk 2025–30</div><div class="stat-val" style="color:var(--g)">$236B</div><div class="stat-note g">Patent cliff opportunity window</div></div>
+      <div class="stat"><div class="stat-lbl">CBO Projected System Savings</div><div class="stat-val" style="color:var(--g)">$312B</div><div class="stat-note g">Expirations + IRA 2025–35</div></div>
+      <div class="stat"><div class="stat-lbl">Generic Price Drop</div><div class="stat-val" style="color:var(--g)">80–90%</div><div class="stat-note">Small molecule within 2 yrs</div></div>
+      <div class="stat"><div class="stat-lbl">Biosimilar Price Drop</div><div class="stat-val" style="color:var(--a)">30–40%</div><div class="stat-note">Initial; more with scale over 5 yrs</div></div>
+      <div class="stat"><div class="stat-lbl">Keytruda Patent Expiry</div><div class="stat-val" style="color:var(--r)">2028</div><div class="stat-note up">$29B/yr — no relief until then</div></div>
+    </div>
+    <div class="card g">
+      <div class="card-title">Blockbuster Patent Protection Windows: 2022–2033</div>
+      <div class="card-sub">Each bar shows branded exclusivity. Green = biosimilar relief arriving. Yellow = expiry within 3 years. Red = still fully protected. All figures are peak annual U.S. brand spend.</div>
+      <div id="cliffViz" style="margin-top:10px;overflow-x:auto;"></div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">🔴 Still Burning — No Near-Term Relief</div>
+        <div class="card-sub">High-spend drugs with full patent protection intact</div>
+        <div class="ins r"><div class="ins-head">Keytruda (pembrolizumab) — $29.3B/yr — Cliff: 2028</div><div class="ins-body">The world's best-selling drug, used in 40+ cancer types. Core patent 2028, but biologic exclusivity means first biosimilar commercial launch realistically 2028–2029. When it falls, Merck could lose ~$15B in annual revenue within 18 months.</div></div>
+        <div class="ins r"><div class="ins-head">Dupixent (dupilumab) — $15.6B/yr — Cliff: ~2031</div><div class="ins-body">Sanofi's atopic dermatitis/asthma blockbuster, expanding into COPD and eosinophilic esophagitis. At ~$28,000/patient/year, one covered employee can materially move a small group's pharmacy trend.</div></div>
+        <div class="ins r"><div class="ins-head">Skyrizi (risankizumab) — $16.1B/yr — Cliff: ~2032+</div><div class="ins-body">AbbVie's Humira successor. Aggressively switching Humira patients before biosimilars erode the base. Growing across psoriasis, Crohn's, psoriatic arthritis. No near-term biosimilar threat.</div></div>
+      </div>
+      <div class="card g">
+        <div class="card-title">🟢 Relief Is Arriving — Capture the Savings</div>
+        <div class="card-sub">Expirations creating real employer savings opportunity now</div>
+        <div class="ins g"><div class="ins-head">Humira (adalimumab) — $28B peak — Biosimilars HERE</div><div class="ins-body">12+ biosimilars on market. Prices down 60–70%. Adoption jumped 3% → 28% in 2024. <strong>Action item: verify your PBM is passing Humira biosimilar savings to your plan — not retaining the rebate differential.</strong></div></div>
+        <div class="ins g"><div class="ins-head">Stelara (ustekinumab) — $17B/yr — Biosimilars 2025</div><div class="ins-body">First biosimilar launched Jan 1, 2025. Six more preparing at 80%+ discount. Significant savings available for any employer with Crohn's/psoriasis claims.</div></div>
+        <div class="ins g"><div class="ins-head">Eliquis (apixaban) — $26B/yr — Generic: April 2028</div><div class="ins-body">Settlement locks generics until April 2028. Negotiated Medicare price effective 2026 will pressure commercial contracts. At $26B system spend, generic entry will be a major deflationary event.</div></div>
+        <div class="ins b"><div class="ins-head">Xarelto (rivaroxaban) — $11B/yr — Generic: 2026</div><div class="ins-body">Generic formulations entering market 2026. Alongside Eliquis, anticoagulant category will see significant price compression through 2028. High-AFib/DVT populations should see meaningful savings.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB 5: EMPLOYER ═══ -->
+  <div id="tab-employer" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Pharmacy Share of Employer Health Plan Spend, 2015–2025</div>
+      <div class="card-sub">Pharmacy's share of total plan cost has grown dramatically — driven almost entirely by specialty drugs. This is now your second-largest plan cost category after hospital/facility.</div>
+      <svg id="pharmaShareChart" viewBox="0 0 900 240" style="width:100%;height:240px;overflow:visible;"></svg>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-lbl">Large Employers: Rx as Driver</div><div class="stat-val" style="color:var(--r)">36%</div><div class="stat-note up">Say Rx prices contributed "a great deal" to premium increases (KFF 2025)</div></div>
+      <div class="stat"><div class="stat-lbl">New Rx Coverage as Driver</div><div class="stat-val">22%</div><div class="stat-note">Cite new Rx as significant premium driver (KFF 2025)</div></div>
+      <div class="stat"><div class="stat-lbl">2026 Pharmacy Trend</div><div class="stat-val" style="color:var(--r)">~11%</div><div class="stat-note up">2.5 points above medical trend</div></div>
+      <div class="stat"><div class="stat-lbl">Employers Cutting Benefits 2026</div><div class="stat-val" style="color:var(--a)">59%</div><div class="stat-note up">Up from 44% in 2024 (Mercer)</div></div>
+    </div>
+    <div class="sdiv"><div class="sdiv-line"></div><div class="sdiv-lbl">What Smart Employers Are Doing Now</div><div class="sdiv-line"></div></div>
+    <div class="three-col">
+      <div class="ins g" style="margin-bottom:0"><div class="ins-icon">💊</div><div class="ins-head">Formulary Tiering &amp; Step Therapy</div><div class="ins-body">Requiring less expensive alternatives first can reduce specialty Rx spend 15–25%. Requires clinical criteria that survive Mental Health Parity and state step therapy laws — not every approach is legally viable in every state.</div></div>
+      <div class="ins g" style="margin-bottom:0"><div class="ins-icon">🔁</div><div class="ins-head">Active Biosimilar Management</div><div class="ins-body">Don't assume your PBM is driving adoption. Ask: what is our biosimilar adoption rate by drug, and what is the rebate pass-through structure for reference products vs. biosimilars? The savings don't always flow automatically.</div></div>
+      <div class="ins g" style="margin-bottom:0"><div class="ins-icon">🏥</div><div class="ins-head">Site-of-Care Steering</div><div class="ins-body">Infused biologics in hospital outpatient settings cost 200–400% more than an independent clinic. Site-of-care programs can cut costs significantly — but require employee support and network design to be effective.</div></div>
+    </div>
+    <div style="margin-top:16px;" class="three-col">
+      <div class="ins p" style="margin-bottom:0"><div class="ins-icon">⚠️</div><div class="ins-head">The 1-Employee Scenario</div><div class="ins-body">A 50-person group where one employee starts Dupixent (~$28,000/yr) adds 3–4% effective premium increase to the whole group. Add a cancer biologic ($100K+/yr) and pharmacy trend can hit 30%+ before counting the rest. <strong>Stop-loss structuring is not optional.</strong></div></div>
+      <div class="ins p" style="margin-bottom:0"><div class="ins-icon">🛡️</div><div class="ins-head">Stop-Loss Attachment Strategy</div><div class="ins-body">As specialty drugs push toward $500K–$1M+ per patient (gene therapies, CAR-T), $100K–$150K specific attachment points are increasingly inadequate. Aggregate protection design matters as much as the specific layer.</div></div>
+      <div class="ins b" style="margin-bottom:0"><div class="ins-icon">📊</div><div class="ins-head">The Data Question to Ask</div><div class="ins-body">Can you show me our pharmacy claims broken down by: specialty vs. traditional, top 10 drugs by spend, biosimilar eligibility, and GLP-1 exposure? If your broker can't produce this — that's a signal.</div></div>
+    </div>
+  </div>
+
+  <div class="src"><strong>Sources:</strong> Becker's Hospital Review / IQVIA National Sales Perspectives 2024 &bull; PubMed — National Trends in Prescription Drug Expenditures 2025 &bull; PwC Behind the Numbers 2026 &bull; KFF 2025 Employer Health Benefits Survey &bull; KFF Health Tracking Poll (March 2026) &bull; CMS Medicare Part B/D Drug Spending Data 2024 &bull; Drug Patent Watch / Pharmacy Times 2025–2030 &bull; CBO Drug Patent Savings Projection &bull; Milliman Commercial Reimbursement Benchmarking 2025<br>This analysis is prepared for informational and advisory purposes. Individual employer plan experience will vary. This is not legal, medical, or actuarial advice.</div>
+</div>
+
+<!-- BOTTOM FOOTER -->
+<div class="bot-footer">
+  <div class="bot-inner">
+    <div class="wtw-wm">wtw</div>
+    <div class="bot-meta">
+      <span>Erin Chisdak, VP Health &amp; Benefits</span>
+      <a href="mailto:Erin.Chisdak@newfront.com">Erin.Chisdak@newfront.com</a>
+      <span>(619) 813-5463</span>
+      <span>CA LIC # 0I37170</span>
+      <a href="https://wtwco.com">wtwco.com</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const DRUGS = [
+  {rank:1, brand:'Ozempic / Wegovy / Rybelsus', gen:'Semaglutide',    use:'GLP-1 | Diabetes · Obesity · CV Risk',  spend:54,   yoy:'+108%', flag:'h', color:'#C0392B', pct:100},
+  {rank:2, brand:'Mounjaro / Zepbound',          gen:'Tirzepatide',   use:'GLP-1 | Diabetes · Obesity',           spend:31.7, yoy:'+95%',  flag:'h', color:'#C0392B', pct:59},
+  {rank:3, brand:'Humira (+ biosimilars)',        gen:'Adalimumab',    use:'Biologic | Autoimmune · Arthritis',    spend:28,   yoy:'-18%',  flag:'c', color:'#1E7E5E', pct:52},
+  {rank:4, brand:'Eliquis',                       gen:'Apixaban',      use:'Anticoagulant | AFib · DVT',          spend:26.2, yoy:'+8%',   flag:'n', color:'#4A7DB5', pct:49},
+  {rank:5, brand:'Jardiance',                     gen:'Empagliflozin', use:'SGLT2 | Diabetes · Heart Failure',    spend:20.5, yoy:'+12%',  flag:'n', color:'#4A7DB5', pct:38},
+  {rank:6, brand:'Keytruda',                      gen:'Pembrolizumab', use:'Oncology | 40+ Cancer Types',        spend:18,   yoy:'+15%',  flag:'h', color:'#C0392B', pct:33},
+  {rank:7, brand:'Stelara',                       gen:'Ustekinumab',   use:'Biologic | Crohn\'s · Psoriasis',     spend:17,   yoy:'-12%',  flag:'c', color:'#1E7E5E', pct:31},
+  {rank:8, brand:'Skyrizi',                       gen:'Risankizumab',  use:'Biologic | Psoriasis · Crohn\'s',     spend:16.1, yoy:'+28%',  flag:'h', color:'#C0392B', pct:30},
+  {rank:9, brand:'Dupixent',                      gen:'Dupilumab',     use:'Biologic | Atopic Derm · Asthma',    spend:15.6, yoy:'+22%',  flag:'h', color:'#C0392B', pct:29},
+  {rank:10,brand:'Xarelto',                       gen:'Rivaroxaban',   use:'Anticoagulant | AFib · DVT',         spend:11,   yoy:'+4%',   flag:'w', color:'#D4860B', pct:20},
+  {rank:11,brand:'Entresto',                      gen:'Sacubitril/Valsartan',use:'Cardio | Heart Failure',        spend:9.8,  yoy:'+18%',  flag:'n', color:'#4A7DB5', pct:18},
+  {rank:12,brand:'Biktarvy',                      gen:'Bictegravir combo',use:'HIV Treatment',                   spend:8.7,  yoy:'+11%',  flag:'w', color:'#D4860B', pct:16},
+];
+
+const FLAG = {
+  h:{label:'🔥 High Exposure',cls:'fl-h'},
+  w:{label:'👀 Watch',        cls:'fl-w'},
+  c:{label:'📉 Relief Coming',cls:'fl-c'},
+  n:{label:'🏛️ IRA Negotiated',cls:'fl-n'},
+};
+
+// Build drug list
+(function() {
+  const el = document.getElementById('drugList');
+  DRUGS.forEach(d => {
+    const fl = FLAG[d.flag];
+    const down = d.yoy.startsWith('-');
+    el.innerHTML += `<div class="drug-row">
+      <div class="drug-rank">${d.rank}</div>
+      <div>
+        <div class="drug-brand">${d.brand}</div>
+        <div class="drug-gen">${d.gen}</div>
+        <span class="drug-use">${d.use}</span>
+      </div>
+      <div>
+        <div class="drug-bar-bg"><div class="drug-bar-fill" style="width:${d.pct}%;background:${d.color}"></div></div>
+        <div class="drug-spend">$${d.spend}B</div>
+      </div>
+      <div class="drug-yoy" style="color:${down?'#1E7E5E':'#C0392B'}">${d.yoy}</div>
+      <div><span class="fl ${fl.cls}">${fl.label}</span></div>
+    </div>`;
+  });
+})();
+
+// Build indication cascade
+(function() {
+  const cascade = [
+    {yr:'2017', label:'FDA: Ozempic — Type 2 Diabetes', pop:'~34M eligible', color:'#4A7DB5'},
+    {yr:'2021', label:'FDA: Wegovy — Obesity / Weight Loss', pop:'+100M+ newly eligible', color:'#D4860B'},
+    {yr:'2024', label:'FDA: Wegovy — CV Risk Reduction', pop:'+3.6M Medicare patients', color:'#C0392B'},
+    {yr:'2024', label:'FDA: Ozempic — Chronic Kidney Disease', pop:'+37M CKD patients', color:'#C0392B'},
+    {yr:'~2025+', label:'Pending: Sleep Apnea, MASH/NASH, others', pop:'Tens of millions more', color:'#C0392B'},
+  ];
+  const el = document.getElementById('indicationCascade');
+  cascade.forEach(c => {
+    el.innerHTML += `<div style="display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:white;border-radius:7px;border:1px solid var(--br);border-left:4px solid ${c.color};">
+      <div style="font-size:11px;font-weight:700;color:${c.color};min-width:46px;padding-top:1px;">${c.yr}</div>
+      <div>
+        <div style="font-size:12.5px;font-weight:700;color:var(--tx);">${c.label}</div>
+        <div style="font-size:11px;color:var(--tx3);margin-top:2px;">Eligible population: <strong style="color:${c.color}">${c.pop}</strong></div>
+      </div>
+    </div>`;
+  });
+})();
+
+// ─── SVG HELPER ───────────────────────────────────────────────────────────────
+function S(tag, attrs, parent) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (let [k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+  if (parent) parent.appendChild(el);
+  return el;
+}
+function T(svg, x, y, txt, attrs) {
+  const t = S('text', {x,y,...attrs}, svg);
+  t.textContent = txt; return t;
+}
+
+// Tooltip
+const tt = document.getElementById('tt');
+function showTT(e, head, rows) {
+  document.getElementById('tt-h').textContent = head;
+  document.getElementById('tt-body').innerHTML = rows.map(r=>`<div class="tt-r"><span>${r[0]}</span><span class="tt-v">${r[1]}</span></div>`).join('');
+  tt.classList.add('on');
+}
+function moveTT(e) { tt.style.left=(e.clientX+14)+'px'; tt.style.top=(e.clientY-58)+'px'; }
+function hideTT() { tt.classList.remove('on'); }
+
+// ─── SPECIALTY DONUT ─────────────────────────────────────────────────────────
+function drawSpecialtyDonut() {
+  const svg = document.getElementById('specialtyDonut');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const cx=115, cy=90, r=65, sw=24;
+  const data=[{p:55,color:'#5C2D91'},{p:45,color:'#E2DFF0'}];
+  let angle=-Math.PI/2;
+  data.forEach(d=>{
+    const sweep=(d.p/100)*2*Math.PI;
+    const x1=cx+r*Math.cos(angle), y1=cy+r*Math.sin(angle);
+    const x2=cx+r*Math.cos(angle+sweep), y2=cy+r*Math.sin(angle+sweep);
+    S('path',{d:`M ${x1} ${y1} A ${r} ${r} 0 ${sweep>Math.PI?1:0} 1 ${x2} ${y2}`,
+      fill:'none',stroke:d.color,'stroke-width':sw,'stroke-linecap':'butt'},svg);
+    angle+=sweep;
+  });
+  T(svg,cx,cy-7,'55%',{'text-anchor':'middle','font-family':'Playfair Display,serif','font-size':'22','font-weight':'700',fill:'#5C2D91'});
+  T(svg,cx,cy+12,'of spend',{'text-anchor':'middle','font-family':'Source Sans 3,sans-serif','font-size':'11',fill:'#9090A0'});
+  T(svg,cx,cy+27,'3% of scripts',{'text-anchor':'middle','font-family':'Source Sans 3,sans-serif','font-size':'11',fill:'#9090A0'});
+  [[55,'Specialty','#5C2D91'],[45,'Traditional','#E2DFF0']].forEach(([p,l,c],i)=>{
+    S('rect',{x:cx+82,y:38+i*22,width:11,height:11,rx:3,fill:c,stroke:'#E2DFF0'},svg);
+    T(svg,cx+97,49+i*22,`${l} (${p}%)`,{'font-family':'Source Sans 3,sans-serif','font-size':'11',fill:'#4A4A6A'});
+  });
+}
+
+// ─── PHARMACY TREND CHART ─────────────────────────────────────────────────────
+function drawPharmTrendChart() {
+  const svg = document.getElementById('pharmTrendChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const W=900,H=320,pad={t:28,r:115,b:42,l:52};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const yrs=[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+  const pharma=[7.5,8.0,8.2,7.5,8.5,6.5,11.0,11.5,11.0,11.0];
+  const medical=[5.5,6.0,6.5,7.0,7.5,5.5,8.0,8.5,8.5,8.5];
+  const cpi=[2.1,2.4,2.3,1.2,4.7,8.0,4.1,3.2,2.7,2.5];
+  const n=yrs.length;
+  const xS=i=>pad.l+(i/(n-1))*cW;
+  const yS=v=>pad.t+cH-(v/14)*cH;
+
+  [0,2,4,6,8,10,12,14].forEach(v=>{
+    S('line',{x1:pad.l,y1:yS(v),x2:W-pad.r+20,y2:yS(v),class:'gl'},svg);
+    T(svg,pad.l-5,yS(v)+4,v+'%',{class:'yl'});
+  });
+  yrs.forEach((yr,i)=>T(svg,xS(i),H-8,yr+(i>=8?'●':''),{'text-anchor':'middle',class:'ax'}));
+  S('line',{x1:xS(8),y1:pad.t,x2:xS(8),y2:H-pad.b,stroke:'#C8C0E0','stroke-width':'1','stroke-dasharray':'4 3'},svg);
+  T(svg,xS(8)+4,pad.t+12,'Projected →',{'font-size':'9','font-family':'Source Sans 3,sans-serif',fill:'#B0A0D0'});
+
+  // gap fill
+  const fillPts='M'+pharma.map((_,i)=>xS(i)+','+yS(pharma[i])).join(' L')+
+    ' L'+medical.slice().reverse().map((_,i)=>xS(n-1-i)+','+yS(medical[n-1-i])).join(' L')+' Z';
+  S('path',{d:fillPts,fill:'rgba(92,45,145,.06)'},svg);
+
+  const series=[
+    {data:pharma,color:'#5C2D91',label:'Pharmacy Trend',dash:''},
+    {data:medical,color:'#C0392B',label:'Medical Trend',dash:''},
+    {data:cpi,   color:'#D4860B',label:'CPI Inflation', dash:'6 3'},
+  ];
+  series.forEach(s=>{
+    S('polyline',{points:s.data.map((v,i)=>xS(i)+','+yS(v)).join(' '),fill:'none',stroke:s.color,'stroke-width':'2.5','stroke-dasharray':s.dash,'stroke-linecap':'round'},svg);
+    s.data.forEach((v,i)=>{
+      const d=S('circle',{cx:xS(i),cy:yS(v),r:'5',fill:s.color,stroke:'white','stroke-width':'2',style:'cursor:pointer'},svg);
+      d.addEventListener('mouseenter',e=>showTT(e,yrs[i],[['Series',s.label],['Value',v+'%']]));
+      d.addEventListener('mousemove',moveTT);
+      d.addEventListener('mouseleave',hideTT);
+    });
+    T(svg,xS(n-1)+9,yS(s.data[n-1])+4,s.label,{'font-size':'11','font-family':'Source Sans 3,sans-serif',fill:s.color,'font-weight':'700'});
+  });
+}
+
+// ─── GLP CHART ───────────────────────────────────────────────────────────────
+function drawGLPChart() {
+  const svg = document.getElementById('glpChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const W=900,H=280,pad={t:28,r:42,b:42,l:52};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const yrs=[2020,2021,2022,2023,2024,2025];
+  const sema=[1.5,2.6,7.2,20.0,54,70];
+  const tirz=[0,0,1.0,8.5,31.7,42];
+  const maxV=82;
+  const xS=i=>pad.l+(i/(yrs.length-1))*cW;
+  const yS=v=>pad.t+cH-(v/maxV)*cH;
+
+  [0,20,40,60,80].forEach(v=>{
+    S('line',{x1:pad.l,y1:yS(v),x2:W-pad.r,y2:yS(v),class:'gl'},svg);
+    T(svg,pad.l-5,yS(v)+4,'$'+v+'B',{class:'yl'});
+  });
+  yrs.forEach((yr,i)=>T(svg,xS(i),H-8,yr+(i===5?' (proj)':''),{'text-anchor':'middle',class:'ax'}));
+
+  const tirzTop=tirz.map((t,i)=>sema[i]+t);
+  const semaArea='M'+xS(0)+','+yS(0)+' '+sema.map((v,i)=>'L'+xS(i)+','+yS(v)).join(' ')+' L'+xS(5)+','+yS(0)+' Z';
+  const tirzArea='M'+xS(0)+','+yS(sema[0])+' '+tirzTop.map((v,i)=>'L'+xS(i)+','+yS(v)).join(' ')+
+    ' L'+xS(5)+','+yS(sema[5])+' '+sema.map((_,i)=>'L'+xS(sema.length-1-i)+','+yS(sema[sema.length-1-i])).join(' ')+' Z';
+
+  S('path',{d:semaArea,fill:'rgba(92,45,145,.12)'},svg);
+  S('path',{d:tirzArea,fill:'rgba(59,191,178,.18)'},svg);
+  S('polyline',{points:sema.map((v,i)=>xS(i)+','+yS(v)).join(' '),fill:'none',stroke:'#5C2D91','stroke-width':'2.5','stroke-linecap':'round'},svg);
+  S('polyline',{points:tirzTop.map((v,i)=>xS(i)+','+yS(v)).join(' '),fill:'none',stroke:'#3BBFB2','stroke-width':'2.5','stroke-linecap':'round'},svg);
+
+  sema.forEach((v,i)=>{
+    S('circle',{cx:xS(i),cy:yS(v),r:'5',fill:'#5C2D91',stroke:'white','stroke-width':'2'},svg);
+    if(v>3) T(svg,xS(i),yS(v)-10,'$'+v+'B',{'text-anchor':'middle','font-size':'11','font-family':'Source Sans 3,sans-serif',fill:'#5C2D91','font-weight':'700'});
+  });
+  tirzTop.forEach((v,i)=>{ if(tirz[i]>0) S('circle',{cx:xS(i),cy:yS(v),r:'5',fill:'#3BBFB2',stroke:'white','stroke-width':'2'},svg); });
+  T(svg,xS(5)-10,yS(sema[5])-14,'Semaglutide ~$70B',{'text-anchor':'end','font-size':'11','font-family':'Source Sans 3,sans-serif',fill:'#5C2D91','font-weight':'700'});
+  T(svg,xS(5)-10,yS(tirzTop[5])-14,'+ Tirzepatide ~$42B',{'text-anchor':'end','font-size':'11','font-family':'Source Sans 3,sans-serif',fill:'#3BBFB2','font-weight':'700'});
+}
+
+// ─── PATENT CLIFF ─────────────────────────────────────────────────────────────
+function drawCliffViz() {
+  const el = document.getElementById('cliffViz');
+  if (!el) return;
+  const drugs=[
+    {name:'Humira',    spend:'$28B', color:'#1E7E5E', patent:2022, note:'✅ Biosimilars HERE (12+ on market)'},
+    {name:'Stelara',   spend:'$17B', color:'#1E7E5E', patent:2025, note:'✅ Biosim launched Jan 2025'},
+    {name:'Xarelto',   spend:'$11B', color:'#D4860B', patent:2026, note:'⏳ Generic entry 2026'},
+    {name:'Trulicity', spend:'$8B',  color:'#D4860B', patent:2027, note:'⏳ Biosimilar ~2027'},
+    {name:'Eliquis',   spend:'$26B', color:'#D4860B', patent:2028, note:'⏳ Generic April 2028'},
+    {name:'Keytruda',  spend:'$29B', color:'#C0392B', patent:2028, note:'🔴 Biosim ~2028–29'},
+    {name:'Opdivo',    spend:'$10B', color:'#C0392B', patent:2028, note:'🔴 Patent 2028'},
+    {name:'Dupixent',  spend:'$16B', color:'#C0392B', patent:2031, note:'🔴 No relief til 2031'},
+    {name:'Skyrizi',   spend:'$16B', color:'#C0392B', patent:2033, note:'🔴 AbbVie fortress'},
+  ];
+  const startYr=2022, endYr=2033, span=endYr-startYr;
+  const pct=yr=>Math.min(100,Math.max(0,((yr-startYr)/span)*100));
+  const yrLabels=[2022,2024,2026,2028,2030,2032];
+  let html='<div style="min-width:580px;">';
+  html+='<div style="display:flex;padding-left:155px;margin-bottom:10px;">';
+  yrLabels.forEach(yr=>{ html+=`<div style="width:${100/((endYr-startYr)/2)}%;font-size:9.5px;font-weight:600;color:var(--tx3);font-family:'Source Sans 3',sans-serif;">${yr}</div>`; });
+  html+='</div>';
+  drugs.forEach(d=>{
+    const p=pct(d.patent);
+    const isG=d.color==='#1E7E5E', isA=d.color==='#D4860B';
+    const tb=isG?'rgba(30,126,94,.08)':isA?'rgba(212,134,11,.08)':'rgba(192,57,43,.08)';
+    html+=`<div class="cliff-row">
+      <div class="cliff-name"><div class="cliff-name-main">${d.name}</div><div class="cliff-name-spend">${d.spend}/yr</div></div>
+      <div class="cliff-track" style="background:${tb}">
+        <div class="cliff-fill" style="width:${p}%;background:${d.color};opacity:.8"><span class="cliff-fill-label">PROTECTED</span></div>
+        <div style="position:absolute;left:${p}%;top:0;width:2px;height:100%;background:${d.color};opacity:.5"></div>
+      </div>
+      <div class="cliff-note" style="color:${d.color}">${d.note}</div>
+    </div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+// ─── PHARMA SHARE CHART ───────────────────────────────────────────────────────
+function drawPharmaShareChart() {
+  const svg = document.getElementById('pharmaShareChart');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const W=900,H=240,pad={t:24,r:145,b:38,l:52};
+  const cW=W-pad.l-pad.r, cH=H-pad.t-pad.b;
+  const yrs=[2015,2017,2019,2021,2023,2025];
+  const ph=[17,18,20,22,25,27];
+  const sp=[6,7,9,12,16,20];
+  const n=yrs.length;
+  const xS=i=>pad.l+(i/(n-1))*cW;
+  const yS=v=>pad.t+cH-(v/32)*cH;
+
+  [0,5,10,15,20,25,30].forEach(v=>{
+    S('line',{x1:pad.l,y1:yS(v),x2:W-pad.r,y2:yS(v),class:'gl'},svg);
+    T(svg,pad.l-5,yS(v)+4,v+'%',{class:'yl'});
+  });
+  yrs.forEach((yr,i)=>T(svg,xS(i),H-5,yr,{'text-anchor':'middle',class:'ax'}));
+
+  const pharmArea='M'+xS(0)+','+yS(0)+' '+ph.map((v,i)=>'L'+xS(i)+','+yS(v)).join(' ')+' L'+xS(n-1)+','+yS(0)+' Z';
+  const specArea='M'+xS(0)+','+yS(0)+' '+sp.map((v,i)=>'L'+xS(i)+','+yS(v)).join(' ')+' L'+xS(n-1)+','+yS(0)+' Z';
+  S('path',{d:pharmArea,fill:'rgba(92,45,145,.10)'},svg);
+  S('path',{d:specArea, fill:'rgba(192,57,43,.15)'},svg);
+
+  S('polyline',{points:ph.map((v,i)=>xS(i)+','+yS(v)).join(' '),fill:'none',stroke:'#5C2D91','stroke-width':'2.5','stroke-linecap':'round'},svg);
+  S('polyline',{points:sp.map((v,i)=>xS(i)+','+yS(v)).join(' '),fill:'none',stroke:'#C0392B','stroke-width':'2.5','stroke-linecap':'round'},svg);
+
+  ph.forEach((v,i)=>S('circle',{cx:xS(i),cy:yS(v),r:'5',fill:'#5C2D91',stroke:'white','stroke-width':'2'},svg));
+  sp.forEach((v,i)=>S('circle',{cx:xS(i),cy:yS(v),r:'5',fill:'#C0392B',stroke:'white','stroke-width':'2'},svg));
+
+  T(svg,xS(n-1)+10,yS(ph[n-1])+4,'All Pharmacy ~27%',{'font-size':'11','font-family':'Source Sans 3,sans-serif',fill:'#5C2D91','font-weight':'700'});
+  T(svg,xS(n-1)+10,yS(sp[n-1])+4,'Specialty ~20%',{'font-size':'11','font-family':'Source Sans 3,sans-serif',fill:'#C0392B','font-weight':'700'});
+  T(svg,pad.l-38,pad.t+cH/2,'% of plan spend',{'font-size':'10','font-family':'Source Sans 3,sans-serif',fill:'#9090B0','text-anchor':'middle',transform:`rotate(-90,${pad.l-38},${pad.t+cH/2})`});
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'spend')    drawSpecialtyDonut();
+  if (id === 'trend')    drawPharmTrendChart();
+  if (id === 'glp1')     drawGLPChart();
+  if (id === 'cliff')    drawCliffViz();
+  if (id === 'employer') drawPharmaShareChart();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  drawSpecialtyDonut();
+});
+
+window.addEventListener('resize', function() {
+  const active = document.querySelector('.tab-panel.active');
+  if (!active) return;
+  const id = active.id.replace('tab-', '');
+  if (id === 'spend')    drawSpecialtyDonut();
+  if (id === 'trend')    drawPharmTrendChart();
+  if (id === 'glp1')     drawGLPChart();
+  if (id === 'cliff')    drawCliffViz();
+  if (id === 'employer') drawPharmaShareChart();
+});
+</script>
+</body>
+</html>
