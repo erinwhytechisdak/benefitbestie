@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>WTW vs. Newfront — 2026 Benefits Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --wtw-purple:#5C2D91;
+  --wtw-purple-dark:#3E1D66;
+  --wtw-teal:#3BBFB2;
+  --wtw-blue:#4A7DB5;
+  --wtw-magenta:#D9308F;
+  --wtw-gray:#E8E8EC;
+  --wtw-gray-med:#C8C8D0;
+  --wtw-ink:#1A1A2E;
+  --wtw-ink-soft:#4A4A5C;
+  --shadow-sm:0 1px 2px rgba(26,26,46,.06);
+  --shadow-md:0 4px 16px rgba(26,26,46,.08);
+  --shadow-lg:0 12px 40px rgba(92,45,145,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:400;
+  color:var(--wtw-ink);
+  background:#FAFAFC;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== HEADER / HERO ===== */
+.hero{
+  position:relative;
+  background:var(--wtw-purple);
+  color:#fff;
+  padding:56px 64px 48px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  top:0;right:0;
+  width:38%;height:100%;
+  background:var(--wtw-teal);
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,transparent 1px 7px);
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  bottom:-40px;left:42%;
+  width:180px;height:180px;
+  background:rgba(255,255,255,.08);
+  transform:rotate(12deg);
+}
+.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:42px;
+  line-height:1.1;
+  letter-spacing:-.01em;
+  margin-bottom:8px;
+}
+.hero .kicker{
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-size:11px;
+  font-weight:600;
+  color:var(--wtw-teal);
+  margin-bottom:18px;
+  display:block;
+}
+.hero .sub{
+  font-size:17px;
+  font-weight:300;
+  opacity:.88;
+  max-width:620px;
+}
+.hero .wtw-mark{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:32px;
+  font-style:italic;
+  letter-spacing:-.02em;
+  background:#fff;
+  color:var(--wtw-purple);
+  padding:6px 18px;
+  display:inline-block;
+}
+
+/* ===== CONTENT WRAPPER ===== */
+.wrap{max-width:1200px;margin:0 auto;padding:48px 64px 80px}
+
+/* ===== EXEC SUMMARY ===== */
+.summary{
+  background:#fff;
+  border-left:4px solid var(--wtw-teal);
+  padding:28px 32px;
+  margin-bottom:48px;
+  box-shadow:var(--shadow-md);
+}
+.summary h2{
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  font-weight:600;
+  color:var(--wtw-purple);
+  margin-bottom:14px;
+}
+.summary p{font-size:15.5px;color:var(--wtw-ink-soft);margin-bottom:10px}
+.summary p:last-child{margin-bottom:0}
+
+/* ===== SECTION ===== */
+.section{margin-bottom:64px}
+.section-header{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  margin-bottom:24px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--wtw-purple);
+}
+.section-header .num{
+  font-family:'Playfair Display',serif;
+  font-size:40px;
+  font-weight:700;
+  color:var(--wtw-teal);
+  line-height:1;
+  font-style:italic;
+}
+.section-header h2{
+  font-family:'Playfair Display',serif;
+  font-size:30px;
+  font-weight:600;
+  color:var(--wtw-purple);
+  letter-spacing:-.005em;
+}
+
+/* ===== COMPARE GRID ===== */
+.compare-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:32px;
+}
+.employer-card{
+  background:#fff;
+  padding:24px 28px;
+  border-top:4px solid var(--wtw-purple);
+  box-shadow:var(--shadow-sm);
+}
+.employer-card.newfront{border-top-color:var(--wtw-magenta)}
+.employer-card h3{
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  font-weight:600;
+  color:var(--wtw-purple);
+  margin-bottom:6px;
+}
+.employer-card.newfront h3{color:var(--wtw-magenta)}
+.employer-card .tag{
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--wtw-ink-soft);
+  font-weight:600;
+  margin-bottom:14px;
+}
+.employer-card ul{list-style:none;font-size:14.5px}
+.employer-card li{
+  padding:7px 0;
+  border-bottom:1px solid var(--wtw-gray);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+.employer-card li:last-child{border-bottom:0}
+.employer-card li .k{color:var(--wtw-ink-soft);flex-shrink:0}
+.employer-card li .v{font-weight:500;text-align:right}
+
+/* ===== TABLES ===== */
+.tbl-wrap{
+  background:#fff;
+  box-shadow:var(--shadow-md);
+  overflow-x:auto;
+  margin-bottom:20px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13.5px;
+}
+thead th{
+  background:var(--wtw-purple);
+  color:#fff;
+  text-align:left;
+  padding:12px 14px;
+  font-weight:600;
+  font-size:12.5px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  border-right:1px solid rgba(255,255,255,.12);
+  vertical-align:bottom;
+}
+thead th:last-child{border-right:0}
+thead th.newfront-col{background:var(--wtw-magenta)}
+thead th .plan-sub{
+  display:block;
+  font-size:10.5px;
+  font-weight:400;
+  opacity:.85;
+  text-transform:none;
+  letter-spacing:0;
+  margin-top:3px;
+}
+tbody td{
+  padding:11px 14px;
+  border-bottom:1px solid var(--wtw-gray);
+  vertical-align:top;
+}
+tbody tr:nth-child(even){background:#FAFAFC}
+tbody td:first-child{
+  font-weight:600;
+  color:var(--wtw-purple);
+  background:#F4F1F9;
+  border-right:2px solid var(--wtw-purple);
+  width:180px;
+}
+tbody tr:nth-child(even) td:first-child{background:#F0ECF7}
+.section-row td{
+  background:var(--wtw-ink)!important;
+  color:#fff!important;
+  font-weight:600!important;
+  font-size:11.5px!important;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:8px 14px!important;
+  border-right:0!important;
+  border-left:0!important;
+}
+
+/* highlight cells */
+.win{background:rgba(59,191,178,.14)!important;font-weight:600}
+.loss{background:rgba(217,48,143,.08)!important}
+
+/* ===== TAKEAWAY BOX ===== */
+.takeaway{
+  background:var(--wtw-ink);
+  color:#fff;
+  padding:20px 28px;
+  border-left:4px solid var(--wtw-teal);
+  margin-top:16px;
+  font-size:14.5px;
+}
+.takeaway strong{color:var(--wtw-teal);font-weight:600}
+.takeaway .label{
+  display:inline-block;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:13px;
+  color:var(--wtw-teal);
+  margin-right:8px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-weight:600;
+}
+
+/* ===== BIG STAT CARDS ===== */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:32px;
+}
+.stat{
+  background:#fff;
+  padding:20px 22px;
+  border-top:3px solid var(--wtw-purple);
+  box-shadow:var(--shadow-sm);
+}
+.stat:nth-child(2){border-top-color:var(--wtw-teal)}
+.stat:nth-child(3){border-top-color:var(--wtw-blue)}
+.stat:nth-child(4){border-top-color:var(--wtw-magenta)}
+.stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--wtw-ink-soft);font-weight:600;margin-bottom:8px}
+.stat .val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--wtw-ink);line-height:1.1}
+.stat .note{font-size:12px;color:var(--wtw-ink-soft);margin-top:4px}
+
+/* ===== FOOTER ===== */
+.foot{
+  background:var(--wtw-gray);
+  padding:28px 64px;
+  font-size:11.5px;
+  color:var(--wtw-ink-soft);
+  border-top:2px solid var(--wtw-purple);
+}
+.foot-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.foot .wtw-mark{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:var(--wtw-purple);
+  font-size:18px;
+  font-style:italic;
+  letter-spacing:-.02em;
+}
+.foot .meta{text-align:right;font-size:11px}
+.foot .disclaimer{font-size:10.5px;font-style:italic;opacity:.8;margin-top:8px;max-width:760px}
+
+@media (max-width:900px){
+  .hero,.wrap,.foot{padding-left:24px;padding-right:24px}
+  .hero h1{font-size:30px}
+  .compare-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  tbody td:first-child{width:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="kicker">Benefits Comparison · Plan Year 2026</span>
+      <h1>WTW vs. Newfront<br>2026 Benefits Side-by-Side</h1>
+      <p class="sub">A plan-by-plan comparison of medical, Rx, dental, vision, HSA, ancillary, and retirement benefits across two competing offers.</p>
+    </div>
+    <span class="wtw-mark">wtw</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- EXEC SUMMARY -->
+  <section class="summary">
+    <h2>At a glance</h2>
+    <p><strong>WTW</strong> offers three HSA-qualified HDHPs through Anthem BCBS, UnitedHealthcare, or Kaiser (where available), plus rich retirement through a pension + 401(k) non-elective, plus company-paid STD/LTD and 1× salary life.</p>
+    <p><strong>Newfront</strong> offers broader medical plan variety — six plans including traditional PPO (OAP), EPO (OAPIN), HDHP, and Kaiser HMO options — with lower paycheck costs on most plans, a much richer HDHP (employer pays full employee-only premium), and guaranteed HSA funding.</p>
+    <p>The core tradeoff: <strong>WTW is stronger on retirement</strong> (pension + 3.5% non-elective 401(k) + ESPP + richer ancillary), while <strong>Newfront is stronger on medical plan choice, paycheck cost, and guaranteed HSA funding</strong> (richer non-HDHP options, free HDHP for employees, $1K–$3K/yr automatic HSA contributions).</p>
+  </section>
+
+  <!-- ===== MEDICAL ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">01</span>
+      <h2>Medical</h2>
+    </div>
+
+    <div class="compare-grid">
+      <div class="employer-card">
+        <h3>WTW Medical</h3>
+        <div class="tag">3 plans · All HSA-qualified HDHPs</div>
+        <ul>
+          <li><span class="k">Carriers</span><span class="v">Anthem BCBS, UHC, Kaiser</span></li>
+          <li><span class="k">Plan types</span><span class="v">HDHP only (all HSA)</span></li>
+          <li><span class="k">Lowest deductible</span><span class="v">$2,000 ind / $4,000 fam</span></li>
+          <li><span class="k">Highest deductible</span><span class="v">$4,500 ind / $9,000 fam</span></li>
+          <li><span class="k">Coinsurance</span><span class="v">70–80% after deductible</span></li>
+          <li><span class="k">OOP max (lowest)</span><span class="v">$4,000 ind / $8,000 fam</span></li>
+          <li><span class="k">Spouse surcharge</span><span class="v">$1,200/yr if other coverage</span></li>
+          <li><span class="k">Tobacco surcharge</span><span class="v">$600/yr per user</span></li>
+        </ul>
+      </div>
+      <div class="employer-card newfront">
+        <h3>Newfront Medical</h3>
+        <div class="tag">6 plans · PPO, EPO, HDHP, HMOs</div>
+        <ul>
+          <li><span class="k">Carriers</span><span class="v">Cigna + Kaiser (CA & HI)</span></li>
+          <li><span class="k">Plan types</span><span class="v">PPO, EPO, HDHP, HMO</span></li>
+          <li><span class="k">Copay plans</span><span class="v">4 of 6 plans (no deductible)</span></li>
+          <li><span class="k">HDHP deductible</span><span class="v">$2,800 ind / $5,000 fam</span></li>
+          <li><span class="k">HDHP OOP max</span><span class="v">$5,000 ind / $10,000 fam</span></li>
+          <li><span class="k">OAP (PPO) ded.</span><span class="v">$500 ind / $1,000 fam</span></li>
+          <li><span class="k">Spouse surcharge / HRA</span><span class="v">Total Care Option: $6K HRA if you use spouse's plan</span></li>
+          <li><span class="k">Tobacco surcharge</span><span class="v">None noted</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HDHP plan-to-plan design comparison -->
+    <h3 style="font-family:'Playfair Display',serif;font-size:19px;color:var(--wtw-purple);margin-bottom:12px;font-weight:600">HDHP Plan Design Comparison</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">In-Network</th>
+            <th>WTW $2,000 HDHP<span class="plan-sub">Lowest deductible</span></th>
+            <th>WTW $3,400 HDHP<span class="plan-sub">Mid</span></th>
+            <th>WTW $4,500 HDHP<span class="plan-sub">Highest deductible</span></th>
+            <th class="newfront-col">Newfront HDHP<span class="plan-sub">Cigna</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Individual deductible</td><td>$2,000</td><td>$3,400</td><td>$4,500</td><td>$2,800</td></tr>
+          <tr><td>Family deductible</td><td>$4,000 aggregate</td><td>$6,800 embedded</td><td>$9,000 embedded</td><td>$5,000 embedded<br><small>($3,400 individual cap)</small></td></tr>
+          <tr><td>Coinsurance</td><td class="win">80% after ded.</td><td>70% after ded.</td><td>70% after ded.</td><td class="win">90% after ded.</td></tr>
+          <tr><td>Individual OOP max</td><td class="win">$4,000</td><td>$6,000</td><td>$6,000</td><td>$5,000</td></tr>
+          <tr><td>Family OOP max</td><td class="win">$8,000</td><td>$12,000</td><td>$12,000</td><td>$10,000</td></tr>
+          <tr><td>Preventive care</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td></tr>
+          <tr><td>HSA-qualified</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes (Rx combined w/ med ded.)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Copay plans (Newfront only) -->
+    <h3 style="font-family:'Playfair Display',serif;font-size:19px;color:var(--wtw-purple);margin:28px 0 12px;font-weight:600">Newfront Copay &amp; HMO Plans <span style="font-size:13px;color:var(--wtw-ink-soft);font-weight:400;font-style:italic">(no WTW equivalent — WTW offers HDHP only)</span></h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">In-Network</th>
+            <th class="newfront-col">OAP (PPO)</th>
+            <th class="newfront-col">OAPIN (EPO)</th>
+            <th class="newfront-col">NorCal HMO 20</th>
+            <th class="newfront-col">SoCal HMO 20</th>
+            <th class="newfront-col">Hawaii HMO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Ind. deductible</td><td>$500</td><td>$0</td><td>$0</td><td>$0</td><td>$0</td></tr>
+          <tr><td>Fam. deductible</td><td>$1,000</td><td>$0</td><td>$0</td><td>$0</td><td>$0</td></tr>
+          <tr><td>Coinsurance</td><td>20%</td><td>0%</td><td>0%</td><td>0%</td><td>10%</td></tr>
+          <tr><td>Ind. OOP max</td><td>$3,000</td><td>$1,500</td><td>$1,500</td><td>$1,500</td><td>$2,500</td></tr>
+          <tr><td>Fam. OOP max</td><td>$6,000</td><td>$3,000</td><td>$3,000</td><td>$3,000</td><td>$7,500</td></tr>
+          <tr><td>PCP visit</td><td>$20</td><td>$20</td><td>$25</td><td>$25</td><td>$15</td></tr>
+          <tr><td>Specialist</td><td>$40</td><td>$40</td><td>$40</td><td>$40</td><td>$15</td></tr>
+          <tr><td>ER</td><td>$150</td><td>$250</td><td>$200</td><td>$200</td><td>$100</td></tr>
+          <tr><td>Inpatient</td><td>20%</td><td>$250/admit</td><td>$200/day</td><td>$200/day</td><td>10%</td></tr>
+          <tr><td>Rx generic (30d)</td><td>$10</td><td>$5</td><td>$10</td><td>$10</td><td>$10</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>WTW's $2,000 HDHP</strong> has the lowest OOP max of any HDHP in the comparison ($4,000 ind / $8,000 fam) and the best coinsurance (80%). <strong>Newfront's HDHP</strong> has the best coinsurance of any HDHP at 90%, but the higher OOP max ($5,000 ind). For non-HDHP preferences, <strong>Newfront wins on choice</strong> — the OAPIN (EPO) and HMO plans deliver $0 deductible, $1,500 OOP max, and rich copays that WTW simply does not offer. <strong>Newfront's unique Healia "Total Care Option"</strong> provides up to $6,000/yr in HRA funding if you enroll in your spouse's employer plan instead — essentially a reverse surcharge that could make dual-coverage households significantly better off.
+    </div>
+  </section>
+
+  <!-- ===== MEDICAL CONTRIBUTIONS ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">02</span>
+      <h2>Your Medical Paycheck Cost</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:200px">Annual Cost · Employee Only</th>
+            <th>WTW $2,000 HDHP<span class="plan-sub">Lowest carrier</span></th>
+            <th>WTW $3,400 HDHP<span class="plan-sub">Lowest carrier</span></th>
+            <th>WTW $4,500 HDHP<span class="plan-sub">Lowest carrier</span></th>
+            <th class="newfront-col">Newfront HDHP</th>
+            <th class="newfront-col">Newfront OAP (PPO)</th>
+            <th class="newfront-col">Newfront OAPIN (EPO)</th>
+            <th class="newfront-col">Newfront NorCal HMO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Employee only</td><td>$1,165</td><td>$234</td><td class="loss">$60</td><td class="win">$0</td><td>$740.52</td><td>$764.52</td><td>$588.84</td></tr>
+          <tr><td>EE + spouse/DP</td><td>$2,777</td><td>$914</td><td>$311</td><td class="win">$6,708</td><td>$8,739.84</td><td>$9,020.76</td><td>$6,949.32</td></tr>
+          <tr><td>EE + child(ren)</td><td>$2,626</td><td>$856</td><td>$283</td><td>$4,471.92</td><td>$6,073.44</td><td>$6,268.56</td><td>$5,889.36</td></tr>
+          <tr><td>EE + family</td><td>$4,707</td><td>$1,727</td><td>$762</td><td>$11,739.12</td><td>$14,738.76</td><td>$15,213.12</td><td>$11,189.64</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      For <strong>employee-only coverage</strong>, Newfront's HDHP is free ($0/yr) — that's a <strong>clear winner vs. any WTW plan</strong>. For <strong>family coverage</strong>, the pattern reverses: WTW's lowest-carrier $4,500 HDHP costs just $762/yr vs. Newfront's HDHP at $11,739 — a <strong>~$11,000 annual gap</strong>. WTW's family contributions are dramatically lower across the board because WTW subsidizes family tiers more heavily. Newfront's design favors singles; WTW's design favors families.
+    </div>
+
+    <div class="stats" style="margin-top:28px">
+      <div class="stat">
+        <div class="lbl">Cheapest EE-Only</div>
+        <div class="val">Newfront HDHP</div>
+        <div class="note">$0/yr · free</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Cheapest Family</div>
+        <div class="val">WTW $4,500</div>
+        <div class="note">$762/yr (low carrier)</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Richest HDHP Design</div>
+        <div class="val">Newfront HDHP</div>
+        <div class="note">90% coins. · $5k OOP</div>
+      </div>
+      <div class="stat">
+        <div class="lbl">Most Plan Choice</div>
+        <div class="val">Newfront</div>
+        <div class="note">6 plans vs. WTW's 3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Rx ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">03</span>
+      <h2>Prescription Drugs</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">Retail 30-day</th>
+            <th>WTW (all HDHPs)<span class="plan-sub">CVS Caremark · after med. ded.</span></th>
+            <th class="newfront-col">Newfront OAP (PPO)</th>
+            <th class="newfront-col">Newfront HDHP</th>
+            <th class="newfront-col">Newfront OAPIN (EPO)</th>
+            <th class="newfront-col">Newfront HMOs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Rx deductible</td><td>Combined w/ med.</td><td>$0</td><td>Combined w/ med.</td><td>$0</td><td>$0</td></tr>
+          <tr><td>Generic</td><td>$10 copay</td><td>$10</td><td>$10</td><td class="win">$5</td><td>$10</td></tr>
+          <tr><td>Preferred brand</td><td>70% (min $30, max $90)</td><td>$35</td><td>$35</td><td>$30</td><td>$20</td></tr>
+          <tr><td>Non-preferred brand</td><td>60% (min $60, max $120)</td><td>$70</td><td>$70</td><td>$65</td><td>$20</td></tr>
+          <tr><td>Specialty</td><td>60% (min $60, max $120)</td><td>10% (max $150)</td><td>10% (max $100)</td><td>10% (max $100)</td><td>20% (max $150) / $200 HI</td></tr>
+          <tr><td>Mail order (90d) generic</td><td>$25 copay</td><td>$25</td><td>$25</td><td>$12</td><td>$20</td></tr>
+          <tr><td>Mail order brand pref.</td><td>70% (min $75, max $225)</td><td>$87</td><td>$87</td><td>$75</td><td>$40</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      Newfront's copay-based Rx structure is <strong>simpler and more predictable</strong> — especially on the non-HDHP plans where Rx is not subject to the medical deductible. WTW's HDHP Rx requires meeting the medical deductible first on non-preventive drugs, which is standard for HSA-qualified plans. For <strong>specialty medications</strong>, Newfront's 10% coinsurance with $100–$150 caps may be meaningfully cheaper than WTW's 60% coinsurance with a $120 cap per fill — Newfront is more generous here despite the percentage looking higher.
+    </div>
+  </section>
+
+  <!-- ===== DENTAL ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">04</span>
+      <h2>Dental</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">In-Network</th>
+            <th>WTW $2,500 Plan<span class="plan-sub">Anthem or Delta</span></th>
+            <th>WTW $1,000 Plan<span class="plan-sub">Anthem or Delta</span></th>
+            <th class="newfront-col">Newfront Buy-Up</th>
+            <th class="newfront-col">Newfront Core</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Deductible (ind.)</td><td>$50</td><td>$50</td><td class="win">$0</td><td class="win">$0</td></tr>
+          <tr><td>Annual max</td><td class="win">$2,500</td><td>$1,000</td><td>$2,000</td><td>$1,500</td></tr>
+          <tr><td>Preventive</td><td>100%</td><td>100%</td><td>100%</td><td>100%</td></tr>
+          <tr><td>Basic services</td><td>90%</td><td>80%</td><td class="win">90% (10% coins.)</td><td class="win">90% (10% coins.)</td></tr>
+          <tr><td>Major services</td><td>60%</td><td>50%</td><td>60% (40% coins.)</td><td>60% (40% coins.)</td></tr>
+          <tr><td>Ortho (adult &amp; child)</td><td>50% to $2,500 lifetime</td><td>Not covered</td><td>50% to $2,000 lifetime</td><td>Not covered</td></tr>
+          <tr><td>EE-only annual cost</td><td>$271 (Anthem) / $322 (Delta)</td><td>$97 / $136</td><td>$240.96</td><td class="win">$33.24</td></tr>
+          <tr><td>Family annual cost</td><td>$1,014 / $1,178</td><td>$457 / $582</td><td>$1,341.00</td><td class="win">$670.68</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>WTW wins on annual max</strong> ($2,500 vs. $2,000 on the comparable buy-up plan) and <strong>ortho lifetime max</strong> ($2,500 vs. $2,000). <strong>Newfront wins on deductible</strong> ($0 in-network vs. $50) and on <strong>basic/major coinsurance</strong> — Newfront covers basic at 90% (employee pays 10%), matching WTW's $2,500 plan. <strong>Newfront's Core plan is dramatically cheaper</strong> at $33/yr for employee-only vs. WTW at $97+/yr, if ortho isn't needed.
+    </div>
+  </section>
+
+  <!-- ===== VISION ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">05</span>
+      <h2>Vision</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px">In-Network</th>
+            <th>WTW High Plan<span class="plan-sub">EyeMed or VSP</span></th>
+            <th>WTW Low Plan<span class="plan-sub">EyeMed or VSP</span></th>
+            <th class="newfront-col">Newfront Vision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Exam copay</td><td>$10</td><td>$20</td><td class="win">$0</td></tr>
+          <tr><td>Materials copay</td><td>$10 lenses</td><td>$20 lenses</td><td>$20</td></tr>
+          <tr><td>Frame allowance</td><td>$180</td><td>$130</td><td>$150 ($170 featured brands)</td></tr>
+          <tr><td>Contact allowance</td><td>$180</td><td>$130</td><td>$130</td></tr>
+          <tr><td>Frequency</td><td>12 months</td><td>12 months</td><td>12 months</td></tr>
+          <tr><td>EE-only annual cost</td><td>$107 / $128</td><td>$64 / $76</td><td class="win">$6.60</td></tr>
+          <tr><td>Family annual cost</td><td>$342 / $438</td><td>$206 / $261</td><td class="win">$93.24</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>Newfront vision is the clear cost winner</strong> — $6.60/yr for employee-only is essentially free, vs. $64+ at WTW. Plan design is comparable; WTW's High plan has a slightly richer $180 frame allowance. For most employees, Newfront's vision is the better value.
+    </div>
+  </section>
+
+  <!-- ===== HSA & TAX-ADVANTAGED ACCOUNTS ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">06</span>
+      <h2>HSA &amp; Tax-Advantaged Accounts</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:200px">Account Type</th>
+            <th>WTW</th>
+            <th class="newfront-col">Newfront</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-row"><td colspan="3">HSA employer contributions</td></tr>
+          <tr><td>Individual contribution</td><td>Up to $750/yr through wellbeing activities</td><td class="win">$1,000/yr (guaranteed)</td></tr>
+          <tr><td>EE + spouse contribution</td><td>Up to $1,500/yr ($750 EE + $750 spouse)</td><td class="win">$2,500/yr (guaranteed)</td></tr>
+          <tr><td>Family contribution</td><td>Up to $1,500/yr ($750 EE + $750 spouse)</td><td class="win">$3,000/yr (guaranteed)</td></tr>
+          <tr><td>How you earn it</td><td>Participation in wellbeing activities through Personify Health</td><td>Automatic · paid per pay period</td></tr>
+          <tr><td>Pre-tax contribution limit*</td><td>$4,400 ind / $8,750 family (standard IRS limits)</td><td>$3,400 ind / $6,250 EE+spouse / $5,750 family**</td></tr>
+          <tr class="section-row"><td colspan="3">Other accounts</td></tr>
+          <tr><td>Health Care FSA</td><td>$3,300/yr</td><td>Available (amount not specified)</td></tr>
+          <tr><td>Dependent Care FSA</td><td>$7,500/yr</td><td>Available (amount not specified)</td></tr>
+          <tr><td>Commuter accounts</td><td>Available (mass transit + parking)</td><td>Not shown</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>Newfront offers guaranteed HSA funding</strong> — $1,000–$3,000/yr deposited automatically, no activities required. WTW requires wellbeing program participation to earn up to $750/employee + $750/spouse. For an employee + spouse, Newfront guarantees <strong>$2,500/yr vs. WTW's potential $1,500/yr</strong> (and WTW's requires effort). However, Newfront's pre-tax limits are reduced because employer contributions count toward IRS caps — your personal contribution room is smaller.
+    </div>
+  </section>
+
+  <!-- ===== LIFE, DISABILITY & VOLUNTARY ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">07</span>
+      <h2>Life, Disability &amp; Voluntary</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:200px">Benefit</th>
+            <th>WTW</th>
+            <th class="newfront-col">Newfront</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Basic Life / AD&amp;D</td><td class="win">1× eligible pay (base + bonus), up to $1M · company paid</td><td>1× annual earnings to $250K max · company paid</td></tr>
+          <tr><td>Supplemental Life</td><td class="win">Up to 10× pay or $3M · EOI required over guarantee</td><td>$10K–$500K increments through The Standard · voluntary</td></tr>
+          <tr><td>Short-Term Disability</td><td class="win">100% salary weeks 2–14, then 60% weeks 15–26 · company paid</td><td>60% of first $4,167/wk, max $2,500/wk · 7-day elim. · company paid</td></tr>
+          <tr><td>Long-Term Disability</td><td class="win">60% of eligible pay (base + bonus), max $30K/mo · company paid</td><td>60% of first $16,667/mo, max $10K/mo · 90-day elim. · company paid</td></tr>
+          <tr><td>Accident, Critical Illness, Hospital Indemnity</td><td>Offered (Aflac)</td><td>Not shown in summary</td></tr>
+          <tr><td>Legal · ID Theft · Pet · Auto/Home</td><td class="win">All offered (MetLife Legal, Allstate ID, Nationwide pet, Farmers auto/home)</td><td>Not detailed in summary</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>WTW has a clear ancillary advantage</strong> — company-paid STD at 100% of salary for 13 weeks is unusually generous, and LTD at 60% up to $30K/mo is a strong executive-level benefit. WTW's life insurance definition of "eligible pay" including bonuses can materially increase coverage for higher earners. Newfront's basic life caps at $250K vs. WTW's $1M, and Newfront's LTD caps at $10K/mo vs. WTW's $30K/mo.
+    </div>
+  </section>
+
+  <!-- ===== RETIREMENT ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">08</span>
+      <h2>Retirement &amp; Accumulation</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:200px">Benefit</th>
+            <th>WTW</th>
+            <th class="newfront-col">Newfront</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-row"><td colspan="3">Defined contribution</td></tr>
+          <tr><td>401(k) match formula</td><td>No direct match, but <strong>3.5% non-elective</strong> (contributed regardless of EE participation)</td><td>3% match on first 1% contributed (effectively 3% of comp if you contribute 1%+)</td></tr>
+          <tr><td>Max employer contribution</td><td>3.5% of eligible earnings on up to $360K</td><td>Up to 3% of total comp, capped at $8,000/yr</td></tr>
+          <tr><td>Vesting</td><td>100% after 2 years of service</td><td>Not shown</td></tr>
+          <tr><td>Contribution limits</td><td>$24,500 (2026) · $8K catch-up age 50+ · $11,250 catch-up age 60–63</td><td>Same IRS limits apply</td></tr>
+          <tr class="section-row"><td colspan="3">Defined benefit</td></tr>
+          <tr><td>Pension plan</td><td class="win">Yes — contributory cash balance: 11.5% yrs 1–10, 13% yrs 11–20, 15% after 20 · 2% EE contribution required · 5-yr vesting</td><td>None</td></tr>
+          <tr class="section-row"><td colspan="3">Equity</td></tr>
+          <tr><td>Employee Share Purchase Plan</td><td class="win">Yes — 15% discount, up to $25K/yr, enrolls May &amp; Nov</td><td>Not offered (private company)</td></tr>
+          <tr class="section-row"><td colspan="3">Post-employment</td></tr>
+          <tr><td>Retiree medical</td><td>Access to Via Benefits Medicare marketplace at 65</td><td>Not shown</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="takeaway">
+      <span class="label">Takeaway</span>
+      <strong>Retirement is where WTW pulls decisively ahead.</strong> On a $150K salary: WTW's 3.5% non-elective = <strong>$5,250/yr guaranteed</strong> (even if you contribute $0), plus a pension accruing 11.5% of base pay = <strong>another ~$17,250/yr</strong> in pension value, plus 15% ESPP discount. Newfront's 401(k) match caps at <strong>$8,000/yr</strong> and requires you to contribute to get it. For a career-long view, the WTW retirement package could be worth <strong>$15K–$25K+/yr more</strong> than Newfront's at the same salary — a major factor if retirement accumulation is a priority.
+    </div>
+  </section>
+
+  <!-- ===== TIME OFF ===== -->
+  <section class="section">
+    <div class="section-header">
+      <span class="num">09</span>
+      <h2>Time Off &amp; Family</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:200px">Benefit</th>
+            <th>WTW</th>
+            <th class="newfront-col">Newfront</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>PTO (senior levels)</td><td>Up to 25 days starting · 28 days at 10+ yrs (Level 43+)</td><td>Not shown</td></tr>
+          <tr><td>PTO (standard levels)</td><td>19 days (1–4 yrs) up to 28 days (15+ yrs)</td><td>Not shown</td></tr>
+          <tr><td>Holidays</td><td>9 fixed paid holidays</td><td>Not shown</td></tr>
+          <tr><td>Parental/adoption leave</td><td>8 weeks paid · in addition to STD for birth</td><td>Not shown</td></tr>
+          <tr><td>Adoption assistance</td><td>$10,000/child pre-tax reimbursement</td><td>Not shown</td></tr>
+          <tr><td>Surrogacy assistance</td><td>$10,000/child after-tax reimbursement</td><td>Not shown</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== FINAL SUMMARY ===== -->
+  <section class="section" style="margin-bottom:0">
+    <div class="section-header">
+      <span class="num">10</span>
+      <h2>Which Benefits Win</h2>
+    </div>
+
+    <div class="compare-grid">
+      <div class="employer-card">
+        <h3>WTW wins on…</h3>
+        <div class="tag">Strongest advantages</div>
+        <ul>
+          <li><span class="k">Retirement</span><span class="v">Pension + 3.5% non-elective + ESPP</span></li>
+          <li><span class="k">Family medical cost</span><span class="v">Dramatically lower on family tiers</span></li>
+          <li><span class="k">Ancillary breadth</span><span class="v">Richer STD/LTD, full voluntary suite</span></li>
+          <li><span class="k">Dental max &amp; ortho</span><span class="v">$2,500 annual / $2,500 ortho lifetime</span></li>
+          <li><span class="k">Life insurance base</span><span class="v">Includes bonus in eligible pay</span></li>
+          <li><span class="k">STD/LTD generosity</span><span class="v">100% salary 13 wks · $30K/mo LTD cap</span></li>
+          <li><span class="k">Work/life services</span><span class="v">Lyra 8 sessions, Health Advocate, Teladoc</span></li>
+        </ul>
+      </div>
+      <div class="employer-card newfront">
+        <h3>Newfront wins on…</h3>
+        <div class="tag">Strongest advantages</div>
+        <ul>
+          <li><span class="k">Medical plan choice</span><span class="v">6 plans vs. WTW's 3</span></li>
+          <li><span class="k">EE-only cost</span><span class="v">$0 HDHP · low copay plans</span></li>
+          <li><span class="k">Non-HDHP option</span><span class="v">$0 ded. HMOs &amp; EPO — WTW has none</span></li>
+          <li><span class="k">HDHP coinsurance</span><span class="v">90% vs. WTW's 70–80%</span></li>
+          <li><span class="k">Guaranteed HSA funding</span><span class="v">$1K–$3K/yr automatic, no activities required</span></li>
+          <li><span class="k">Healia HRA option</span><span class="v">$6K/yr if you use spouse's plan instead</span></li>
+          <li><span class="k">Rx on copay plans</span><span class="v">Not subject to med. deductible</span></li>
+          <li><span class="k">Vision cost</span><span class="v">~$7/yr EE-only vs. $64+ at WTW</span></li>
+          <li><span class="k">No surcharges</span><span class="v">No spouse / tobacco surcharge shown</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="takeaway" style="margin-top:24px">
+      <span class="label">Bottom line</span>
+      If the decision is <strong>mostly about medical plan richness, monthly cost, and plan choice</strong>, Newfront is the stronger offer — particularly for single employees or those who want non-HDHP options. If the decision is <strong>about long-term total rewards</strong>, WTW's pension + 401(k) non-elective + ESPP + richer ancillary suite represents meaningfully more annualized value, especially for higher earners with families. The right answer depends on career stage, family tier, and whether retirement accumulation outweighs current paycheck cost.
+    </div>
+  </section>
+
+</div>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <span class="wtw-mark">wtw</span>
+    <div class="meta">
+      Prepared for internal reference · Plan Year 2026<br>
+      CA LIC # 0I37170 · wtwco.com
+    </div>
+  </div>
+  <div class="foot-inner">
+    <p class="disclaimer">This comparison is prepared for informational purposes based on the 2026 WTW U.S. Colleagues Benefits Overview and Newfront portal plan summaries. It does not constitute a complete summary of benefits. If any statement is inconsistent with official plan documents, those documents will govern. Some benefits may differ based on state of residence, hire date, or employment classification.</p>
+  </div>
+</footer>
+
+</body>
+</html>
