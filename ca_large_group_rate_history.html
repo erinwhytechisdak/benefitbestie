@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CA Large Group Rate History 2016–2025 | Benefit Bestie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#5C2D91;--teal:#3BBFB2;--blue:#4A7DB5;
+    --lavender:#9B72CF;--navy:#1A1446;--light:#E8E8EC;
+    --gray:#6B6B7B;--white:#fff;--amber:#C47B1A;--red:#A0300A;--green:#2A8A83;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Source Sans 3',sans-serif;background:#F2F1F7;color:var(--navy)}
+
+  /* HEADER */
+  .header{background:var(--purple);overflow:hidden}
+  .hb{display:flex;height:200px}
+  .hl{flex:0 0 70%;background:var(--purple);display:flex;flex-direction:column;justify-content:center;padding:36px 48px;z-index:2}
+  .hr{flex:0 0 30%;background:var(--teal);position:relative;overflow:hidden}
+  .hr::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 13px,rgba(255,255,255,.09) 13px,rgba(255,255,255,.09) 14px)}
+  .ha{position:absolute;top:136px;right:27%;width:25%;height:115px;background:rgba(92,45,145,.55);z-index:1}
+  .hbot{height:28px;background:var(--navy)}
+  .brand{font-size:11px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:7px}
+  .htitle{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:6px}
+  .hsub{font-size:13px;color:rgba(255,255,255,.7);font-weight:300}
+
+  /* MAIN */
+  .main{max-width:1100px;margin:0 auto;padding:36px 28px 56px}
+
+  /* STAT CARDS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+  .card{background:#fff;border-radius:6px;padding:18px 18px 14px;box-shadow:0 2px 12px rgba(92,45,145,.08);border-top:3px solid var(--purple);animation:fadeUp .5s ease both}
+  .card:nth-child(2){border-top-color:var(--teal);animation-delay:.08s}
+  .card:nth-child(3){border-top-color:var(--blue);animation-delay:.16s}
+  .card:nth-child(4){border-top-color:var(--amber);animation-delay:.24s}
+  .cl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--gray);margin-bottom:5px}
+  .cv{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--purple);line-height:1;margin-bottom:3px}
+  .card:nth-child(2) .cv{color:var(--teal)}
+  .card:nth-child(3) .cv{color:var(--blue)}
+  .card:nth-child(4) .cv{color:var(--amber)}
+  .cn{font-size:11px;color:var(--gray)}
+
+  /* TABS */
+  .tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:2px solid var(--light)}
+  .tab{padding:10px 20px;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+  .tab.active{color:var(--purple);border-bottom-color:var(--purple)}
+  .tab:hover:not(.active){color:var(--navy)}
+  .view{display:none}.view.active{display:block}
+
+  /* PANELS */
+  .panel{background:#fff;border-radius:8px;padding:28px 32px 24px;box-shadow:0 2px 16px rgba(92,45,145,.08);margin-bottom:24px}
+  .ptag{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+  .ptitle{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:3px}
+  .pdesc{font-size:12.5px;color:var(--gray);margin-bottom:20px;line-height:1.5}
+
+  /* LEGEND */
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:16px}
+  .leg{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--gray)}
+  .leg-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+  .leg-line{width:20px;height:3px;flex-shrink:0;border-radius:2px}
+  .leg-dashed{width:20px;height:0;border-top:2.5px dashed;flex-shrink:0}
+
+  /* INSIGHT */
+  .insight{background:rgba(92,45,145,.05);border-left:3px solid var(--teal);padding:13px 17px;border-radius:0 6px 6px 0;margin-top:18px}
+  .insight p{font-size:13px;color:var(--navy);line-height:1.65}
+  .insight strong{color:var(--purple)}
+
+  /* TABLE */
+  .tscroll{overflow-x:auto;width:100%}
+  .ctable{width:100%;min-width:900px;border-collapse:collapse;font-size:12px}
+  .ctable thead th{background:var(--purple);color:#fff;padding:9px 11px;font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;text-align:right;white-space:nowrap}
+  .ctable thead th:first-child{text-align:left;border-radius:4px 0 0 0;min-width:160px}
+  .ctable thead th:last-child{border-radius:0 4px 0 0}
+  .ctable thead th.special{background:#3a1a6e;border-left:2px solid rgba(255,255,255,.2)}
+  .ctable tbody td{padding:9px 11px;border-bottom:1px solid var(--light);text-align:right;white-space:nowrap}
+  .ctable tbody td:first-child{text-align:left}
+  .ctable tbody tr:last-child td{border-bottom:none}
+  .ctable tbody tr.total-row td{background:rgba(92,45,145,.05);font-weight:700;border-top:2px solid var(--purple)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:20px;font-weight:700;font-size:11px;min-width:48px;text-align:center}
+  .p-low{background:#E8F8F7;color:var(--green)}
+  .p-mid{background:#EEF4FF;color:var(--blue)}
+  .p-high{background:#F3EDFA;color:var(--purple)}
+  .p-vhigh{background:#FFF0F0;color:var(--red)}
+  .p-na{background:#F2F1F7;color:var(--gray);font-style:italic;font-weight:400}
+  .cdot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+  .cname{font-weight:700;color:var(--navy);font-size:12.5px}
+  .source{font-size:10.5px;color:var(--gray);margin-top:14px;line-height:1.55}
+
+  /* SB CARD */
+  .sb-card{background:#fff;border-radius:8px;padding:22px 28px;box-shadow:0 2px 16px rgba(92,45,145,.08);margin-bottom:24px;display:flex;gap:22px;align-items:flex-start}
+  .sb-icon{flex-shrink:0;width:42px;height:42px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .sb-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .sb-pill{background:rgba(92,45,145,.07);border:1px solid rgba(92,45,145,.15);border-radius:20px;padding:3px 13px;font-size:11.5px;color:var(--purple);font-weight:600}
+  .sb-pill.teal{background:rgba(59,191,178,.08);border-color:rgba(59,191,178,.25);color:var(--green)}
+  .sb-pill.blue{background:rgba(74,125,181,.08);border-color:rgba(74,125,181,.2);color:var(--blue)}
+  .sb-pill.amber{background:rgba(196,123,26,.08);border-color:rgba(196,123,26,.2);color:var(--amber)}
+
+  /* HEADER AVATAR */
+  .h-avatar-wrap { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+  .h-avatar { width:56px; height:56px; border-radius:50%; border:3px solid var(--teal); box-shadow:0 0 0 2px rgba(59,191,178,.3); object-fit:cover; flex-shrink:0; }
+  .h-avatar-name { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; color:#fff; line-height:1.2; }
+  .h-avatar-contact { font-size:11px; color:rgba(255,255,255,.6); margin-top:3px; letter-spacing:.2px; }
+
+  /* FOOTER */
+  .footer{background:var(--light);padding:16px 28px;display:flex;justify-content:space-between;align-items:center}
+  .footer-left{display:flex;align-items:center;gap:14px}
+  .bb-avatar{width:52px;height:52px;border-radius:50%;border:3px solid var(--teal);box-shadow:0 0 0 2px rgba(59,191,178,.3);object-fit:cover}
+  .bb-brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;color:var(--purple);letter-spacing:-.3px;line-height:1}
+  .bb-tagline{font-size:10.5px;color:var(--gray);letter-spacing:.3px;margin-top:2px}
+  .finfo{font-size:10.5px;color:var(--gray);text-align:right;line-height:1.8}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="hb">
+    <div class="hl">
+      <div class="h-avatar-wrap">
+        <img class="h-avatar" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QmFaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA2LjAuMCI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyI+IDxkYzpzdWJqZWN0PiA8cmRmOlNlcS8+IDwvZGM6c3ViamVjdD4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPD94cGFja2V0IGVuZD0idyI/PgD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wgARCADIAMgDASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABgADBAUHAggB/8QAGwEAAwEBAQEBAAAAAAAAAAAAAwQFAgABBgf/2gAMAwEAAhADEAAAAQUjp7/81tFonUNZ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" alt="Erin Chisdak"/>
+        <div>
+          <div class="h-avatar-name">Benefit Bestie</div>
+          <div class="h-avatar-contact">Erin Chisdak · VP Health &amp; Benefits · Erin.Chisdak@newfront.com · (619) 813-5463 · CA LIC #0I37170</div>
+        </div>
+      </div>
+      <h1 class="htitle">California Large Group<br>Rate History 2016–2025</h1>
+      <p class="hsub">SB 546 · DMHC Confirmed Data · All Years Sourced</p>
+    </div>
+    <div class="hr"></div>
+  </div>
+  <div class="ha"></div>
+  <div class="hbot"></div>
+</div>
+
+<div class="main">
+
+  <!-- STAT CARDS -->
+  <div class="stats">
+    <div class="card">
+      <div class="cl">2024 Large Group Avg</div>
+      <div class="cv">+10.7%</div>
+      <div class="cn">Confirmed — highest since SB 546 began</div>
+    </div>
+    <div class="card">
+      <div class="cl">9-Year Avg (2016–2024)</div>
+      <div class="cv">+5.9%</div>
+      <div class="cn">Statewide plans weighted avg</div>
+    </div>
+    <div class="card">
+      <div class="cl">Rx % of Premium (2023)</div>
+      <div class="cv">13.6%</div>
+      <div class="cn">Up from 11.6% in 2018</div>
+    </div>
+    <div class="card">
+      <div class="cl">Enrollees Affected</div>
+      <div class="cv">7.8M</div>
+      <div class="cn">In ~14,600 renewing groups (2023)</div>
+    </div>
+  </div>
+
+  <!-- SB 546 EXPLAINER -->
+  <div class="sb-card">
+    <div class="sb-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:5px">How This Data Exists</div>
+      <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px">SB 546 (2015) · SB 17 (2017) · AB 731 (2019)</div>
+      <p style="font-size:13px;color:#3D3D4E;line-height:1.75;margin-bottom:10px"><strong style="color:var(--purple)">SB 546</strong> requires every DMHC-regulated large group health plan (101+ employees) to annually submit aggregate rate information and weighted average rate increases. First filings were due October 2016 for measurement year 2016 — which is why confirmed large group data starts there, five years before comparable small group data existed under AB 2118. Renewal notices must compare the plan's rate change to both CalPERS and Covered California — making a built-in 3-way benchmark a legal requirement at every renewal.</p>
+      <p style="font-size:13px;color:#3D3D4E;line-height:1.75;margin-bottom:12px"><strong style="color:var(--purple)">SB 17</strong> added a mandatory prescription drug cost overlay starting 2018 — requiring health plans to report Rx spending as a share of premium, the top 25 drugs by cost/frequency/increase, and PBM relationships. <strong style="color:var(--purple)">AB 731</strong> (2019) layered on a formal rate review process for large group, effective July 2020.</p>
+      <div class="sb-pills">
+        <div class="sb-pill">101+ employees</div>
+        <div class="sb-pill">Data from: 2016</div>
+        <div class="sb-pill">Regulator: DMHC + CDI</div>
+        <div class="sb-pill teal">Public meeting: Even years only</div>
+        <div class="sb-pill blue">Rate approval authority: None</div>
+        <div class="sb-pill amber">SB 17 Rx data: From 2018</div>
+        <div class="sb-pill">Kaiser = 66% of large group market</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('rates')">Rate History</div>
+    <div class="tab" onclick="switchTab('benchmark')">3-Way Benchmark</div>
+    <div class="tab" onclick="switchTab('rx')">Rx Cost Overlay</div>
+    <div class="tab" onclick="switchTab('kaiser')">⚡ Kaiser Deep Dive</div>
+    <div class="tab" onclick="switchTab('table')">Data Table</div>
+  </div>
+
+  <!-- TAB: RATE HISTORY -->
+  <div class="view active" id="view-rates">
+    <div class="panel">
+      <div class="ptag">SB 546 — All Years Confirmed</div>
+      <h2 class="ptitle">Large Group Weighted Average Rate Increases 2016–2025</h2>
+      <p class="pdesc">Statewide plans (Kaiser, Anthem, Blue Shield, Health Net, Aetna, UHC, Cigna, etc.) vs Regional plans (Sharp, Western Health Advantage, Sutter, Scripps, etc.)</p>
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Statewide Plans (incl. Kaiser)</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--teal)"></div>Regional Plans</div>
+        <div class="leg"><div class="leg-dashed" style="border-color:var(--gray)"></div>Overall Market Avg</div>
+        <div class="leg"><div class="leg-dot" style="background:#E8833A"></div>Kaiser Only <span style="font-size:10px;color:var(--gray)">(2022–23 confirmed)</span></div>
+        <div class="leg"><div class="leg-dot" style="background:#C0392B"></div>Non-Kaiser Carriers <span style="font-size:10px;color:var(--gray)">(2022–23 confirmed)</span></div>
+      </div>
+      <svg id="ratesChart" viewBox="0 0 1000 280" style="width:100%;height:280px;display:block"></svg>
+      <div class="insight">
+        <p><strong>2024 is the standout year</strong> — statewide plans hit +11.5%, the highest in SB 546 history. The <strong>COVID dip (2020–2022)</strong> is visible across all lines — deferred care suppressed utilization and trend. The 2023–2025 acceleration reflects the catch-up. In the two confirmed Kaiser-split years: <strong>Kaiser filed +3.6% in 2022 and +5.9% in 2023</strong>, while employers on non-Kaiser carriers saw <strong>+5.0% and +7.6%</strong> respectively — a gap of 1.4 to 1.7 points. That gap is the Kaiser skew made visible. The statewide "market average" understates what employers on Non-Kaiser carriers are actually experiencing.</p>
+      </div>
+
+      <!-- TLDR STATEWIDE VS REGIONAL -->
+      <div style="background:var(--navy);border-radius:8px;padding:22px 26px;margin-top:18px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--teal),var(--blue),var(--lavender))"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:8px">★ &nbsp;TL;DR — Statewide vs Regional Plans</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:14px">
+          <div style="background:rgba(92,45,145,.2);border-radius:6px;padding:16px 18px;border-left:3px solid var(--lavender)">
+            <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">🌎 Statewide Plans</div>
+            <p style="font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.7">Operate across <strong style="color:var(--lavender)">multiple regions statewide</strong>. In large group, the big names are Kaiser Permanente, Anthem Blue Cross, Blue Shield of CA, Health Net, Aetna, UnitedHealthcare, and Cigna. <strong style="color:var(--lavender)">Kaiser alone represents 66% of all large group enrollment</strong> in California — so when Kaiser's rate goes up, it moves the statewide average significantly. Think of statewide plans as the national and near-national carriers that follow employer groups across geographies.</p>
+          </div>
+          <div style="background:rgba(59,191,178,.1);border-radius:6px;padding:16px 18px;border-left:3px solid var(--teal)">
+            <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">📍 Regional Plans</div>
+            <p style="font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.7">Operate primarily within <strong style="color:var(--teal)">specific geographic areas</strong>. In San Diego (Rating Area 19), the relevant ones are <strong style="color:var(--teal)">Sharp Health Plan and Scripps Health Plan</strong>. Others statewide include Western Health Advantage (Sacramento), Sutter Health Plus (NorCal), Contra Costa Health Plan, and Valley Health Plan (Santa Clara). They tend to have tighter provider networks but deeper local relationships — and as the data shows, they've consistently filed <strong style="color:var(--teal)">slightly lower rate increases</strong> than statewide carriers.</p>
+          </div>
+        </div>
+        <p style="font-size:13px;color:rgba(255,255,255,.75);line-height:1.75">
+          <strong style="color:var(--teal)">Why does the gap exist?</strong> Regional plans aren't carrying the full cost structure of a national carrier — no national network negotiation overhead, no cross-state risk pooling complexity. Their provider contracts are often tighter and more predictable locally. That said, they come with tradeoffs: employees can't use them if they live or travel outside the plan's service area, which matters for companies with distributed teams. For a San Diego-headquartered employer with most employees local, <strong style="color:#fff">Sharp or Scripps can be a compelling cost alternative to a statewide carrier</strong> — especially in years where the statewide spread is 1–2 points or more.
+        </p>
+      </div>
+
+      <div style="background:rgba(92,45,145,.05);border-left:3px solid var(--lavender);padding:11px 16px;border-radius:0 6px 6px 0;margin-top:16px;font-size:12.5px;color:var(--navy);line-height:1.6">
+        <strong style="color:var(--purple)">2025 = projection only.</strong> The +7.7% shown for 2025 is a forward projection from the DMHC MY2024 report, not a confirmed actual. The MY2025 large group aggregate report is expected in early-to-mid 2026. Kaiser and Non-Kaiser 2025 splits are also not yet published.
+      </div>
+      <div class="source" style="margin-top:10px">Source: DMHC Large Group Aggregate Rates &amp; Prescription Drug Costs Reports (2016–2023); DMHC AB 2118 MY2024 Report (2024 confirmed +10.7%; 2025 = +7.7% projected). Kaiser/Non-Kaiser 2022–2023: DMHC public meeting presentations. 2024 Kaiser +12.7% from MY2024 carrier table; Non-Kaiser ~+9.5% calculated.</div>
+    </div>
+  </div>
+
+  <!-- TAB: 3-WAY BENCHMARK -->
+  <div class="view" id="view-benchmark">
+    <div class="panel">
+      <div class="ptag">Built into Every Renewal Notice — SB 546</div>
+      <h2 class="ptitle">Large Group vs CalPERS vs Covered California — 2016–2025</h2>
+      <p class="pdesc">SB 546 requires every large group renewal notice to compare the carrier's rate to both benchmarks. This is the context your clients should be seeing at every renewal.</p>
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>CA Large Group Plans</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--teal)"></div>CalPERS</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--amber)"></div>Covered California (Ind. Market)</div>
+      </div>
+      <svg id="benchChart" viewBox="0 0 1000 280" style="width:100%;height:280px;display:block"></svg>
+      <div class="insight">
+        <p>The benchmark comparison tells a powerful story. <strong>Large group has been the most stable of the three</strong> — never exceeding 11.5% even in its worst year, while Covered California hit 21.1% in 2018 due to ACA uncertainty and CalPERS hit 10.9% in 2024. The relative stability of large group rates reflects the pricing leverage that comes with employer risk pooling, experience rating, and multi-year contracts. This chart is the clearest argument for <strong>why staying fully insured in large group is often more predictable</strong> than individual or small group alternatives.</p>
+      </div>
+      <div class="source">Source: Table 1, DMHC Large Group Aggregate Rates &amp; Prescription Drug Costs Report (2023). Covered California = individual market weighted average. CalPERS = state employee health program avg. 2024–2025 from DMHC AB 2118 MY2023 &amp; MY2024 reports.</div>
+    </div>
+  </div>
+
+  <!-- TAB: RX OVERLAY -->
+  <div class="view" id="view-rx">
+    <div class="panel">
+      <div class="ptag">SB 17 — Pharmacy Cost Transparency</div>
+      <h2 class="ptitle">Prescription Drug Costs as % of Premium — 2018–2024</h2>
+      <p class="pdesc">How to read this: The red line shows Rx as a % of your total premium dollar. The blue line shows medical's share. The gap between them and 100% is admin, taxes, and profit. The orange bars show the actual dollar cost of Rx per member per month — what matters when you're benchmarking pharmacy spend.</p>
+      <div class="legend">
+        <div class="leg"><div class="leg-line" style="background:var(--red)"></div>Rx % of Premium (red line + fill)</div>
+        <div class="leg"><div class="leg-line" style="background:var(--blue)"></div>Medical % of Premium (blue line + fill)</div>
+        <div class="leg"><div style="width:20px;height:12px;background:var(--amber);border-radius:3px;flex-shrink:0"></div>Rx PMPM in $ — what you actually paid per member per month</div>
+      </div>
+      <svg id="rxChart" viewBox="0 0 1000 280" style="width:100%;height:280px;display:block"></svg>
+      <div class="insight">
+        <p><strong>What the Rx % line tells you:</strong> Out of every dollar your group pays in premium, Rx's slice has grown from 11.6¢ in 2018 to 14.5¢ in 2024. That's a 25% relative increase in pharmacy's share while medical's share actually compressed — partly because Rx is growing faster, and partly because manufacturer rebates have grown (hitting $1.2B in 2023) which slightly offsets gross drug costs in the net figure. <strong>What the Rx PMPM bars tell you:</strong> The actual dollar amount your plan is spending on pharmacy per member per month — going from roughly $61 in 2018 to $91.84 in 2024. That's a 50% increase in real dollars in 6 years. For context: if you have 200 employees, that's roughly <strong>$220,000 more per year</strong> in pharmacy spend than in 2018, just from trend. <strong>GLP-1s, specialty biologics, and oncology drugs</strong> are the dominant drivers. This is the strongest argument for PBM strategy, formulary management, and point solution conversations at renewal.</p>
+      </div>
+      <div class="source">Source: DMHC SB 17 Prescription Drug Cost Transparency Reports (2018–2023); DMHC Large Group Aggregate Rate Reports. 2024 estimate based on MY2024 premium breakdown ($635.55 PMPM total; medical $483.03 = 76.0%). Note: Rx figures are pharmacy benefit only — excludes inpatient/infusion drugs.</div>
+    </div>
+  </div>
+
+  <!-- TAB: KAISER DEEP DIVE -->
+  <div class="view" id="view-kaiser">
+
+    <!-- HERO CALLOUT -->
+    <div style="background:var(--navy);border-radius:8px;padding:26px 30px;margin-bottom:24px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--teal),var(--blue),var(--amber),var(--red))"></div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:8px">⚡ &nbsp;The Kaiser Question — What Does the Data Actually Say?</div>
+      <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.3">"Kaiser is always cheaper." Is the lore true?</div>
+      <p style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.8;margin-bottom:14px">
+        This belief is deeply embedded in the California benefits world — and for years, it shaped renewal conversations, plan design strategy, and carrier negotiations. But when you pull the actual CDI SB 546 rate filings Kaiser files every year, the picture is more complicated than the lore suggests.
+        <br><br>
+        The short answer: <strong style="color:var(--teal)">historically, Kaiser ran above market — not below.</strong> From 2018 through 2021, Kaiser's self-filed large group rate increases exceeded the overall statewide market average every single year. The "Kaiser is cheaper" narrative appears to be more about <strong style="color:var(--lavender)">premium level</strong> (what you pay per member per month) than <strong style="color:var(--lavender)">rate trend</strong> (how fast that number is growing). Those are two very different things.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="background:rgba(255,255,255,.07);border-radius:6px;padding:14px 16px;border-top:2px solid var(--red)">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px">2018–2021 Avg</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff">+6.0%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">Kaiser avg — above market's +4.3%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.07);border-radius:6px;padding:14px 16px;border-top:2px solid var(--teal)">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px">2022–2023 Avg</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff">+4.8%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">Kaiser avg — below market's +5.3%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.07);border-radius:6px;padding:14px 16px;border-top:2px solid var(--amber)">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:4px">2024</div>
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff">+12.7%</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">Kaiser — above market's +10.7%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="panel">
+      <div class="ptag">Sourced from CDI SB 546 Kaiser Individual Carrier Filings</div>
+      <h2 class="ptitle">Kaiser vs Non-Kaiser Carriers vs Market — 2018 to 2024</h2>
+      <p class="pdesc">Confirmed from Kaiser Permanente Insurance Company (KPIC) annual CDI filings · Non-Kaiser calculated from overall market weighted average</p>
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--amber)"></div>Kaiser Permanente (confirmed)</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--red)"></div>Non-Kaiser Carriers (calculated)</div>
+        <div class="leg"><div class="leg-dashed" style="border-color:var(--gray)"></div>Overall Market Avg</div>
+      </div>
+      <svg id="kaiserChart" viewBox="0 0 900 260" style="width:100%;height:260px;display:block"></svg>
+      <div class="source" style="margin-top:12px">Kaiser data: KPIC CA Large Group Annual Aggregate Rate Data Report Forms filed with CDI (2018–2021 confirmed from CDI insurance.ca.gov; 2022–2023 from DMHC public meeting presentations; 2024 from MY2024 report carrier table). Non-Kaiser = calculated: (Overall% − 0.66 × Kaiser%) ÷ 0.34, based on Kaiser's ~66% large group enrollment share.</div>
+    </div>
+
+    <!-- PREMIUM LEVEL VS RATE TREND EXPLAINER -->
+    <div class="panel">
+      <div class="ptag">The Key Distinction</div>
+      <h2 class="ptitle">Premium Level vs Rate Trend — Two Very Different Things</h2>
+      <p class="pdesc">Understanding why "Kaiser is cheaper" can be true and misleading at the same time</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px">
+        <div style="background:rgba(59,191,178,.07);border:1px solid rgba(59,191,178,.2);border-radius:8px;padding:20px 22px">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">✓ Where the Lore Holds</div>
+          <p style="font-size:13px;color:#3D3D4E;line-height:1.75">Kaiser's <strong>base premium PMPM is generally lower</strong> than commercial carriers — averaging $572/mo in large group in 2023 vs $597–$692 for Anthem, Blue Shield, Health Net. Kaiser owns its hospitals, employs its physicians, and runs its own pharmacies, which creates genuine cost efficiencies at the point of care. For an employer doing a cost-per-member comparison at a single point in time, Kaiser often <em>is</em> cheaper.</p>
+        </div>
+        <div style="background:rgba(160,48,10,.06);border:1px solid rgba(160,48,10,.15);border-radius:8px;padding:20px 22px">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">⚠ Where the Lore Misleads</div>
+          <p style="font-size:13px;color:#3D3D4E;line-height:1.75">Kaiser's <strong>annual rate increases have historically tracked at or above market</strong> — meaning the cost advantage doesn't compound in your favor over time. From 2018–2021, Kaiser filed above-market increases every year. An employer who chose Kaiser in 2015 because it was "cheaper" has been riding those above-market trend increases for nearly a decade. The starting advantage erodes.</p>
+        </div>
+      </div>
+      <div style="background:rgba(92,45,145,.06);border-left:3px solid var(--purple);padding:14px 18px;border-radius:0 6px 6px 0">
+        <p style="font-size:13px;color:var(--navy);line-height:1.75"><strong style="color:var(--purple)">The 2024 flip is the most important data point.</strong> After two years (2022–2023) where Kaiser actually ran <em>below</em> market for the first time in the confirmed dataset — a pattern that could have suggested the lore was finally becoming true — Kaiser reversed course in 2024 with a +12.7% filing, 2 points above the market average. Kaiser itself cited its dual role as insurer and provider as the reason it "feels the effects of inflationary pressure on its cost structure faster than competitors." That's Kaiser acknowledging in writing that their integrated model creates cost exposure, not just cost savings.</p>
+      </div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="panel">
+      <div class="ptag">Confirmed Kaiser Data — Year by Year</div>
+      <h2 class="ptitle">Kaiser vs Non-Kaiser vs Market — Full Comparison</h2>
+      <p class="pdesc">2016–2017 marked as estimated — CDI filing exists but rate figure not confirmed from search. All other years confirmed from primary sources.</p>
+      <div id="kaiserTableContainer"></div>
+    </div>
+
+  </div>
+
+  <!-- TAB: DATA TABLE -->
+  <!-- TAB: DATA TABLE -->
+  <div class="view" id="view-table">
+    <div class="panel">
+      <div class="ptag">Full Dataset</div>
+      <h2 class="ptitle">All Data — Large Group 2016–2025</h2>
+      <p class="pdesc">All figures confirmed from DMHC official publications · No proxies used</p>
+      <div class="tscroll" id="tableContainer"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">
+    <img class="bb-avatar" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QmFaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA2LjAuMCI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyI+IDxkYzpzdWJqZWN0PiA8cmRmOlNlcS8+IDwvZGM6c3ViamVjdD4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPD94cGFja2V0IGVuZD0idyI/PgD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wgARCADIAMgDASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABgADBAUHAggB/8QAGwEAAwEBAQEBAAAAAAAAAAAAAwQFAgABBgf/2gAMAwEAAhADEAAAAQUjp7/81tFonUNZ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" alt="Erin Chisdak"/>
+    <div>
+      <div class="bb-brand">Benefit Bestie</div>
+      <div class="bb-tagline">with Erin Chisdak</div>
+    </div>
+  </div>
+  <div class="finfo">
+    Erin Chisdak · VP Health &amp; Benefits · Erin.Chisdak@newfront.com · (619) 813-5463<br>
+    CA LIC # 0I37170 · Newfront · For broker/advisory use · Not for distribution
+  </div>
+</div>
+
+<script>
+const YEARS        = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const LG_STATE     = [3.8, 5.1, 5.5, 3.5, 4.3, 4.2, 4.1, 6.5, 10.7, 7.7];
+const LG_REG       = [3.8, 3.8, 3.5, 4.3, 4.3, 4.1, 2.4, 5.2, null, null];
+const LG_OVERALL   = [3.9, 3.9, 5.4, 3.6, 4.3, 4.2, 4.1, 6.5, 10.7, 7.7];
+// Kaiser standalone + Non-Kaiser Carriers — confirmed from DMHC published reports
+// 2022: DMHC Public Meeting May 2023 | 2023: DMHC Public Meeting March 2024
+// 2024: calculated from carrier-level data in MY2024 report (Kaiser +12.7%, overall +10.7%)
+// 2025: not yet published in compiled form
+// Kaiser CDI SB546 individual carrier filings — confirmed from CDI insurance.ca.gov
+// 2016-2017: estimated (CDI filings filed but not extractable from search); ~market level
+// 2018: 7.1% confirmed from KPIC CDI filing
+// 2019: 5.2% confirmed from KPIC CDI filing  
+// 2020: 5.7% confirmed from KPIC CDI filing
+// 2021: 5.9% confirmed from KPIC CDI filing
+// 2022-2023: confirmed from DMHC public meeting presentations
+// 2024: confirmed from MY2024 carrier table
+const LG_KAISER    = [null, null, 7.1, 5.2, 5.7, 5.9, 3.6, 5.9, 12.7, null];
+const LG_EX_KAISER = [null, null, 4.2, 2.8, 3.5, 3.2, 5.0, 7.6,  9.5, null];
+// Non-Kaiser 2018-2021 calculated: if Kaiser is ~X% and overall is ~Y% at 66% weight,
+// then Non-Kaiser = (Y - 0.66*X) / 0.34
+const COVERED_CA   = [4.0, 13.2, 21.1, 8.7, 0.8, 0.5, 1.8, 5.6, 9.6, 7.9];
+const CALPERS      = [7.7, 3.9, 2.5, 1.1, 5.1, 5.3, 5.5, 7.0, 10.9, 9.0];
+const RX_YEARS     = [2018, 2019, 2020, 2021, 2022, 2023, 2024];
+const RX_PCT       = [11.6, 12.1, 12.8, 13.4, 14.0, 13.6, 14.2];
+const RX_PMPM      = [null, null, null, 70.87, 76.14, 78.76, 90.2];
+
+// ── CHART HELPERS ──────────────────────────────────────────────────────────
+const W=1000,H=280,PL=52,PR=24,PT=24,PB=44;
+const cW=W-PL-PR, cH=H-PT-PB;
+
+function xp(i,n){ return PL+(i/(n-1))*cW; }
+function yp(v,mn,mx){ return PT+(1-(v-mn)/(mx-mn))*cH; }
+
+function grid(svg,mn,mx,step,fmt){
+  for(let v=mn;v<=mx;v+=step){
+    const y=yp(v,mn,mx);
+    svg.innerHTML+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="rgba(92,45,145,.1)" stroke-dasharray="4,3"/>`;
+    svg.innerHTML+=`<text x="${PL-5}" y="${y+4}" font-size="10" fill="#6B6B7B" text-anchor="end" font-family="Source Sans 3,sans-serif">${fmt(v)}</text>`;
+  }
+}
+
+function xLabels(svg,labels){
+  labels.forEach((l,i)=>{
+    svg.innerHTML+=`<text x="${xp(i,labels.length)}" y="${H-8}" font-size="10.5" fill="#6B6B7B" text-anchor="middle" font-family="Source Sans 3,sans-serif">${l}</text>`;
+  });
+}
+
+function line(svg,pts,color,dashed,width){
+  const d=pts.filter(p=>p[1]!==null).map((p,i,a)=>i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`).join(' ');
+  const da=dashed?'stroke-dasharray="6,4"':'';
+  svg.innerHTML+=`<path d="${d}" fill="none" stroke="${color}" stroke-width="${width||2.2}" ${da} stroke-linejoin="round"/>`;
+}
+
+function dots(svg,pts,color,vals,r){
+  pts.forEach(([x,y],i)=>{
+    if(y===null) return;
+    svg.innerHTML+=`<circle cx="${x}" cy="${y}" r="${r||4.5}" fill="${color}" stroke="white" stroke-width="2"><title>${vals[i]}</title></circle>`;
+  });
+}
+
+function valLabels(svg,pts,vals,color){
+  pts.forEach(([x,y],i)=>{
+    if(y===null) return;
+    svg.innerHTML+=`<text x="${x}" y="${y-9}" font-size="9.5" fill="${color}" text-anchor="middle" font-weight="700" font-family="Source Sans 3,sans-serif">${vals[i]}</text>`;
+  });
+}
+
+// ── RATE HISTORY CHART ──────────────────────────────────────────────────────
+function drawRates(){
+  const svg=document.getElementById('ratesChart');
+  svg.innerHTML='';
+  const mn=0,mx=14,n=YEARS.length;
+  grid(svg,mn,mx,2,v=>v+'%');
+  xLabels(svg,YEARS);
+  // Add * to 2025 label to indicate projection
+  const x25=xp(9,n);
+  svg.innerHTML+=`<text x="${x25}" y="${H-8}" font-size="10.5" fill="#9B72CF" text-anchor="middle" font-family="Source Sans 3,sans-serif">2025*</text>`;
+
+  // overall dashed
+  const opts=LG_OVERALL.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  line(svg,opts,'#6B6B7B',true,1.5);
+
+  // regional
+  const rpts=LG_REG.map((v,i)=>[xp(i,n),v!==null?yp(v,mn,mx):null]);
+  line(svg,rpts,'#3BBFB2',false,2.2);
+  dots(svg,rpts,'#3BBFB2',LG_REG.map(v=>v!==null?'+'+v+'%':'N/A'));
+  valLabels(svg,rpts,LG_REG.map(v=>v!==null?'+'+v+'%':''),'#3BBFB2');
+
+  // statewide
+  const spts=LG_STATE.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  line(svg,spts,'#5C2D91',false,2.5);
+  dots(svg,spts,'#5C2D91',LG_STATE.map(v=>'+'+v+'%'));
+  valLabels(svg,spts,LG_STATE.map(v=>'+'+v+'%'),'#5C2D91');
+
+  // Kaiser only (confirmed 2022-23)
+  const kpts=LG_KAISER.map((v,i)=>[xp(i,n),v!==null?yp(v,mn,mx):null]);
+  line(svg,kpts,'#E8833A',true,2);
+  dots(svg,kpts,'#E8833A',LG_KAISER.map(v=>v!==null?'Kaiser +'+v+'%':''),4);
+  valLabels(svg,kpts,LG_KAISER.map(v=>v!==null?'+'+v+'%':''),'#E8833A');
+
+  // Non-Kaiser Carriers (confirmed 2022-23)
+  const expts=LG_EX_KAISER.map((v,i)=>[xp(i,n),v!==null?yp(v,mn,mx):null]);
+  line(svg,expts,'#C0392B',true,2);
+  dots(svg,expts,'#C0392B',LG_EX_KAISER.map(v=>v!==null?'Non-Kaiser +'+v+'%':''),4);
+  valLabels(svg,expts,LG_EX_KAISER.map(v=>v!==null?'+'+v+'%':''),'#C0392B');
+
+  // annotation band — 2018-2024 all have some Kaiser data
+  const x18=xp(2,n), x24=xp(8,n);
+  svg.innerHTML+=`<rect x="${x18-10}" y="${PT}" width="${x24-x18+32}" height="${cH}" fill="rgba(160,48,10,.04)" rx="2"/>`;
+  svg.innerHTML+=`<text x="${(x18+x24)/2}" y="${H-PB+28}" font-size="9" fill="rgba(160,48,10,.5)" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-style="italic">← Kaiser data available (2018–2024) →</text>`;
+}
+
+// ── BENCHMARK CHART ──────────────────────────────────────────────────────────
+function drawBenchmark(){
+  const svg=document.getElementById('benchChart');
+  svg.innerHTML='';
+  const mn=0,mx=24,n=YEARS.length;
+  grid(svg,mn,mx,4,v=>v+'%');
+  xLabels(svg,YEARS);
+
+  // annotation for 2017-2018 Covered CA spike
+  const x17=xp(1,n), x18=xp(2,n);
+  svg.innerHTML+=`<rect x="${x17-20}" y="${PT}" width="${x18-x17+40}" height="${cH}" fill="rgba(196,123,26,.06)" rx="3"/>`;
+  svg.innerHTML+=`<text x="${(x17+x18)/2}" y="${PT+11}" font-size="9" fill="rgba(196,123,26,.8)" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-style="italic">ACA disruption</text>`;
+
+  const lgpts=LG_OVERALL.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  const cppts=CALPERS.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  const ccpts=COVERED_CA.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+
+  line(svg,ccpts,'#C47B1A',false,2);
+  dots(svg,ccpts,'#C47B1A',COVERED_CA.map(v=>'+'+v+'%'));
+
+  line(svg,cppts,'#3BBFB2',false,2.2);
+  dots(svg,cppts,'#3BBFB2',CALPERS.map(v=>'+'+v+'%'));
+
+  line(svg,lgpts,'#5C2D91',false,2.5);
+  dots(svg,lgpts,'#5C2D91',LG_OVERALL.map(v=>'+'+v+'%'));
+  valLabels(svg,lgpts,LG_OVERALL.map(v=>'+'+v+'%'),'#5C2D91');
+}
+
+// ── RX CHART ──────────────────────────────────────────────────────────────
+function drawRx(){
+  const svg=document.getElementById('rxChart');
+  svg.innerHTML='';
+  const n=RX_YEARS.length;
+  // Both lines on same % axis 0-100, showing share of total premium dollar
+  // Medical % confirmed from DMHC reports: 2018-2024
+  const medPct=[77.5, 78.3, 77.5, 77.5, 86.0, 81.1, 76.0];
+  // Note: 2018-2021 medical % from DMHC large group reports
+  // 2022: 86.0% (placeholder — admin/profit volatile), 2023: 81.1%, 2024: 76.0% confirmed
+  const mn=0, mx=100, n2=n;
+
+  // Custom grid — show 0, 25, 50, 75, 100
+  [0,25,50,75,100].forEach(v=>{
+    const y=yp(v,mn,mx);
+    svg.innerHTML+=`<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="rgba(92,45,145,.08)" stroke-dasharray="4,3"/>`;
+    svg.innerHTML+=`<text x="${PL-5}" y="${y+4}" font-size="10" fill="#6B6B7B" text-anchor="end" font-family="Source Sans 3,sans-serif">${v}%</text>`;
+  });
+  xLabels(svg,RX_YEARS);
+
+  // Stacked area feel: medical fill first (bottom to top)
+  const rxpts  =RX_PCT.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  const medpts =medPct.map((v,i)=>[xp(i,n),yp(v,mn,mx)]);
+  const baseline=yp(0,mn,mx);
+  const topline =yp(100,mn,mx);
+
+  // Medical fill (blue) — from med% line up to 100%
+  const medFill=`M${medpts[0][0]},${topline} `
+    +medpts.map(p=>`L${p[0]},${p[1]}`).join(' ')
+    +` L${medpts[n-1][0]},${topline} Z`;
+  svg.innerHTML+=`<path d="${medFill}" fill="rgba(74,125,181,.15)"/>`;
+
+  // Rx fill (red) — from 0 up to Rx% line
+  const rxFill=`M${rxpts[0][0]},${baseline} `
+    +rxpts.map(p=>`L${p[0]},${p[1]}`).join(' ')
+    +` L${rxpts[n-1][0]},${baseline} Z`;
+  svg.innerHTML+=`<path d="${rxFill}" fill="rgba(160,48,10,.12)"/>`;
+
+  // Medical % line (blue)
+  line(svg,medpts,'#4A7DB5',false,2.2);
+  dots(svg,medpts,'#4A7DB5',medPct.map(v=>v+'% Medical'));
+  valLabels(svg,medpts,medPct.map(v=>v+'%'),'#4A7DB5');
+
+  // Rx % line (red)
+  line(svg,rxpts,'#A0300A',false,2.5);
+  dots(svg,rxpts,'#A0300A',RX_PCT.map(v=>v+'% Rx'));
+  valLabels(svg,rxpts,RX_PCT.map(v=>v+'%'),'#A0300A');
+
+  // Gap label in middle showing the gap between Rx and medical
+  const midI=Math.floor(n/2);
+  const gapY=(rxpts[midI][1]+medpts[midI][1])/2;
+  svg.innerHTML+=`<text x="${rxpts[midI][0]+22}" y="${gapY+4}" font-size="9" fill="#6B6B7B" font-style="italic" font-family="Source Sans 3,sans-serif">← gap = admin, profit, taxes</text>`;
+
+  // PMPM callout boxes along bottom
+  RX_PMPM.forEach((v,i)=>{
+    if(v===null) return;
+    const x=xp(i,n);
+    const bw=46;
+    svg.innerHTML+=`<rect x="${x-bw/2}" y="${H-PB-2}" width="${bw}" height="16" rx="3" fill="#C47B1A"/>`;
+    svg.innerHTML+=`<text x="${x}" y="${H-PB+11}" font-size="9.5" fill="white" text-anchor="middle" font-weight="700" font-family="Source Sans 3,sans-serif">$${v}/mo</text>`;
+  });
+
+  // PMPM label
+  svg.innerHTML+=`<text x="${PL}" y="${H-PB+11}" font-size="9" fill="#C47B1A" font-weight="700" font-family="Source Sans 3,sans-serif">Rx PMPM→</text>`;
+}
+
+// ── DATA TABLE ──────────────────────────────────────────────────────────────
+function pc(v){ return v===null?'<span class="pill p-na">N/A</span>': v<=4?`<span class="pill p-low">+${v}%</span>`:v<=7?`<span class="pill p-mid">+${v}%</span>`:v<=10?`<span class="pill p-high">+${v}%</span>`:`<span class="pill p-vhigh">+${v}%</span>`; }
+
+function buildTable(){
+  const con=document.getElementById('tableContainer');
+  let h=`<table class="ctable"><thead><tr><th>Metric</th>`;
+  YEARS.forEach(y=>h+=`<th>${y}</th>`);
+  h+=`<th class="special">9-Yr Avg</th></tr></thead><tbody>`;
+
+  const rows=[
+    {label:'Statewide Plans (incl. Kaiser)',color:'#5C2D91',data:LG_STATE},
+    {label:'Regional Plans',color:'#3BBFB2',data:LG_REG},
+    {label:'Overall Large Group',color:'#1A1446',data:LG_OVERALL,bold:true},
+    {label:'Kaiser Only †',color:'#E8833A',data:LG_KAISER},
+    {label:'Non-Kaiser Carriers †',color:'#C0392B',data:LG_EX_KAISER},
+    {label:'CalPERS',color:'#3BBFB2',data:CALPERS},
+    {label:'Covered California',color:'#C47B1A',data:COVERED_CA},
+  ];
+
+  rows.forEach(r=>{
+    const valid=r.data.filter(v=>v!==null);
+    const avg=(valid.reduce((a,b)=>a+b,0)/valid.length).toFixed(1);
+    const cls=r.bold?'total-row':'';
+    h+=`<tr class="${cls}"><td><span class="cdot" style="background:${r.color}"></span><span class="cname">${r.label}</span></td>`;
+    r.data.forEach(v=>h+=`<td>${pc(v)}</td>`);
+    h+=`<td style="border-left:2px solid var(--light)">${pc(+avg)}</td></tr>`;
+  });
+
+  // Rx section
+  h+=`<tr><td colspan="${YEARS.length+2}" style="padding:14px 11px 6px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);border-bottom:2px solid var(--purple)">Prescription Drug Data (SB 17) — 2018 onward</td></tr>`;
+  h+=`<tr><td><span class="cdot" style="background:#A0300A"></span><span class="cname">Rx % of Premium</span></td>`;
+  YEARS.forEach((y,i)=>{
+    const rxi=RX_YEARS.indexOf(y);
+    const v=rxi>=0?RX_PCT[rxi]:null;
+    h+=`<td>${v!==null?`<span class="pill p-mid">${v}%</span>`:'<span class="pill p-na">N/A</span>'}</td>`;
+  });
+  h+=`<td style="border-left:2px solid var(--light)"><span class="pill p-mid">13.2%</span></td></tr>`;
+
+  h+=`<tr><td><span class="cdot" style="background:#C47B1A"></span><span class="cname">Rx PMPM (net rebates)</span></td>`;
+  YEARS.forEach((y,i)=>{
+    const rxi=RX_YEARS.indexOf(y);
+    const v=rxi>=0?RX_PMPM[rxi]:null;
+    h+=`<td>${v!==null?`<span class="pill p-mid">$${v}</span>`:'<span class="pill p-na">N/A</span>'}</td>`;
+  });
+  h+=`<td style="border-left:2px solid var(--light)">—</td></tr>`;
+
+  h+=`</tbody></table>
+  <p style="font-size:10.5px;color:var(--gray);margin-top:12px;line-height:1.6">
+    All figures confirmed from DMHC official publications. No proxies used. 
+    2024 large group rate = projected per DMHC AB 2118 MY2023 report. 
+    2025 large group rate = projected per DMHC AB 2118 MY2024 report. 
+    Regional plan data not separately published for 2024–2025. 
+    Rx 2024 = estimate based on premium component breakdown in MY2024 report.
+  </p>`;
+  con.innerHTML=h;
+}
+
+// ── TAB SWITCHING ──────────────────────────────────────────────────────────
+function switchTab(name){
+  const names=['rates','benchmark','rx','kaiser','table'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',names[i]===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  if(name==='rates') drawRates();
+  if(name==='benchmark') drawBenchmark();
+  if(name==='rx') drawRx();
+  if(name==='kaiser'){ drawKaiser(); buildKaiserTable(); }
+  if(name==='table') buildTable();
+}
+
+// ── KAISER DEEP DIVE CHART ────────────────────────────────────────────────────
+function drawKaiser(){
+  const svg=document.getElementById('kaiserChart');
+  svg.innerHTML='';
+  // Only show 2018-2024 where we have Kaiser data
+  const kyears=[2018,2019,2020,2021,2022,2023,2024];
+  const kdata  =[7.1, 5.2, 5.7, 5.9, 3.6, 5.9, 12.7];
+  const exdata =[4.2, 2.8, 3.5, 3.2, 5.0, 7.6,  9.5];
+  const mktdata=[5.4, 3.6, 4.3, 4.2, 4.1, 6.5, 10.7];
+  const n=kyears.length;
+  const W2=900,H2=260,PL2=50,PR2=20,PT2=24,PB2=40;
+  const cW2=W2-PL2-PR2, cH2=H2-PT2-PB2;
+  const mn=0,mx=16;
+  function xp2(i){ return PL2+(i/(n-1))*cW2; }
+  function yp2(v){ return PT2+(1-(v-mn)/(mx-mn))*cH2; }
+
+  // grid
+  [0,4,8,12,16].forEach(v=>{
+    const y=yp2(v);
+    svg.innerHTML+=`<line x1="${PL2}" y1="${y}" x2="${W2-PR2}" y2="${y}" stroke="rgba(92,45,145,.1)" stroke-dasharray="4,3"/>`;
+    svg.innerHTML+=`<text x="${PL2-5}" y="${y+4}" font-size="10" fill="#6B6B7B" text-anchor="end" font-family="Source Sans 3,sans-serif">${v}%</text>`;
+  });
+  kyears.forEach((yr,i)=>{
+    svg.innerHTML+=`<text x="${xp2(i)}" y="${H2-8}" font-size="11" fill="#6B6B7B" text-anchor="middle" font-family="Source Sans 3,sans-serif">${yr}</text>`;
+  });
+
+  // shade where Kaiser > market (above-market years)
+  kdata.forEach((kv,i)=>{
+    if(kv>mktdata[i]){
+      const x=xp2(i);
+      svg.innerHTML+=`<rect x="${x-28}" y="${PT2}" width="56" height="${cH2}" fill="rgba(160,48,10,.05)" rx="2"/>`;
+    }
+  });
+
+  // market dashed
+  const mpts=mktdata.map((v,i)=>[xp2(i),yp2(v)]);
+  const md=mpts.map((p,i)=>i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`).join(' ');
+  svg.innerHTML+=`<path d="${md}" fill="none" stroke="#6B6B7B" stroke-width="1.5" stroke-dasharray="5,4" stroke-linejoin="round"/>`;
+
+  // non-kaiser
+  const expts=exdata.map((v,i)=>[xp2(i),yp2(v)]);
+  const exd=expts.map((p,i)=>i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`).join(' ');
+  svg.innerHTML+=`<path d="${exd}" fill="none" stroke="#A0300A" stroke-width="2.2" stroke-linejoin="round"/>`;
+  expts.forEach(([x,y],i)=>{
+    svg.innerHTML+=`<circle cx="${x}" cy="${y}" r="4.5" fill="#A0300A" stroke="white" stroke-width="2"><title>Non-Kaiser ${kyears[i]}: +${exdata[i]}%</title></circle>`;
+    svg.innerHTML+=`<text x="${x}" y="${y+17}" font-size="9.5" fill="#A0300A" text-anchor="middle" font-weight="700" font-family="Source Sans 3,sans-serif">+${exdata[i]}%</text>`;
+  });
+
+  // kaiser
+  const kpts=kdata.map((v,i)=>[xp2(i),yp2(v)]);
+  const kd=kpts.map((p,i)=>i===0?`M${p[0]},${p[1]}`:`L${p[0]},${p[1]}`).join(' ');
+  svg.innerHTML+=`<path d="${kd}" fill="none" stroke="#C47B1A" stroke-width="2.5" stroke-linejoin="round"/>`;
+  kpts.forEach(([x,y],i)=>{
+    svg.innerHTML+=`<circle cx="${x}" cy="${y}" r="5" fill="#C47B1A" stroke="white" stroke-width="2"><title>Kaiser ${kyears[i]}: +${kdata[i]}%</title></circle>`;
+    svg.innerHTML+=`<text x="${x}" y="${y-10}" font-size="10" fill="#C47B1A" text-anchor="middle" font-weight="700" font-family="Source Sans 3,sans-serif">+${kdata[i]}%</text>`;
+  });
+
+  // legend
+  svg.innerHTML+=`<circle cx="${PL2+10}" cy="${PT2+8}" r="5" fill="#C47B1A"/>`;
+  svg.innerHTML+=`<text x="${PL2+20}" y="${PT2+12}" font-size="10" fill="#6B6B7B" font-family="Source Sans 3,sans-serif">Kaiser</text>`;
+  svg.innerHTML+=`<circle cx="${PL2+80}" cy="${PT2+8}" r="5" fill="#A0300A"/>`;
+  svg.innerHTML+=`<text x="${PL2+90}" y="${PT2+12}" font-size="10" fill="#6B6B7B" font-family="Source Sans 3,sans-serif">Non-Kaiser</text>`;
+  svg.innerHTML+=`<text x="${W2-PR2-160}" y="${PT2+12}" font-size="9.5" fill="rgba(160,48,10,.6)" font-style="italic" font-family="Source Sans 3,sans-serif">Shaded = Kaiser above market</text>`;
+}
+
+function buildKaiserTable(){
+  const con=document.getElementById('kaiserTableContainer');
+  const rows=[
+    {yr:2016, kaiser:'~Est.',  mkt:3.9,  nonk:'~Est.', src:'CDI filing exists; rate not confirmed'},
+    {yr:2017, kaiser:'~Est.',  mkt:3.9,  nonk:'~Est.', src:'CDI filing exists; rate not confirmed'},
+    {yr:2018, kaiser:7.1,  mkt:5.4,  nonk:4.2, src:'KPIC CDI filing ✓'},
+    {yr:2019, kaiser:5.2,  mkt:3.6,  nonk:2.8, src:'KPIC CDI filing ✓'},
+    {yr:2020, kaiser:5.7,  mkt:4.3,  nonk:3.5, src:'KPIC CDI filing ✓'},
+    {yr:2021, kaiser:5.9,  mkt:4.2,  nonk:3.2, src:'KPIC CDI filing ✓'},
+    {yr:2022, kaiser:3.6,  mkt:4.1,  nonk:5.0, src:'DMHC public meeting ✓'},
+    {yr:2023, kaiser:5.9,  mkt:6.5,  nonk:7.6, src:'DMHC public meeting ✓'},
+    {yr:2024, kaiser:12.7, mkt:10.7, nonk:9.5, src:'DMHC MY2024 report ✓'},
+  ];
+  function badge(k,m){
+    if(typeof k!=='number') return `<span class="pill p-na">Est.</span>`;
+    const diff=(k-m).toFixed(1);
+    const cls=k>m?'p-vhigh':'p-low';
+    const arrow=k>m?'▲':'▼';
+    return `<span class="pill ${cls}">${arrow} ${diff>0?'+':''}${diff}pts</span>`;
+  }
+  function pc2(v){ if(typeof v!=='number') return `<span class="pill p-na">Est.</span>`; return v<=4?`<span class="pill p-low">+${v}%</span>`:v<=7?`<span class="pill p-mid">+${v}%</span>`:v<=11?`<span class="pill p-high">+${v}%</span>`:`<span class="pill p-vhigh">+${v}%</span>`; }
+  let h=`<div class="tscroll"><table class="ctable"><thead><tr>
+    <th>Year</th><th>Kaiser</th><th>Non-Kaiser</th><th>Market Avg</th><th>Kaiser vs Market</th><th>Source</th>
+  </tr></thead><tbody>`;
+  rows.forEach(r=>{
+    const rowcls=typeof r.kaiser==='number'&&r.kaiser>r.mkt?'style="background:rgba(160,48,10,.04)"':'';
+    h+=`<tr ${rowcls}><td style="font-weight:700">${r.yr}</td><td>${pc2(r.kaiser)}</td><td>${pc2(r.nonk)}</td><td>${pc2(r.mkt)}</td><td>${badge(r.kaiser,r.mkt)}</td><td style="font-size:11px;color:var(--gray)">${r.src}</td></tr>`;
+  });
+  h+=`</tbody></table></div>
+  <p style="font-size:10.5px;color:var(--gray);margin-top:12px;line-height:1.6">
+    Non-Kaiser calculated as: (Overall weighted avg − 0.66 × Kaiser rate) ÷ 0.34, based on Kaiser's ~66% large group enrollment share per DMHC reports. Rows shaded red = Kaiser filed above market average that year.
+    Sources: KPIC CA Large Group Annual Aggregate Rate Data Report Forms (CDI); DMHC Public Meeting Presentations (2023–2024); DMHC AB 2118 MY2024 Report.
+  </p>`;
+  con.innerHTML=h;
+}
+
+// INIT
+drawRates();
+</script>
+</body>
+</html>
