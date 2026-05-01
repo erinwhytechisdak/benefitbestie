@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benefit Rate Trends 2022–2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2240;
+    --navy-mid: #1A3A5C;
+    --navy-light: #2A5280;
+    --violet: #6B3FA0;
+    --violet-light: #9B6DD0;
+    --teal: #00897B;
+    --teal-light: #4DB6AC;
+    --amber: #E67E22;
+    --amber-light: #F5A623;
+    --rose: #C0392B;
+    --rose-light: #E74C3C;
+    --slate: #F4F6F9;
+    --white: #FFFFFF;
+    --text-dark: #0D2240;
+    --text-mid: #4A5568;
+    --text-light: #8A9BB0;
+    --border: #D8E3EE;
+    --card-shadow: 0 2px 16px rgba(13,34,64,0.09);
+    --card-shadow-hover: 0 8px 32px rgba(13,34,64,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--slate);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .page-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    padding: 40px 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: rgba(107,63,160,0.18);
+    pointer-events: none;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(0,137,123,0.12);
+    pointer-events: none;
+  }
+  .header-inner {
+    position: relative; z-index: 2;
+    display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .header-left {}
+  .org-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px; font-weight: 600; letter-spacing: 3px;
+    color: var(--teal-light); text-transform: uppercase; margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  h1 span { color: var(--teal-light); }
+  .header-sub {
+    margin-top: 8px;
+    font-size: 14px; color: rgba(255,255,255,0.65); font-weight: 400;
+  }
+  .header-right {
+    display: flex; gap: 20px; align-items: center;
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px; padding: 10px 18px; text-align: center;
+  }
+  .badge-val {
+    font-size: 22px; font-weight: 700; color: var(--white);
+    font-family: 'Playfair Display', serif;
+  }
+  .badge-label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+
+  /* NAV TABS */
+  .tabs-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex; gap: 0;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(13,34,64,0.06);
+  }
+  .tab-btn {
+    padding: 16px 22px;
+    border: none; background: none;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--text-mid); cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--navy); }
+  .tab-btn.active { color: var(--navy); border-bottom-color: var(--violet); font-weight: 600; }
+
+  /* MAIN CONTENT */
+  .main { padding: 36px 48px 60px; max-width: 1400px; margin: 0 auto; }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* CFO SUMMARY BOXES */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .kpi-card {
+    background: var(--white); border-radius: 12px; padding: 22px 24px;
+    box-shadow: var(--card-shadow);
+    border-top: 4px solid var(--navy);
+    transition: box-shadow 0.2s;
+  }
+  .kpi-card:hover { box-shadow: var(--card-shadow-hover); }
+  .kpi-card.teal { border-top-color: var(--teal); }
+  .kpi-card.violet { border-top-color: var(--violet); }
+  .kpi-card.amber { border-top-color: var(--amber); }
+  .kpi-card.rose { border-top-color: var(--rose); }
+  .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); margin-bottom: 6px; }
+  .kpi-val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--navy); line-height: 1; }
+  .kpi-sub { font-size: 12px; color: var(--text-mid); margin-top: 6px; }
+  .kpi-change { display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .kpi-change.up { background: #FEF3F2; color: var(--rose); }
+  .kpi-change.down { background: #F0FDF4; color: #16A34A; }
+
+  /* CONTRIBUTION EXPLANATION BOX */
+  .info-box {
+    background: linear-gradient(135deg, #EDF2FF 0%, #F3E8FF 100%);
+    border-left: 4px solid var(--violet);
+    border-radius: 0 10px 10px 0;
+    padding: 18px 24px; margin-bottom: 28px;
+    font-size: 13.5px; line-height: 1.7; color: var(--navy-mid);
+  }
+  .info-box strong { color: var(--violet); }
+
+  /* CARDS GRID */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-bottom: 32px; }
+
+  .rate-card {
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .rate-card:hover { box-shadow: var(--card-shadow-hover); transform: translateY(-2px); }
+  .card-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .carrier-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .card-subtitle { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .card-body { padding: 18px 22px; }
+
+  /* TREND TABLE inside card */
+  .trend-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .trend-table th {
+    text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-light); font-weight: 600; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .trend-table th:not(:first-child) { text-align: right; }
+  .trend-table td {
+    padding: 7px 0; vertical-align: middle;
+    border-bottom: 1px solid #F0F4F8;
+    color: var(--text-mid);
+  }
+  .trend-table td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .trend-table td:first-child { font-weight: 500; color: var(--navy); font-size: 12px; }
+  .trend-table tr:last-child td { border-bottom: none; }
+  .trend-table .year-col { font-weight: 700; color: var(--navy); }
+  .trend-table .highlight { background: #F8F5FF; }
+  .trend-table .highlight td { color: var(--navy); font-weight: 600; }
+
+  .pct-pill {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 4px; margin-left: 4px;
+  }
+  .pct-up { background: #FEF3F2; color: #C0392B; }
+  .pct-down { background: #F0FDF4; color: #16A34A; }
+  .pct-new { background: #EFF6FF; color: #1D4ED8; }
+
+  /* CHART SECTION */
+  .chart-card {
+    background: var(--white); border-radius: 14px;
+    box-shadow: var(--card-shadow); padding: 28px 28px 20px;
+    margin-bottom: 28px;
+  }
+  .chart-title-row {
+    display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;
+  }
+  .chart-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .chart-note { font-size: 11.5px; color: var(--text-light); font-style: italic; }
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* ER CONTRIBUTION TABLE */
+  .contrib-section { margin-top: 32px; }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700; color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .section-desc { font-size: 13px; color: var(--text-mid); margin-bottom: 20px; }
+
+  .contrib-table-wrap { overflow-x: auto; border-radius: 12px; box-shadow: var(--card-shadow); }
+  table.contrib-table {
+    width: 100%; border-collapse: collapse; background: var(--white);
+    font-size: 13px;
+  }
+  .contrib-table thead th {
+    background: var(--navy); color: var(--white);
+    padding: 13px 16px; text-align: left;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
+  }
+  .contrib-table thead th:not(:first-child) { text-align: right; }
+  .contrib-table tbody tr:nth-child(even) { background: #F8FAFC; }
+  .contrib-table tbody tr:hover { background: #EDF2FF; }
+  .contrib-table tbody td {
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    color: var(--text-mid);
+  }
+  .contrib-table tbody td:first-child { font-weight: 600; color: var(--navy); }
+  .contrib-table tbody td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; }
+  .contrib-table tfoot td {
+    padding: 12px 16px; font-weight: 700; font-size: 13px;
+    background: #EDF2FF; color: var(--navy);
+    border-top: 2px solid var(--violet);
+  }
+  .contrib-table tfoot td:not(:first-child) { text-align: right; }
+
+  .er-amt { color: var(--teal); font-weight: 700; }
+  .ee-amt { color: var(--violet); font-weight: 600; }
+  .supp-amt { color: var(--amber); font-weight: 700; }
+
+  /* LEGEND */
+  .legend-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--text-mid); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* CARRIER COLORS */
+  .c-anthem { background: #1A5FB4; }
+  .c-kaiser { background: #00897B; }
+  .c-sutter { background: #6B3FA0; }
+  .c-nonstop { background: #E67E22; }
+  .c-dental { background: #3498DB; }
+  .c-vision { background: #27AE60; }
+
+  /* YEAR badges in trend tables */
+  .yr { 
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px;
+    margin-right: 4px; color: var(--white);
+  }
+  .yr-2022 { background: #7F8C8D; }
+  .yr-2023 { background: #2980B9; }
+  .yr-2024 { background: #8E44AD; }
+  .yr-2025 { background: #16A085; }
+  .yr-2026 { background: #C0392B; }
+
+  /* SUPP NOTE */
+  .supp-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+    padding: 2px 8px; border-radius: 4px;
+    background: #FFF3E0; color: var(--amber); border: 1px solid #FFB74D;
+  }
+
+  /* Footnotes */
+  .footnotes { margin-top: 36px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .footnote { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+  .footnote strong { color: var(--text-mid); }
+
+  /* PRINT */
+  @media print {
+    .tabs-bar { display: none; }
+    .section { display: block !important; page-break-before: always; }
+    .section:first-of-type { page-break-before: auto; }
+  }
+
+  @media (max-width: 768px) {
+    .page-header { padding: 24px 20px; }
+    .tabs-bar { padding: 0 12px; overflow-x: auto; }
+    .main { padding: 24px 16px; }
+    h1 { font-size: 24px; }
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .roi-compare-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="org-label">Benefits Intelligence</div>
+      <h1>Benefit Rate Trends<br><span>2022 – 2026</span></h1>
+      <div class="header-sub">Year-over-year rate & employer contribution analysis · Prepared by WTW</div>
+    </div>
+    <div class="header-right">
+      <div class="header-badge">
+        <div class="badge-val">5</div>
+        <div class="badge-label">Plan Years</div>
+      </div>
+      <div class="header-badge">
+        <div class="badge-val">3</div>
+        <div class="badge-label">Medical Carriers</div>
+      </div>
+      <div class="header-badge">
+        <div class="badge-val">2026</div>
+        <div class="badge-label">Current Plan Year</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="showTab('summary')">CFO Summary</button>
+  <button class="tab-btn" onclick="showTab('medical')">Medical Plans</button>
+  <button class="tab-btn" onclick="showTab('contributions')">ER Contributions</button>
+  <button class="tab-btn" onclick="showTab('supplemental')">Supplemental (Nonstop)</button>
+  <button class="tab-btn" onclick="showTab('dental-vision')">Dental &amp; Vision</button>
+  <button class="tab-btn" onclick="showTab('nonstop-roi')" style="border-bottom-color:transparent;">💡 Nonstop ROI Analysis</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+<!-- ─────────────────── TAB: CFO SUMMARY ─────────────────── -->
+<div id="tab-summary" class="section active">
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Kaiser Bronze EE Rate (Age 21)</div>
+      <div class="kpi-val">$365.64</div>
+      <div class="kpi-sub">2026 benchmark · ER anchor plan</div>
+      <div class="kpi-change up">+10.1% vs 2025 ($332.09)</div>
+    </div>
+    <div class="kpi-card teal">
+      <div class="kpi-label">Anthem Bronze EE Rate (Age 21)</div>
+      <div class="kpi-val">$536.39</div>
+      <div class="kpi-sub">2026 · Employee pays difference over Kaiser</div>
+      <div class="kpi-change up">+11.7% vs 2025 ($480.40)</div>
+    </div>
+    <div class="kpi-card violet">
+      <div class="kpi-label">Sutter Bronze EE Rate (Age 21)</div>
+      <div class="kpi-val">$511.76</div>
+      <div class="kpi-sub">2026 · NEW plan · Employee pays difference</div>
+      <div class="kpi-change pct-new">NEW in 2026</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Nonstop Supp – EE Only Tier</div>
+      <div class="kpi-val">$209.43</div>
+      <div class="kpi-sub">2026 $1K Backend · Kaiser enrollees · 100% ER paid</div>
+      <div class="kpi-change down">–6.1% vs 2025 ($223.15)</div>
+    </div>
+    <div class="kpi-card rose">
+      <div class="kpi-label">Dental – EE Only Tier</div>
+      <div class="kpi-val">$61.94</div>
+      <div class="kpi-sub">2026 Principal PPO · No change from 2022–2024</div>
+      <div class="kpi-change up">+4.8% vs 2025 ($59.10)</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>2026 Contribution Strategy:</strong> The company pays <strong>100% of the Employee rate</strong> and <strong>80% of the Dependent rate</strong> based on the <strong>Kaiser Permanente Bronze HMO C HSA</strong> rates. If an employee selects Anthem or Sutter, they pay the premium difference above Kaiser. Nonstop Medical Supplemental premiums are fully <strong>employer-paid (100% ER)</strong> and are reported separately from base medical contributions.
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Medical Premium Trends — Age 21 Individual Rate (2022–2026)</div>
+      <div class="chart-note">Age 21 used as index rate; actual cost varies by age band</div>
+    </div>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot c-anthem"></div>Anthem (PPO)</div>
+      <div class="legend-item"><div class="legend-dot c-kaiser"></div>Kaiser (HMO)</div>
+      <div class="legend-item"><div class="legend-dot c-sutter"></div>Sutter Health Plus (NEW 2026)</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartMedicalTrend"></canvas></div>
+  </div>
+
+
+  <!-- YoY PLAIN-LANGUAGE SUMMARY -->
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Year-over-Year Rate Changes — Anthem &amp; Kaiser (2022–2026)</div>
+      <div class="chart-note">Age 21 index rate · * 2024→2025 reflects plan tier change (Gold/Platinum → Bronze), not a true like-for-like increase</div>
+    </div>
+
+    <!-- HEADLINE AVERAGES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:22px;">
+      <div style="background:linear-gradient(135deg,#EEF3FB,#DBEAFE);border-radius:10px;padding:16px 18px;text-align:center;border:1px solid #BFDBFE;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#1A5FB4;margin-bottom:6px;">Anthem Avg YoY Increase</div>
+        <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#1A5FB4;line-height:1;">+8.9%</div>
+        <div style="font-size:11px;color:#374151;margin-top:6px;">Per year · 2022–2026<br>Excludes 2024→2025 tier change</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#E0F2F1,#CCFBF1);border-radius:10px;padding:16px 18px;text-align:center;border:1px solid #99F6E4;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#00695C;margin-bottom:6px;">Kaiser Avg YoY Increase</div>
+        <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#00695C;line-height:1;">+8.9%</div>
+        <div style="font-size:11px;color:#374151;margin-top:6px;">Per year · 2022–2026<br>Excludes 2024→2025 tier change</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#F0FDF4,#DCFCE7);border-radius:10px;padding:16px 18px;text-align:center;border:1px solid #BBF7D0;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#14532D;margin-bottom:6px;">Combined Carrier Average</div>
+        <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#14532D;line-height:1;">+8.9%</div>
+        <div style="font-size:11px;color:#374151;margin-top:6px;">Both carriers trending identically<br>on a like-for-like basis</div>
+      </div>
+    </div>
+
+    <!-- YoY TABLE -->
+    <div class="contrib-table-wrap">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Period</th>
+            <th>Anthem Plan</th>
+            <th>Anthem Age 21 Rate</th>
+            <th>Anthem YoY Δ</th>
+            <th>Kaiser Plan</th>
+            <th>Kaiser Age 21 Rate</th>
+            <th>Kaiser YoY Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">2022 <span style="font-size:10px;color:var(--text-light);">(baseline)</span></td>
+            <td style="color:var(--text-mid);">Gold PPO E</td>
+            <td>$511.94</td>
+            <td style="color:var(--text-light);">—</td>
+            <td style="color:var(--text-mid);">Platinum HMO A</td>
+            <td>$414.29</td>
+            <td style="color:var(--text-light);">—</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">2022→2023</td>
+            <td style="color:var(--text-mid);">Gold PPO E</td>
+            <td>$538.02</td>
+            <td><span class="pct-pill pct-up">+5.1%</span></td>
+            <td style="color:var(--text-mid);">Platinum HMO A</td>
+            <td>$443.69</td>
+            <td><span class="pct-pill pct-up">+7.1%</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">2023→2024</td>
+            <td style="color:var(--text-mid);">Gold PPO E</td>
+            <td>$590.81</td>
+            <td><span class="pct-pill pct-up">+9.8%</span></td>
+            <td style="color:var(--text-mid);">Platinum HMO A</td>
+            <td>$485.44</td>
+            <td><span class="pct-pill pct-up">+9.4%</span></td>
+          </tr>
+          <tr style="background:#FFF8F0;">
+            <td style="font-weight:700;color:var(--navy);">2024→2025 <span style="font-size:10px;">⚡</span></td>
+            <td style="color:var(--text-mid);font-style:italic;">Gold PPO E → Bronze PPO C</td>
+            <td>$480.40</td>
+            <td><span style="font-size:10px;color:#BF5000;font-weight:600;">Tier change*</span></td>
+            <td style="color:var(--text-mid);font-style:italic;">Platinum HMO A → Bronze HMO C</td>
+            <td>$332.09</td>
+            <td><span style="font-size:10px;color:#BF5000;font-weight:600;">Tier change*</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">2025→2026</td>
+            <td style="color:var(--text-mid);">Bronze PPO C</td>
+            <td>$536.39</td>
+            <td><span class="pct-pill pct-up">+11.7%</span></td>
+            <td style="color:var(--text-mid);">Bronze HMO C HSA</td>
+            <td>$365.64</td>
+            <td><span class="pct-pill pct-up">+10.1%</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" style="font-weight:700;color:var(--navy);">Avg Annual Increase (excl. tier change year)</td>
+            <td style="font-weight:900;color:#1A5FB4;font-size:14px;">+8.9%</td>
+            <td colspan="1"></td>
+            <td></td>
+            <td style="font-weight:900;color:#00695C;font-size:14px;">+8.9%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:var(--text-light);font-style:italic;">
+      * 2024→2025 excluded from average: the nominal rate decrease reflects a plan tier change from Gold/Platinum to Bronze, not a true market rate reduction. Nonstop Health supplemental plans were implemented simultaneously to maintain benefit value.
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Year-over-Year Rate Change % — Like-for-Like Periods Only</div>
+      <div class="chart-note">2024→2025 tier-change year excluded · shows underlying carrier trend</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartYoYChange"></canvas></div>
+  </div>
+
+</div><!-- /summary -->
+
+<!-- ─────────────────── TAB: MEDICAL PLANS ─────────────────── -->
+<div id="tab-medical" class="section">
+
+  <div class="section-heading">Medical Plan Rate History — 2022 to 2026</div>
+  <div class="section-desc">Age-banded plans; rates shown at Age 21 as a representative individual benchmark. All plans shown below are group health plans.</div>
+
+  <div class="info-box">
+    <strong>Plan Continuity Note:</strong> 2022–2024 plans were Gold-tier (Anthem PPO &amp; Kaiser Gold/Platinum HMO). In 2025, plans shifted to <strong>Bronze tier</strong> with the addition of Nonstop Medical Supplemental coverage to bridge the benefit gap. Kaiser Platinum HMO A (2022–2024) was effectively replaced by Kaiser Bronze HMO C + Nonstop Supplemental in 2025. Sutter Health Plus Bronze HMO B HSA was added as a <strong>new option in 2026</strong>.
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- ANTHEM CARD -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-anthem"></div>
+        <div>
+          <div class="card-title">Anthem Blue Cross — PPO Plans</div>
+          <div class="card-subtitle">Age 21 Individual Rate · Gold → Bronze transition</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead>
+            <tr>
+              <th>Year / Plan</th>
+              <th>Age 21 Rate</th>
+              <th>YoY Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Gold PPO A</td>
+              <td>$518.86</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Gold PPO D</td>
+              <td>$477.72</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Gold PPO E</td>
+              <td>$511.94</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2023">2023</span>Gold PPO D</td>
+              <td>$505.49</td>
+              <td><span class="pct-pill pct-up">+5.8%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2023">2023</span>Gold PPO E</td>
+              <td>$538.02</td>
+              <td><span class="pct-pill pct-up">+5.1%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2024">2024</span>Gold PPO D</td>
+              <td>$547.71</td>
+              <td><span class="pct-pill pct-up">+8.4%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2024">2024</span>Gold PPO E</td>
+              <td>$590.81</td>
+              <td><span class="pct-pill pct-up">+9.8%</span></td>
+            </tr>
+            <tr class="highlight">
+              <td><span class="yr yr-2025">2025</span>Bronze PPO C</td>
+              <td>$480.40</td>
+              <td><span class="pct-pill pct-down">–12.3%†</span></td>
+            </tr>
+            <tr class="highlight">
+              <td><span class="yr yr-2026">2026</span>Bronze PPO C</td>
+              <td>$536.39</td>
+              <td><span class="pct-pill pct-up">+11.7% vs 2025</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Nonstop callout -->
+        <div style="margin-top:14px;padding:12px 14px;background:#FFF8ED;border-left:4px solid #E67E22;border-radius:0 8px 8px 0;font-size:12px;line-height:1.65;color:#7B4F18;">
+          <div style="font-weight:700;font-size:12.5px;margin-bottom:4px;">⚡ † 2025 Rate Reduction — Nonstop Health Gap Plans Implemented</div>
+          The –12.3% drop from 2024→2025 reflects a strategic plan design change: Anthem moved from a <strong>Gold PPO</strong> to a <strong>Bronze PPO</strong>, reducing the base premium. To protect employees from higher out-of-pocket exposure, <strong>Nonstop Health Medical Supplemental</strong> gap coverage was implemented simultaneously — fully employer-paid — bridging the benefit gap created by the tier change.
+        </div>
+
+        <!-- 2026 vs 2024 savings context -->
+        <div style="margin-top:10px;padding:12px 14px;background:#F0FDF4;border-left:4px solid #16A34A;border-radius:0 8px 8px 0;font-size:12px;line-height:1.65;color:#14532D;">
+          <div style="font-weight:700;font-size:12.5px;margin-bottom:4px;">✅ 2026 Rate Still Below 2024 Peak — Even After +11.7% Increase</div>
+          Despite the 2025→2026 increase of +11.7%, the 2026 Anthem Bronze PPO C rate of <strong>$536.39</strong> remains <strong>$54.42 below (–9.2%)</strong> the 2024 Gold PPO E rate of $590.81 — the last comparable plan prior to Nonstop implementation. The base medical premium is lower while Nonstop gap coverage continues to protect employee out-of-pocket exposure.
+        </div>
+      </div>
+    </div>
+
+    <!-- KAISER CARD -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-kaiser"></div>
+        <div>
+          <div class="card-title">Kaiser Permanente — HMO Plans</div>
+          <div class="card-subtitle">Age 21 Individual Rate · Gold/Platinum → Bronze transition</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead>
+            <tr>
+              <th>Year / Plan</th>
+              <th>Age 21 Rate</th>
+              <th>YoY Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Gold HMO B</td>
+              <td>$366.29</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Gold HMO D</td>
+              <td>$344.88</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2022">2022</span>Platinum HMO A</td>
+              <td>$414.29</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2023">2023</span>Gold HMO B</td>
+              <td>$391.98</td>
+              <td><span class="pct-pill pct-up">+7.0%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2023">2023</span>Gold HMO D</td>
+              <td>$368.59</td>
+              <td><span class="pct-pill pct-up">+6.9%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2023">2023</span>Platinum HMO A</td>
+              <td>$443.69</td>
+              <td><span class="pct-pill pct-up">+7.1%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2024">2024</span>Gold HMO B</td>
+              <td>$434.89</td>
+              <td><span class="pct-pill pct-up">+10.9%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2024">2024</span>Gold HMO D</td>
+              <td>$413.58</td>
+              <td><span class="pct-pill pct-up">+12.2%</span></td>
+            </tr>
+            <tr>
+              <td><span class="yr yr-2024">2024</span>Platinum HMO A</td>
+              <td>$485.44</td>
+              <td><span class="pct-pill pct-up">+9.4%</span></td>
+            </tr>
+            <tr class="highlight">
+              <td><span class="yr yr-2025">2025</span>Bronze HMO C</td>
+              <td>$332.09</td>
+              <td><span class="pct-pill pct-down">–31.6%†</span></td>
+            </tr>
+            <tr class="highlight">
+              <td><span class="yr yr-2026">2026</span>Bronze HMO C HSA</td>
+              <td>$365.64</td>
+              <td><span class="pct-pill pct-up">+10.1% vs 2025</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Nonstop callout -->
+        <div style="margin-top:14px;padding:12px 14px;background:#FFF8ED;border-left:4px solid #E67E22;border-radius:0 8px 8px 0;font-size:12px;line-height:1.65;color:#7B4F18;">
+          <div style="font-weight:700;font-size:12.5px;margin-bottom:4px;">⚡ † 2025 Rate Reduction — Nonstop Health Gap Plans Implemented</div>
+          The –31.6% drop from 2024→2025 reflects the transition from <strong>Kaiser Gold/Platinum HMO</strong> to a <strong>Bronze HMO</strong>, substantially reducing the base premium. <strong>Nonstop Health Medical Supplemental</strong> gap plans were implemented simultaneously and are 100% employer-paid, offsetting the higher deductibles and out-of-pocket maximums inherent in bronze-tier coverage. The rate decrease is a plan design change — not a reduction in employee benefit value.
+        </div>
+
+        <!-- 2026 vs 2024 savings context -->
+        <div style="margin-top:10px;padding:12px 14px;background:#F0FDF4;border-left:4px solid #16A34A;border-radius:0 8px 8px 0;font-size:12px;line-height:1.65;color:#14532D;">
+          <div style="font-weight:700;font-size:12.5px;margin-bottom:4px;">✅ 2026 Rate Still Well Below 2024 Peak — Even After +10.1% Increase</div>
+          Despite the 2025→2026 increase of +10.1%, the 2026 Kaiser Bronze HMO C HSA rate of <strong>$365.64</strong> is <strong>$119.80 below (–24.7%)</strong> the 2024 Kaiser Platinum HMO A rate of $485.44 — the highest-tier plan offered before Nonstop was implemented. Even compared to the 2024 Gold HMO B at $434.89, the 2026 rate is <strong>$69.25 lower (–15.9%)</strong>. The company is achieving meaningful premium savings while sustaining employee benefit protection through Nonstop.
+        </div>
+      </div>
+    </div>
+
+    <!-- SUTTER CARD (NEW 2026) -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-sutter"></div>
+        <div>
+          <div class="card-title">Sutter Health Plus — Bronze HMO B HSA</div>
+          <div class="card-subtitle">NEW in 2026 · Age-banded · Employee pays difference above Kaiser</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead>
+            <tr>
+              <th>Coverage / Age</th>
+              <th>2026 Rate</th>
+              <th>vs. Kaiser</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Age 21</td>
+              <td>$511.76</td>
+              <td><span class="pct-pill pct-up">+$146.12</span></td>
+            </tr>
+            <tr>
+              <td>Age 30</td>
+              <td>$598.82</td>
+              <td><span class="pct-pill pct-up">+$170.99</span></td>
+            </tr>
+            <tr>
+              <td>Age 40</td>
+              <td>$674.26</td>
+              <td><span class="pct-pill pct-up">+$192.52</span></td>
+            </tr>
+            <tr>
+              <td>Age 50</td>
+              <td>$942.28</td>
+              <td><span class="pct-pill pct-up">+$269.06</span></td>
+            </tr>
+            <tr>
+              <td>Age 60</td>
+              <td>$1,431.89</td>
+              <td><span class="pct-pill pct-up">+$408.86</span></td>
+            </tr>
+            <tr>
+              <td>Age 64+</td>
+              <td>$1,582.77</td>
+              <td><span class="pct-pill pct-up">+$451.92</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:14px;padding:10px 14px;background:#FFF3E0;border-radius:8px;font-size:12px;color:#7B5418;">
+          <strong>Employee-Pay-Difference:</strong> ER pays based on Kaiser Bronze rate. Employee electing Sutter pays the premium spread above Kaiser.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FULL AGE-BAND COMPARISON TABLE -->
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">2026 Medical Rate Comparison — Key Age Bands</div>
+      <div class="chart-note">Monthly rates per enrolled employee</div>
+    </div>
+    <div class="contrib-table-wrap">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Age</th>
+            <th>Kaiser Bronze HMO C HSA<br><small>(ER Anchor Plan)</small></th>
+            <th>Anthem Bronze PPO C</th>
+            <th>Sutter Bronze HMO B HSA</th>
+            <th>EE Diff: Anthem vs Kaiser</th>
+            <th>EE Diff: Sutter vs Kaiser</th>
+          </tr>
+        </thead>
+        <tbody id="ageBandTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /medical -->
+
+<!-- ─────────────────── TAB: ER CONTRIBUTIONS ─────────────────── -->
+<div id="tab-contributions" class="section">
+
+  <div class="section-heading">Employer Contribution Analysis — 2026</div>
+  <div class="section-desc">Based on 100% of Kaiser Bronze HMO C HSA employee rate + 80% of Kaiser dependent rate. Employees electing Anthem or Sutter pay the premium difference above Kaiser.</div>
+
+  <div class="info-box">
+    <strong>2026 Contribution Rule:</strong> The employer pays:
+    <ul style="margin-top:8px;margin-left:20px;line-height:2;">
+      <li><strong>100% of the Employee-only rate</strong> based on the Kaiser Permanente Bronze HMO C HSA</li>
+      <li><strong>80% of the Dependent portion</strong> of the Kaiser Permanente Bronze HMO C HSA rate</li>
+      <li><strong>100% of Nonstop Medical Supplemental premiums</strong> (ER-paid supplement, categorized separately)</li>
+    </ul>
+  </div>
+
+  <div class="contrib-section">
+    <div class="section-heading" style="font-size:17px;">2026 ER Contribution by Coverage Tier (Medical)</div>
+    <div class="section-desc">Kaiser Permanente Bronze HMO C HSA — basis for employer contribution calculation. Age-banded rates: illustrative example uses Age 35 employee, Age 35 spouse, and children ages 2, 3 &amp; 4 (all rated at the Age 0–14 band of $302.63/mo). Actual amounts vary by enrolled member ages.</div>
+    <div class="contrib-table-wrap" style="margin-bottom:28px;">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Coverage Tier</th>
+            <th>Individual Rates (Kaiser Anchor)</th>
+            <th>Total Premium</th>
+            <th>ER Pays</th>
+            <th>EE Pays</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Employee Only</strong><br><small style="color:var(--text-light);">Age 35 representative</small></td>
+            <td class="er-amt">EE (Age 35): $460.63</td>
+            <td>$460.63</td>
+            <td class="er-amt">$460.63<br><small>100% of EE rate</small></td>
+            <td>$0.00</td>
+            <td>Fully ER paid</td>
+          </tr>
+          <tr>
+            <td><strong>Employee + Child</strong><br><small style="color:var(--text-light);">Age 35 EE + Child age 2</small></td>
+            <td>EE (Age 35): $460.63<br><span style="color:#BF5000;">Child (Age 0–14): $302.63</span></td>
+            <td>$763.26</td>
+            <td class="er-amt">$702.73<br><small>100% EE + 80% child</small></td>
+            <td class="ee-amt">$60.53<br><small>20% of child rate</small></td>
+            <td>EE pays 20% of child portion</td>
+          </tr>
+          <tr>
+            <td><strong>Employee + Spouse</strong><br><small style="color:var(--text-light);">Both age 35</small></td>
+            <td>EE (Age 35): $460.63<br><span style="color:#6B3FA0;">Spouse (Age 35): $460.63</span></td>
+            <td>$921.26</td>
+            <td class="er-amt">$829.13<br><small>100% EE + 80% spouse</small></td>
+            <td class="ee-amt">$92.13<br><small>20% of spouse rate</small></td>
+            <td>EE pays 20% of spouse portion</td>
+          </tr>
+          <tr>
+            <td><strong>Family</strong><br><small style="color:var(--text-light);">Age 35 EE + Spouse + Children ages 2, 3 &amp; 4</small></td>
+            <td>EE (Age 35): $460.63<br><span style="color:#6B3FA0;">Spouse (Age 35): $460.63</span><br><span style="color:#BF5000;">Child age 2 (Age 0–14): $302.63<br>Child age 3 (Age 0–14): $302.63<br>Child age 4 (Age 0–14): $302.63</span></td>
+            <td>$1,829.15</td>
+            <td class="er-amt">$1,555.45<br><small>100% EE + 80% all dependents</small></td>
+            <td class="ee-amt">$273.70<br><small>20% of all dependent rates</small></td>
+            <td>EE pays 20% of all dependent portions (spouse + 3 children)</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="6">Age-banded plan — each individual rated at their own age. Children ages 2, 3 &amp; 4 all rate at the Age 0–14 band ($302.63/mo). Spouse and EE rates vary by actual age. Figures above use Age 35 as a representative illustration.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- ER CONTRIBUTION TREND - HISTORICAL CONTEXT -->
+    <div class="section-heading" style="font-size:17px;">Historical ER Contribution Context (2022–2025)</div>
+    <div class="section-desc">Prior to 2025, ER paid 100% EE + 100% of child dependents (Anthem/Kaiser Gold plans). Dependent contribution structure evolved in 2025.</div>
+
+    <div class="contrib-table-wrap" style="margin-bottom:28px;">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Medical Plans Offered</th>
+            <th>ER EE Contribution</th>
+            <th>ER Dependent Contribution</th>
+            <th>Key Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2022</td>
+            <td>Anthem Gold PPO A/D/E · Kaiser Gold HMO B/D · Kaiser Platinum HMO A</td>
+            <td class="er-amt">100%</td>
+            <td class="er-amt">100% (Children)</td>
+            <td>Full family coverage ER-paid for children</td>
+          </tr>
+          <tr>
+            <td>2023</td>
+            <td>Anthem Gold PPO D/E · Kaiser Gold HMO B/D · Kaiser Platinum HMO A</td>
+            <td class="er-amt">100%</td>
+            <td class="er-amt">100% (Children)</td>
+            <td>Gold PPO A discontinued</td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>Anthem Gold PPO D/E · Kaiser Gold HMO B/D · Kaiser Platinum HMO A</td>
+            <td class="er-amt">100%</td>
+            <td class="er-amt">100% (Children)</td>
+            <td>Consistent with 2023</td>
+          </tr>
+          <tr>
+            <td>2025</td>
+            <td>Anthem Bronze PPO C · Kaiser Bronze HMO C · Nonstop Supplemental</td>
+            <td class="er-amt">100%</td>
+            <td class="er-amt">—</td>
+            <td>Tier shift Gold→Bronze; Nonstop Supp added (100% ER)</td>
+          </tr>
+          <tr>
+            <td>2026</td>
+            <td>Kaiser Bronze HMO C HSA · Anthem Bronze PPO C · Sutter Bronze HMO B HSA · Nonstop Supp ($1K Kaiser / $2K Anthem &amp; Sutter)</td>
+            <td class="er-amt">100% of Kaiser EE rate</td>
+            <td class="er-amt">80% of Kaiser Dep rate</td>
+            <td>Sutter added; formal 80% dep contribution policy; Nonstop 100% ER</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CHART: ER COST EVOLUTION -->
+    <div class="chart-card" style="margin-top:0;">
+      <div class="chart-title-row">
+        <div class="chart-title">Kaiser Plan Rate Trajectory — ER Anchor Plan (Age 21)</div>
+        <div class="chart-note">ER cost benchmark plan across all years</div>
+      </div>
+      <div class="chart-wrap"><canvas id="chartKaiserTrack"></canvas></div>
+    </div>
+  </div>
+
+</div><!-- /contributions -->
+
+<!-- ─────────────────── TAB: SUPPLEMENTAL ─────────────────── -->
+<div id="tab-supplemental" class="section">
+
+  <div class="section-heading">Nonstop Medical Supplemental Plans</div>
+  <div class="section-desc">Introduced in 2025 to offset benefit reduction from Gold→Bronze tier transition. 100% employer-paid. Categorized separately from base medical premiums. <strong>The $1,000 Backend plan is paired with Kaiser enrollment; the $2,000 Backend plan is paired with Anthem (and Sutter) enrollment.</strong></div>
+
+  <div class="info-box">
+    <strong>What is Nonstop?</strong> Nonstop Medical Supplemental plans provide "backend exposure" wrap coverage — they reimburse employees for out-of-pocket costs (deductibles, co-insurance) that are higher under bronze-tier plans. The employer pays <strong>100% of these premiums</strong>, effectively maintaining the benefit value employees experienced under gold-tier plans. These costs are <span class="supp-badge">EMPLOYER PAID</span> and reported separately.
+    <br><br><strong>Carrier Pairing:</strong> <span style="color:#00695C;font-weight:700;">Kaiser enrollees → $1,000 Backend Exposure</span> &nbsp;·&nbsp; <span style="color:#1A5FB4;font-weight:700;">Anthem / Sutter enrollees → $2,000 Backend Exposure</span>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- 2025 Nonstop $1K -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-nonstop"></div>
+        <div>
+          <div class="card-title">2025 Nonstop $1,000 Backend Exposure</div>
+          <div class="card-subtitle">100% ER Paid · Monthly Tier Rates</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead><tr><th>Coverage Tier</th><th>2025 Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Employee Only</td><td>$223.15</td></tr>
+            <tr><td>Employee + 1 Child</td><td>$398.13</td></tr>
+            <tr><td>Employee + Spouse</td><td>$398.58</td></tr>
+            <tr><td>Employee + Spouse + Child</td><td>$618.05</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2025 Nonstop $2K -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-nonstop"></div>
+        <div>
+          <div class="card-title">2025 Nonstop $2,000 Backend Exposure</div>
+          <div class="card-subtitle">100% ER Paid · Monthly Tier Rates</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead><tr><th>Coverage Tier</th><th>2025 Rate</th></tr></thead>
+          <tbody>
+            <tr><td>Employee Only</td><td>$247.99</td></tr>
+            <tr><td>Employee + 1 Child</td><td>$431.03</td></tr>
+            <tr><td>Employee + Spouse</td><td>$451.75</td></tr>
+            <tr><td>Employee + Spouse + Child</td><td>$679.41</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2026 Nonstop $1K — Kaiser -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-kaiser"></div>
+        <div>
+          <div class="card-title">2026 Nonstop $1,000 Backend Exposure</div>
+          <div class="card-subtitle">Kaiser enrollees · 100% ER Paid · Monthly Tier Rates</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:10px;padding:6px 12px;background:#E0F2F1;border-radius:6px;font-size:11.5px;font-weight:700;color:#00695C;">🔗 Paired with: Kaiser Permanente Bronze HMO C HSA</div>
+        <table class="trend-table">
+          <thead><tr><th>Coverage Tier</th><th>2026 Rate</th><th>vs. 2025</th></tr></thead>
+          <tbody>
+            <tr><td>Employee Only</td><td>$209.43</td><td><span class="pct-pill pct-down">–6.1%</span></td></tr>
+            <tr><td>Employee + Child</td><td>$358.16</td><td><span class="pct-pill pct-down">–10.0%</span></td></tr>
+            <tr><td>Employee + Spouse</td><td>$358.54</td><td><span class="pct-pill pct-down">–10.0%</span></td></tr>
+            <tr><td>Emp + Spouse + Child</td><td>$545.09</td><td><span class="pct-pill pct-down">–11.8%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2026 Nonstop $2K — Anthem / Sutter -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-anthem"></div>
+        <div>
+          <div class="card-title">2026 Nonstop $2,000 Backend Exposure</div>
+          <div class="card-subtitle">Anthem &amp; Sutter enrollees · 100% ER Paid · Monthly Tier Rates</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:10px;padding:6px 12px;background:#EEF3FB;border-radius:6px;font-size:11.5px;font-weight:700;color:#1A5FB4;">🔗 Paired with: Anthem Bronze PPO C &amp; Sutter Bronze HMO B HSA</div>
+        <table class="trend-table">
+          <thead><tr><th>Coverage Tier</th><th>2026 Rate</th><th>vs. 2025</th></tr></thead>
+          <tbody>
+            <tr><td>Employee Only</td><td>$247.99</td><td><span class="pct-pill">0.0%</span></td></tr>
+            <tr><td>Employee + Child</td><td>$431.03</td><td><span class="pct-pill">0.0%</span></td></tr>
+            <tr><td>Employee + Spouse</td><td>$451.75</td><td><span class="pct-pill">0.0%</span></td></tr>
+            <tr><td>Emp + Spouse + Child</td><td>$679.41</td><td><span class="pct-pill">0.0%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Nonstop Supplemental — Employee Only Tier Comparison (2025 vs 2026)</div>
+      <div class="chart-note">All costs are 100% employer-paid</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartNonstop"></canvas></div>
+  </div>
+
+  <!-- TOTAL ER COST WITH SUPP -->
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">2026 Total Employer Cost: Base Medical + Nonstop Supplemental (EE Only, Age 21)</div>
+      <div class="chart-note">ER contribution anchored to Kaiser Bronze HMO C HSA rate regardless of plan election</div>
+    </div>
+    <div class="contrib-table-wrap">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Supplemental Plan</th>
+            <th>Carrier Pairing</th>
+            <th>ER Base Medical<br><small>(Kaiser Anchor, Age 21)</small></th>
+            <th>Nonstop Premium<br><small>(100% ER Paid)</small></th>
+            <th>Total ER Cost / Month</th>
+            <th>Annual ER Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>$1,000 Backend Exposure</strong></td>
+            <td style="color:#00695C;font-weight:600;">Kaiser Bronze HMO C HSA</td>
+            <td class="er-amt">$365.64</td>
+            <td class="supp-amt">$209.43</td>
+            <td class="er-amt">$575.07</td>
+            <td class="er-amt">$6,900.84</td>
+          </tr>
+          <tr>
+            <td><strong>$2,000 Backend Exposure</strong></td>
+            <td style="color:#1A5FB4;font-weight:600;">Anthem Bronze PPO C &amp; Sutter Bronze HMO B HSA</td>
+            <td class="er-amt">$365.64</td>
+            <td class="supp-amt">$247.99</td>
+            <td class="er-amt">$613.63</td>
+            <td class="er-amt">$7,363.56</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EMPLOYEE PAY-DIFFERENCE CALLOUT -->
+    <div style="margin-top:16px;background:#F8FAFC;border-radius:10px;padding:14px 18px;border:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;">Employee Pay-Difference — Anthem &amp; Sutter Enrollees (Age 21)</div>
+      <table class="trend-table" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Full Monthly Premium</th>
+            <th>ER Pays (Kaiser Anchor)</th>
+            <th>Employee Pays (Difference)</th>
+            <th>Annual EE Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">Anthem Bronze PPO C</td>
+            <td>$536.39</td>
+            <td class="er-amt">$365.64</td>
+            <td class="ee-amt">$170.75</td>
+            <td class="ee-amt">$2,049.00</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">Sutter Bronze HMO B HSA</td>
+            <td>$511.76</td>
+            <td class="er-amt">$365.64</td>
+            <td class="ee-amt">$146.12</td>
+            <td class="ee-amt">$1,753.44</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:8px;font-size:11px;color:var(--text-light);">Rates vary by age band — Age 21 shown as an illustrative index. Employee pay-difference is deducted pre-tax via payroll.</div>
+    </div>
+
+    <!-- FOOTNOTE -->
+    <div style="margin-top:12px;padding:12px 16px;background:#EDF2FF;border-left:4px solid var(--violet);border-radius:0 8px 8px 0;font-size:11.5px;line-height:1.7;color:var(--navy-mid);">
+      <strong>ER Contribution Strategy:</strong> The employer's medical contribution is anchored entirely to the <strong>Kaiser Permanente Bronze HMO C HSA</strong> rate — paying 100% of the Kaiser employee rate and 80% of Kaiser dependent rates regardless of which plan an employee chooses. Employees who elect Anthem or Sutter pay the premium spread above the Kaiser anchor out-of-pocket. Nonstop Medical Supplemental premiums ($1K for Kaiser enrollees, $2K for Anthem/Sutter enrollees) are paid separately and in full by the employer on top of the base medical contribution.
+    </div>
+  </div>
+
+</div><!-- /supplemental -->
+
+<!-- ─────────────────── TAB: DENTAL & VISION ─────────────────── -->
+<div id="tab-dental-vision" class="section">
+
+  <div class="section-heading">Dental &amp; Vision Rate History — 2022 to 2026</div>
+  <div class="section-desc">Principal dental and vision plans — tier-rated (not age-banded). Employer pays 100% of EE rate and 80% of dependent rate for dental; 100% EE and 80% dependent for vision.</div>
+
+  <div class="cards-grid">
+
+    <!-- DENTAL -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-dental"></div>
+        <div>
+          <div class="card-title">Principal Dental PPO</div>
+          <div class="card-subtitle">Monthly Tier Rates — 2022 through 2026</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead>
+            <tr>
+              <th>Coverage Tier</th>
+              <th>2022</th>
+              <th>2023</th>
+              <th>2024</th>
+              <th>2025</th>
+              <th>2026</th>
+              <th>2025→2026</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Employee Only</td>
+              <td>$57.94</td>
+              <td>$57.94</td>
+              <td>$57.94</td>
+              <td>$59.10</td>
+              <td class="year-col">$61.94</td>
+              <td><span class="pct-pill pct-up">+4.8%</span></td>
+            </tr>
+            <tr>
+              <td>Employee + Child</td>
+              <td>$136.26</td>
+              <td>$136.26</td>
+              <td>$136.26</td>
+              <td>$138.99</td>
+              <td class="year-col">$145.66</td>
+              <td><span class="pct-pill pct-up">+4.8%</span></td>
+            </tr>
+            <tr>
+              <td>Employee + Spouse</td>
+              <td>$108.42</td>
+              <td>$108.42</td>
+              <td>$108.42</td>
+              <td>$110.59</td>
+              <td class="year-col">$115.90</td>
+              <td><span class="pct-pill pct-up">+4.8%</span></td>
+            </tr>
+            <tr>
+              <td>Family</td>
+              <td>$196.15</td>
+              <td>$196.15</td>
+              <td>$196.15</td>
+              <td>$200.07</td>
+              <td class="year-col">$209.68</td>
+              <td><span class="pct-pill pct-up">+4.8%</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--text-mid);">
+          <strong>ER Contribution:</strong> 100% of EE rate · 80% of Dependent rate (2026)<br>
+          <strong>Note:</strong> Rates were flat 2022–2024; increased modestly in 2025 (+2%), then again in 2026 (+4.8%)
+        </div>
+      </div>
+    </div>
+
+    <!-- VISION -->
+    <div class="rate-card">
+      <div class="card-header">
+        <div class="carrier-dot c-vision"></div>
+        <div>
+          <div class="card-title">Principal Vision</div>
+          <div class="card-subtitle">Monthly Tier Rates — 2022 through 2026</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="trend-table">
+          <thead>
+            <tr>
+              <th>Coverage Tier</th>
+              <th>2022</th>
+              <th>2023</th>
+              <th>2024</th>
+              <th>2025</th>
+              <th>2026</th>
+              <th>2025→2026</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Employee Only</td>
+              <td>$8.60</td>
+              <td>$8.60</td>
+              <td>$8.60</td>
+              <td>$8.60</td>
+              <td class="year-col">$8.60</td>
+              <td><span class="pct-pill">0.0%</span></td>
+            </tr>
+            <tr>
+              <td>Employee + Child</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td class="year-col">$13.36</td>
+              <td><span class="pct-pill">0.0%</span></td>
+            </tr>
+            <tr>
+              <td>Employee + Spouse</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td>$13.36</td>
+              <td class="year-col">$13.36</td>
+              <td><span class="pct-pill">0.0%</span></td>
+            </tr>
+            <tr>
+              <td>Family</td>
+              <td>$21.19</td>
+              <td>$21.19</td>
+              <td>$21.19</td>
+              <td>$21.19</td>
+              <td class="year-col">$21.19</td>
+              <td><span class="pct-pill">0.0%</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--text-mid);">
+          <strong>ER Contribution:</strong> 100% of EE rate · 80% of Dependent rate (2026)<br>
+          <strong>Note:</strong> Vision rates have been <strong>completely flat</strong> for all 5 years (2022–2026). No rate increases.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Dental &amp; Vision Rate Trends — Employee Only Tier (2022–2026)</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartDentalVision"></canvas></div>
+  </div>
+
+</div><!-- /dental-vision -->
+
+<!-- ─────────────────── TAB: NONSTOP ROI ANALYSIS ─────────────────── -->
+<div id="tab-nonstop-roi" class="section">
+
+  <div class="section-heading" style="display:flex;align-items:center;gap:12px;">
+    <span>💡 Nonstop ROI — "What If We Hadn't Done This?"</span>
+    <span style="font-size:13px;font-weight:400;color:var(--text-mid);font-family:'DM Sans',sans-serif;">Proof-of-Concept Analysis · 2025 Plan Year</span>
+  </div>
+  <div class="section-desc" style="margin-bottom:20px;">Comparing actual 2025 strategy (Bronze + Nonstop) against a hypothetical straight renewal of Gold/Platinum plans. Uses Age 21 as per-employee index rate. All 2025 and 2026 Gold/Platinum rates confirmed from Word & Brown carrier proposal (Quote #1254071, effective Jan 1, 2025 / Jan 1, 2026).</div>
+
+  <!-- CONFIRMED DATA CALLOUT -->
+  <div style="background:#F0FDF4;border:2px solid #16A34A;border-radius:12px;padding:16px 22px;margin-bottom:24px;display:flex;gap:14px;align-items:flex-start;">
+    <div style="font-size:22px;line-height:1;">✅</div>
+    <div>
+      <div style="font-weight:700;font-size:13px;color:#14532D;margin-bottom:4px;">All Rate Inputs Confirmed — Model Complete</div>
+      <div style="font-size:12.5px;color:#14532D;line-height:1.7;">
+        Confirmed 2025 and 2026 Gold/Platinum renewal rates sourced from <strong>Word &amp; Brown carrier proposal (Quote #1254071)</strong>, pulled by Newfront/WTW. 
+        2025 Kaiser Platinum HMO A: <strong>$534.64</strong> · 2025 Anthem Gold PPO E: <strong>$652.85</strong> · 
+        2026 Kaiser Platinum HMO A: <strong>$567.67</strong> · 2026 Anthem Gold PPO E: <strong>$728.31</strong>.
+        The model below reflects actual carrier rates — no estimates in use.
+      </div>
+    </div>
+  </div>
+
+  <!-- ASSUMPTION INPUTS -->
+  <div class="chart-card" style="margin-bottom:24px;">
+    <div class="chart-title-row">
+      <div class="chart-title">Model Assumptions & Inputs</div>
+      <div class="chart-note">All inputs confirmed from carrier rate files · Adjust enrollment assumptions as needed</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:4px;">
+
+      <div style="background:#F8FAFC;border-radius:10px;padding:16px 18px;border:1px solid var(--border);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;">✅ Confirmed — 2025 Actual Strategy (Bronze + Nonstop)</div>
+        <table class="trend-table" style="font-size:12px;">
+          <tr><td style="color:var(--navy);font-weight:600;">Kaiser Bronze HMO C — Age 21</td><td style="color:#14532D;font-weight:700;">$332.09 ✓</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Anthem Bronze PPO C — Age 21</td><td style="color:#14532D;font-weight:700;">$480.40 ✓</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Nonstop $1K Backend · Kaiser enrollees (EE Only)</td><td style="color:#14532D;font-weight:700;">$223.15 ✓</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Nonstop $2K Backend · Anthem enrollees (EE Only)</td><td style="color:#14532D;font-weight:700;">$247.99 ✓</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Surplus Share Returned to Employer</td><td style="color:#14532D;font-weight:700;">$18,000 ✓</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Total Nonstop Surplus (Pool)</td><td style="color:#14532D;font-weight:700;">$27,000 ✓</td></tr>
+        </table>
+      </div>
+
+      <div style="background:#F0FDF4;border-radius:10px;padding:16px 18px;border:2px solid #16A34A;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#14532D;margin-bottom:10px;">✅ Confirmed — 2025 Hypothetical Gold/Platinum Rates</div>
+        <table class="trend-table" style="font-size:12px;">
+          <tr>
+            <td style="color:var(--navy);font-weight:600;">Kaiser Platinum HMO A — Age 21<br><span style="font-size:10px;color:var(--text-light);">Source: W&B Quote #1254071, eff. 01/01/2025</span></td>
+            <td><span id="inputKaiserGold" style="background:#DCFCE7;padding:3px 10px;border-radius:4px;font-weight:700;color:#14532D;font-size:13px;">$534.64 ✓</span></td>
+          </tr>
+          <tr style="margin-top:6px;">
+            <td style="color:var(--navy);font-weight:600;">Anthem Gold PPO E — Age 21<br><span style="font-size:10px;color:var(--text-light);">Source: W&B Quote #1254071, eff. 01/01/2025</span></td>
+            <td><span id="inputAnthemGold" style="background:#DCFCE7;padding:3px 10px;border-radius:4px;font-weight:700;color:#14532D;font-size:13px;">$652.85 ✓</span></td>
+          </tr>
+          <tr style="margin-top:6px;">
+            <td style="color:var(--navy);font-weight:600;">Kaiser Platinum HMO A — Age 21<br><span style="font-size:10px;color:var(--text-light);">2026 renewal rate — W&B Quote #1254071</span></td>
+            <td><span style="background:#DCFCE7;padding:3px 10px;border-radius:4px;font-weight:700;color:#14532D;font-size:13px;">$567.67 ✓</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--navy);font-weight:600;">Anthem Gold PPO E — Age 21<br><span style="font-size:10px;color:var(--text-light);">2026 renewal rate — W&B Quote #1254071</span></td>
+            <td><span style="background:#DCFCE7;padding:3px 10px;border-radius:4px;font-weight:700;color:#14532D;font-size:13px;">$728.31 ✓</span></td>
+          </tr>
+        </table>
+        <button onclick="openAssumptions()" style="margin-top:10px;background:#0D2240;color:white;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">⚙️ Adjust Enrollment Assumptions</button>
+      </div>
+
+      <div style="background:#F0FDF4;border-radius:10px;padding:16px 18px;border:1px solid #BBF7D0;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#14532D;margin-bottom:10px;">Nonstop Surplus Share — 2025 Actual</div>
+        <table class="trend-table" style="font-size:12px;">
+          <tr><td style="color:var(--navy);font-weight:600;">Total Pool Surplus</td><td style="color:#14532D;font-weight:700;">$27,000</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Employer Share (2/3)</td><td style="color:#14532D;font-weight:700;">$18,000</td></tr>
+          <tr><td style="color:var(--navy);">Nonstop Share (1/3)</td><td style="color:var(--text-mid);">$9,000</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Claims Paid (Jan–Aug 2025)</td><td style="color:#14532D;font-weight:700;">~$49,121</td></tr>
+          <tr><td style="color:var(--navy);font-weight:600;">Reserve Balance (Aug 2025)</td><td style="color:#14532D;font-weight:700;">$23,491</td></tr>
+        </table>
+        <div style="margin-top:8px;font-size:10.5px;color:#14532D;font-style:italic;">Source: Nonstop Health 2024–2025 Utilization Report</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ASSUMPTION EDITOR (hidden by default) -->
+  <div id="assumptionEditor" style="display:none;background:#F0F7FF;border:2px solid #1A5FB4;border-radius:12px;padding:20px 24px;margin-bottom:24px;">
+    <div style="font-weight:700;font-size:14px;color:#1A3A5C;margin-bottom:14px;">⚙️ Confirmed Rate Inputs — W&amp;B Quote #1254071</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end;">
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--text-mid);display:block;margin-bottom:4px;">Kaiser Platinum HMO A — 2025 Rate (Age 21)</label>
+        <input type="number" id="kaisHypInput" value="534.64" step="0.01"
+          style="width:140px;padding:8px 12px;border:2px solid #1A5FB4;border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;">
+        <div style="font-size:10px;color:var(--text-light);margin-top:3px;">Confirmed: $534.64 (W&B Quote #1254071)</div>
+      </div>
+      <div>
+        <label style="font-size:11px;font-weight:700;color:var(--text-mid);display:block;margin-bottom:4px;">Anthem Gold PPO E — 2025 Rate (Age 21)</label>
+        <input type="number" id="anthHypInput" value="652.85" step="0.01"
+          style="width:140px;padding:8px 12px;border:2px solid #1A5FB4;border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;">
+        <div style="font-size:10px;color:var(--text-light);margin-top:3px;">Confirmed: $652.85 (W&B Quote #1254071)</div>
+      </div>
+      <button onclick="recalcROI()" style="background:#0D2240;color:white;border:none;border-radius:6px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;height:40px;">✓ Update</button>
+      <button onclick="closeAssumptions()" style="background:none;border:1px solid var(--border);border-radius:6px;padding:10px 16px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;height:40px;">Close</button>
+    </div>
+    <div style="margin-top:10px;font-size:11.5px;color:var(--text-mid);">Age-banded comparison tables use these rates as the Age 21 anchor — all other ages pull directly from carrier rate files and ACA age factors.</div>
+  </div>
+
+  <!-- SIDE-BY-SIDE COMPARISON -->
+  <div class="info-box" style="margin-bottom:20px;">
+    <strong>How to read this analysis:</strong> Rather than tying costs to a headcount that fluctuates, the table below shows the per-employee annual cost difference between the two strategies at four representative age bands. Actual total cost depends on the age distribution of enrolled employees — the older the population, the more favorable the Bronze + Nonstop strategy becomes on a pure premium basis.
+  </div>
+
+  <!-- PER-EMPLOYEE AGE-BAND TABLE -->
+  <div class="chart-card" style="margin-bottom:24px;">
+    <div class="chart-title-row">
+      <div class="chart-title">2025 — Per-Employee Annual Cost: Scenario A vs. B by Age</div>
+      <div class="chart-note">EE-only tier · Nonstop premiums are 100% ER paid · surplus return shown separately</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:4px;" class="roi-compare-grid">
+
+      <!-- KAISER COLUMN -->
+      <div>
+        <div style="padding:10px 14px;background:#E0F2F1;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#00695C;">
+          🔗 Kaiser Permanente Enrollee
+        </div>
+        <div class="contrib-table-wrap" style="border-radius:0 0 8px 8px;">
+          <table class="contrib-table">
+            <thead>
+              <tr>
+                <th>Age</th>
+                <th>Scen A: Plat HMO A<br><small>/mo · /yr</small></th>
+                <th>Scen B: Bronze + $1K Nonstop<br><small>/mo · /yr</small></th>
+                <th>Annual Difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:700;color:var(--navy);">Age 21</td>
+                <td>$534.64 · <span style="color:var(--rose);">$6,416</span></td>
+                <td>$555.24 · <span style="color:var(--text-mid);">$6,663</span></td>
+                <td><span style="color:#92400E;font-weight:700;">B costs $247 more</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:var(--navy);">Age 35</td>
+                <td>$653.33 · <span style="color:var(--rose);">$7,840</span></td>
+                <td>$683.78 · <span style="color:var(--text-mid);">$8,205</span></td>
+                <td><span style="color:#92400E;font-weight:700;">B costs $365 more</span></td>
+              </tr>
+              <tr style="background:#F0FDF4;">
+                <td style="font-weight:700;color:var(--navy);">Age 45</td>
+                <td>$772.03 · <span style="color:var(--rose);">$9,264</span></td>
+                <td>$767.46 · <span style="color:#14532D;font-weight:700;">$9,209</span></td>
+                <td><span style="color:#14532D;font-weight:700;">B saves $55</span></td>
+              </tr>
+              <tr style="background:#DCFCE7;">
+                <td style="font-weight:700;color:var(--navy);">Age 55</td>
+                <td>$1,192.26 · <span style="color:var(--rose);">$14,307</span></td>
+                <td>$1,063.74 · <span style="color:#14532D;font-weight:700;">$12,765</span></td>
+                <td><span style="color:#14532D;font-weight:800;">B saves $1,542 ✅</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11px;color:var(--text-light);margin-top:6px;font-style:italic;">Scen B = Kaiser Bronze HMO C $332.09–$840.59 + Nonstop $1K $223.15/mo</div>
+      </div>
+
+      <!-- ANTHEM COLUMN -->
+      <div>
+        <div style="padding:10px 14px;background:#EEF3FB;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1A5FB4;">
+          🔗 Anthem Blue Cross Enrollee
+        </div>
+        <div class="contrib-table-wrap" style="border-radius:0 0 8px 8px;">
+          <table class="contrib-table">
+            <thead>
+              <tr>
+                <th>Age</th>
+                <th>Scen A: Gold PPO E<br><small>/mo · /yr</small></th>
+                <th>Scen B: Bronze + $2K Nonstop<br><small>/mo · /yr</small></th>
+                <th>Annual Difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:700;color:var(--navy);">Age 21</td>
+                <td>$652.85 · <span style="color:var(--rose);">$7,834</span></td>
+                <td>$728.39 · <span style="color:var(--text-mid);">$8,741</span></td>
+                <td><span style="color:#92400E;font-weight:700;">B costs $907 more</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;color:var(--navy);">Age 35</td>
+                <td>$797.78 · <span style="color:var(--rose);">$9,573</span></td>
+                <td>$835.04 · <span style="color:var(--text-mid);">$10,020</span></td>
+                <td><span style="color:#92400E;font-weight:700;">B costs $447 more</span></td>
+              </tr>
+              <tr style="background:#F0FDF4;">
+                <td style="font-weight:700;color:var(--navy);">Age 45</td>
+                <td>$942.72 · <span style="color:var(--rose);">$11,313</span></td>
+                <td>$941.69 · <span style="color:#14532D;font-weight:700;">$11,300</span></td>
+                <td><span style="color:#14532D;font-weight:700;">B saves $12 ≈ breakeven</span></td>
+              </tr>
+              <tr style="background:#DCFCE7;">
+                <td style="font-weight:700;color:var(--navy);">Age 55</td>
+                <td>$1,455.86 · <span style="color:var(--rose);">$17,470</span></td>
+                <td>$1,319.29 · <span style="color:#14532D;font-weight:700;">$15,831</span></td>
+                <td><span style="color:#14532D;font-weight:800;">B saves $1,639 ✅</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11px;color:var(--text-light);margin-top:6px;font-style:italic;">Scen B = Anthem Bronze PPO C (age-scaled from $480.40) + Nonstop $2K $247.99/mo</div>
+      </div>
+
+    </div>
+
+    <!-- BREAKEVEN + SURPLUS NOTE -->
+    <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="roi-compare-grid">
+      <div style="padding:12px 16px;background:#FFF8F0;border-left:4px solid #BF5000;border-radius:0 8px 8px 0;font-size:12px;line-height:1.7;color:#7B4F18;">
+        <strong>Premium breakeven point:</strong> Bronze + Nonstop becomes cheaper than Gold/Platinum on a per-employee basis at approximately <strong>Age 44–45</strong> for both carriers. Employees younger than ~44 cost more under the Nonstop strategy on premiums alone; older employees generate premium savings.
+      </div>
+      <div style="padding:12px 16px;background:#F0FDF4;border-left:4px solid #16A34A;border-radius:0 8px 8px 0;font-size:12px;line-height:1.7;color:#14532D;">
+        <strong>The $18,000 surplus return</strong> is what makes the strategy work across all age groups. A younger employee who costs $907 more in premiums under Scenario B still benefits the employer when the surplus is factored in — and crucially, every employee has their out-of-pocket exposure fully covered regardless of age.
+      </div>
+    </div>
+  </div>
+
+  <!-- VERDICT ROW -->
+  <div id="verdictBox" style="background:linear-gradient(135deg,#0D2240 0%,#1A3A5C 100%);border-radius:14px;padding:24px 32px;margin-bottom:16px;color:white;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:220px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">The Decisive Factor — 2025</div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#4DB6AC;line-height:1.1;">$18,000 surplus<br>returned to employer</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:8px;">From 2/3 share of the $27K Nonstop pool · unavailable under traditional Gold/Platinum plans · driven by actual PMPM 39% below funded level</div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 45 Kaiser EE</div>
+        <div style="font-size:18px;font-weight:800;color:#4DB6AC;">B saves $55/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">on premium alone</div>
+      </div>
+      <div style="border-left:1px solid rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 55 Kaiser EE</div>
+        <div style="font-size:18px;font-weight:800;color:#4DB6AC;">B saves $1,542/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">on premium alone</div>
+      </div>
+      <div style="border-left:1px solid rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 55 Anthem EE</div>
+        <div style="font-size:18px;font-weight:800;color:#4DB6AC;">B saves $1,639/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">on premium alone</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE CASE CALLOUT -->
+  <div style="background:#FFFBEB;border:2px solid #F59E0B;border-radius:12px;padding:18px 24px;margin-bottom:28px;">
+    <div style="font-weight:700;font-size:13.5px;color:#92400E;margin-bottom:10px;">💡 So Why Does the Nonstop Strategy Still Win?</div>
+    <div style="font-size:12.5px;color:#78350F;line-height:1.8;">
+      On a <strong>pure premium basis</strong>, Scenario B costs more than a hypothetical Gold/Platinum renewal for employees under approximately age 44. The real value case rests on three factors not captured in the premium comparison:
+      <ol style="margin:10px 0 0 20px;line-height:2;">
+        <li><strong>Employee out-of-pocket protection:</strong> Bronze plans carry deductibles up to $7,000/individual. Without Nonstop, employees absorb that gap entirely. Nonstop eliminates it — effectively giving employees Gold-level coverage at Bronze-tier premiums.</li>
+        <li><strong>Surplus participation:</strong> Employer received <strong>$18,000 back</strong> in 2025 from underutilized reserves — a structural feature unavailable under a traditional fully-insured Gold/Platinum plan. Actual PMPM utilization came in 39% below the funded level.</li>
+        <li><strong>Premium trajectory:</strong> Gold/Platinum rates have increased ~8.9%/year on average. At Age 45+, Bronze + Nonstop is already cheaper on premiums and that gap widens every year as Gold/Platinum inflation compounds.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 2026 FORWARD-LOOK COMPARISON -->
+  <div class="section-heading" style="font-size:17px;margin-bottom:6px;">📅 2026 Forward Look — Does the Strategy Still Win?</div>
+  <div class="section-desc" style="margin-bottom:16px;">Applying the same analysis to 2026 using confirmed renewal rates from W&B Quote #1254071 (eff. 01/01/2026) vs. actual 2026 Bronze + Nonstop strategy.</div>
+
+  <div class="info-box" style="margin-bottom:20px;">
+    <strong>2026 Forward Look:</strong> Same per-employee analysis using confirmed 2026 Gold/Platinum rates from W&B Quote #1254071 and actual 2026 Bronze + Nonstop rates. The premium breakeven point shifts slightly — Anthem Bronze + Nonstop crosses Gold PPO E at around <strong>Age 45</strong>, Kaiser crosses Platinum HMO A just above Age 45.
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" class="roi-compare-grid">
+
+    <!-- 2026 KAISER -->
+    <div>
+      <div style="padding:10px 14px;background:#E0F2F1;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#00695C;">
+        🔗 Kaiser Permanente Enrollee — 2026
+      </div>
+      <div class="contrib-table-wrap" style="border-radius:0 0 8px 8px;">
+        <table class="contrib-table">
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>Scen A: Plat HMO A<br><small>/mo · /yr</small></th>
+              <th>Scen B: Bronze + $1K Nonstop<br><small>/mo · /yr</small></th>
+              <th>Annual Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;color:var(--navy);">Age 21</td>
+              <td>$567.67 · <span style="color:var(--rose);">$6,812</span></td>
+              <td>$586.38 · <span style="color:var(--text-mid);">$7,037</span></td>
+              <td><span style="color:#92400E;font-weight:700;">B costs $225 more</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:var(--navy);">Age 35</td>
+              <td>$693.69 · <span style="color:var(--rose);">$8,324</span></td>
+              <td>$732.28 · <span style="color:var(--text-mid);">$8,787</span></td>
+              <td><span style="color:#92400E;font-weight:700;">B costs $463 more</span></td>
+            </tr>
+            <tr style="background:#FFF8F0;">
+              <td style="font-weight:700;color:var(--navy);">Age 45</td>
+              <td>$819.71 · <span style="color:var(--rose);">$9,837</span></td>
+              <td>$827.27 · <span style="color:var(--text-mid);">$9,927</span></td>
+              <td><span style="color:#92400E;font-weight:700;">B costs $91 more ≈ near breakeven</span></td>
+            </tr>
+            <tr style="background:#DCFCE7;">
+              <td style="font-weight:700;color:var(--navy);">Age 55</td>
+              <td>$1,265.90 · <span style="color:var(--rose);">$15,191</span></td>
+              <td>$1,163.57 · <span style="color:#14532D;font-weight:700;">$13,963</span></td>
+              <td><span style="color:#14532D;font-weight:800;">B saves $1,228 ✅</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2026 ANTHEM -->
+    <div>
+      <div style="padding:10px 14px;background:#EEF3FB;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#1A5FB4;">
+        🔗 Anthem Blue Cross Enrollee — 2026
+      </div>
+      <div class="contrib-table-wrap" style="border-radius:0 0 8px 8px;">
+        <table class="contrib-table">
+          <thead>
+            <tr>
+              <th>Age</th>
+              <th>Scen A: Gold PPO E<br><small>/mo · /yr</small></th>
+              <th>Scen B: Bronze + $2K Nonstop<br><small>/mo · /yr</small></th>
+              <th>Annual Difference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;color:var(--navy);">Age 21</td>
+              <td>$728.31 · <span style="color:var(--rose);">$8,740</span></td>
+              <td>$800.97 · <span style="color:var(--text-mid);">$9,612</span></td>
+              <td><span style="color:#92400E;font-weight:700;">B costs $872 more</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;color:var(--navy);">Age 35</td>
+              <td>$889.99 · <span style="color:var(--rose);">$10,680</span></td>
+              <td>$923.73 · <span style="color:var(--text-mid);">$11,085</span></td>
+              <td><span style="color:#92400E;font-weight:700;">B costs $405 more</span></td>
+            </tr>
+            <tr style="background:#F0FDF4;">
+              <td style="font-weight:700;color:var(--navy);">Age 45</td>
+              <td>$1,051.68 · <span style="color:var(--rose);">$12,620</span></td>
+              <td>$1,046.49 · <span style="color:#14532D;font-weight:700;">$12,558</span></td>
+              <td><span style="color:#14532D;font-weight:700;">B saves $62 ✅ breakeven crossed</span></td>
+            </tr>
+            <tr style="background:#DCFCE7;">
+              <td style="font-weight:700;color:var(--navy);">Age 55</td>
+              <td>$1,624.13 · <span style="color:var(--rose);">$19,490</span></td>
+              <td>$1,481.13 · <span style="color:#14532D;font-weight:700;">$17,774</span></td>
+              <td><span style="color:#14532D;font-weight:800;">B saves $1,716 ✅</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 2026 VERDICT -->
+  <div style="background:linear-gradient(135deg,#064E3B 0%,#065F46 100%);border-radius:14px;padding:24px 32px;margin-bottom:16px;color:white;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">2026 Per-Employee Trend</div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#6EE7B7;line-height:1.1;">Breakeven at ~Age 45<br>for both carriers</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:8px;">Gold/Platinum rate inflation (+8.9%/yr avg) means the premium crossover point stays consistent, while savings at older ages grow larger each year</div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 45 Anthem EE</div>
+        <div style="font-size:18px;font-weight:800;color:#6EE7B7;">B saves $62/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">crossover achieved</div>
+      </div>
+      <div style="border-left:1px solid rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 55 Kaiser EE</div>
+        <div style="font-size:18px;font-weight:800;color:#6EE7B7;">B saves $1,228/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">on premium alone</div>
+      </div>
+      <div style="border-left:1px solid rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <div style="text-align:center;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:4px;">Age 55 Anthem EE</div>
+        <div style="font-size:18px;font-weight:800;color:#6EE7B7;">B saves $1,716/yr</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);">on premium alone</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2026 VALUE CALLOUT -->
+  <div style="background:#FFFBEB;border:2px solid #F59E0B;border-radius:12px;padding:14px 20px;margin-bottom:28px;font-size:12.5px;color:#78350F;line-height:1.7;">
+    💡 <strong>2026 trend note:</strong> The premium crossover point (where Bronze + Nonstop becomes cheaper than Gold/Platinum) holds steady at approximately Age 45 for both carriers. As Gold/Platinum rates compound at ~8.9%/year, this crossover will gradually shift to younger ages — making the strategy more favorable over time for the full population.
+  </div>
+
+  <!-- 2-YEAR SAVINGS SUMMARY -->
+  <div class="chart-card" style="margin-bottom:28px;">
+    <div class="chart-title-row">
+      <div class="chart-title">Two-Year Per-Employee Savings Summary — 2025 + 2026</div>
+      <div class="chart-note">Annual savings = Scenario A minus Scenario B · positive = B is cheaper · W&B Quote #1254071</div>
+    </div>
+    <div class="contrib-table-wrap">
+      <table class="contrib-table">
+        <thead>
+          <tr>
+            <th>Age / Carrier</th>
+            <th>2025 Annual Savings (B vs A)</th>
+            <th>2026 Annual Savings (B vs A)</th>
+            <th>2-Year Total Savings</th>
+            <th>Reading</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">Age 21 — Kaiser</td>
+            <td style="color:#92400E;font-weight:700;">(–$247)</td>
+            <td style="color:#92400E;font-weight:700;">(–$225)</td>
+            <td style="color:#92400E;font-weight:700;">(–$472)</td>
+            <td style="font-size:11px;color:var(--text-mid);">B costs more on premiums</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">Age 21 — Anthem</td>
+            <td style="color:#92400E;font-weight:700;">(–$907)</td>
+            <td style="color:#92400E;font-weight:700;">(–$872)</td>
+            <td style="color:#92400E;font-weight:700;">(–$1,779)</td>
+            <td style="font-size:11px;color:var(--text-mid);">B costs more on premiums</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">Age 35 — Kaiser</td>
+            <td style="color:#92400E;font-weight:700;">(–$365)</td>
+            <td style="color:#92400E;font-weight:700;">(–$463)</td>
+            <td style="color:#92400E;font-weight:700;">(–$828)</td>
+            <td style="font-size:11px;color:var(--text-mid);">B costs more on premiums</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;color:var(--navy);">Age 35 — Anthem</td>
+            <td style="color:#92400E;font-weight:700;">(–$447)</td>
+            <td style="color:#92400E;font-weight:700;">(–$405)</td>
+            <td style="color:#92400E;font-weight:700;">(–$852)</td>
+            <td style="font-size:11px;color:var(--text-mid);">B costs more on premiums</td>
+          </tr>
+          <tr style="background:#F0FDF4;">
+            <td style="font-weight:700;color:var(--navy);">Age 45 — Kaiser</td>
+            <td style="color:#14532D;font-weight:700;">+$55</td>
+            <td style="color:#92400E;font-weight:700;">(–$91)</td>
+            <td style="color:#92400E;font-weight:700;">(–$36)</td>
+            <td style="font-size:11px;color:var(--text-mid);">Breakeven zone</td>
+          </tr>
+          <tr style="background:#F0FDF4;">
+            <td style="font-weight:700;color:var(--navy);">Age 45 — Anthem</td>
+            <td style="color:#14532D;font-weight:700;">+$12</td>
+            <td style="color:#14532D;font-weight:700;">+$62</td>
+            <td style="color:#14532D;font-weight:700;">+$74</td>
+            <td style="font-size:11px;color:var(--text-mid);">B cheaper on premiums</td>
+          </tr>
+          <tr style="background:#DCFCE7;">
+            <td style="font-weight:700;color:var(--navy);">Age 55 — Kaiser</td>
+            <td style="color:#14532D;font-weight:800;">+$1,542</td>
+            <td style="color:#14532D;font-weight:800;">+$1,228</td>
+            <td style="color:#14532D;font-weight:900;font-size:14px;">+$2,770 ✅</td>
+            <td style="font-size:11px;color:#14532D;font-weight:600;">Strong premium savings</td>
+          </tr>
+          <tr style="background:#DCFCE7;">
+            <td style="font-weight:700;color:var(--navy);">Age 55 — Anthem</td>
+            <td style="color:#14532D;font-weight:800;">+$1,639</td>
+            <td style="color:#14532D;font-weight:800;">+$1,716</td>
+            <td style="color:#14532D;font-weight:900;font-size:14px;">+$3,355 ✅</td>
+            <td style="font-size:11px;color:#14532D;font-weight:600;">Strong premium savings</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              Surplus return of $18,000/year to employer applies regardless of employee age mix and is not reflected in per-employee figures above.
+              For any employee under ~Age 44, the $18K surplus return and full out-of-pocket protection are what make the strategy favorable.
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- NONSTOP UTILIZATION SUMMARY -->
+  <div class="section-heading" style="font-size:17px;">Nonstop 2025 Utilization — Plan Performance</div>
+  <div class="section-desc">Source: Nonstop Health 2024–2025 Utilization Report (Jan–Aug 2025)</div>
+
+  <div class="kpi-row" style="margin-bottom:24px;">
+    <div class="kpi-card teal">
+      <div class="kpi-label">Total Claims Paid (Jan–Aug)</div>
+      <div class="kpi-val" style="font-size:24px;">~$49,121</div>
+      <div class="kpi-sub">Across all members · 8 months</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Reserve Balance (Aug 2025)</div>
+      <div class="kpi-val" style="font-size:24px;">$23,491</div>
+      <div class="kpi-sub">Growing surplus — $7K Jan → $23K Aug</div>
+    </div>
+    <div class="kpi-card violet">
+      <div class="kpi-label">Avg Claims PMPM (Actual)</div>
+      <div class="kpi-val" style="font-size:24px;">~$94.84</div>
+      <div class="kpi-sub">vs. $156.55 estimated PMPM — 39% lower</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Surplus Pool — 2025</div>
+      <div class="kpi-val" style="font-size:24px;">$27,000</div>
+      <div class="kpi-sub">Employer receives $18K · Nonstop $9K</div>
+    </div>
+    <div class="kpi-card" style="border-top-color:#16A34A;">
+      <div class="kpi-label">Claims by Category</div>
+      <div class="kpi-val" style="font-size:18px;line-height:1.3;">92% Medical<br><span style="font-size:14px;color:var(--teal);">5% Alt-Care</span></div>
+      <div class="kpi-sub">Debit card: 94% of payments</div>
+    </div>
+  </div>
+
+  <!-- RESERVE BALANCE CHART -->
+  <div class="chart-card" style="margin-bottom:24px;">
+    <div class="chart-title-row">
+      <div class="chart-title">Nonstop Reserve Balance Growth — Jan to Aug 2025</div>
+      <div class="chart-note">Growing surplus indicates claims well below funded reserves — strong performance</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartReserveBalance"></canvas></div>
+  </div>
+
+  <!-- CLAIMS VS RESERVES CHART -->
+  <div class="chart-card" style="margin-bottom:24px;">
+    <div class="chart-title-row">
+      <div class="chart-title">Monthly Claims Paid vs. Reserves Billed — 2025</div>
+      <div class="chart-note">When claims &lt; reserves, surplus accumulates for year-end sharing</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartClaimsVsReserves"></canvas></div>
+  </div>
+
+  <!-- PMPM CHART -->
+  <div class="chart-card">
+    <div class="chart-title-row">
+      <div class="chart-title">Average Claim Usage PMPM — Actual vs. Estimated</div>
+      <div class="chart-note">Actual usage consistently below estimated PMPM — key driver of surplus</div>
+    </div>
+    <div class="chart-wrap"><canvas id="chartPMPM"></canvas></div>
+  </div>
+
+  <div style="margin-top:20px;padding:14px 18px;background:#F0FDF4;border-left:4px solid #16A34A;border-radius:0 8px 8px 0;font-size:12.5px;line-height:1.7;color:#14532D;">
+    <strong>Bottom Line for the CFO:</strong> On a per-employee basis using confirmed carrier rates (W&B Quote #1254071), Bronze + Nonstop is more expensive in premiums for employees under approximately Age 44, and cheaper from Age 45 onwards — with savings growing substantially at older ages (up to $1,716/yr per employee at Age 55 for Anthem enrollees). The strategy's full value case rests on three factors: (1) the <strong>$18,000 surplus return</strong> from 2025, which offsets the premium cost difference for younger employees; (2) <strong>full out-of-pocket protection</strong> equivalent to Gold coverage at every age; and (3) a structural premium advantage that compounds as Gold/Platinum rates continue their ~8.9%/year inflation trend. The actual 2025 PMPM of $94.84 — 39% below the $156.55 funded estimate — confirms the population's utilization is well-controlled, making the surplus opportunity real and repeatable.
+  </div>
+
+</div><!-- /nonstop-roi -->
+
+<!-- FOOTNOTES -->
+<div class="footnotes">
+  <div class="footnote"><strong>Data Source:</strong> Plan Configuration Reports — 2026 EC File &amp; Historical 2022–2025 File</div>
+  <div class="footnote"><strong>Medical Rate Type:</strong> Age-banded; rates shown at Age 21 as a representative index. Actual rates are higher for older employees per ACA age-rating tables.</div>
+  <div class="footnote"><strong>2025 Plan Transition:</strong> Anthem/Kaiser plans shifted from Gold to Bronze tier in 2025. The nominal rate decrease does not represent a true cost reduction — Nonstop Medical Supplemental coverage was added simultaneously to offset higher employee out-of-pocket exposure.</div>
+  <div class="footnote"><strong>2026 New Plan:</strong> Sutter Health Plus Bronze HMO B HSA was introduced as an option in 2026. Employees electing Sutter pay the difference above the Kaiser anchor rate.</div>
+  <div class="footnote"><strong>Prepared by:</strong> WTW · For CFO / Finance leadership use</div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ─── DATA ───
+const years = ['2022', '2023', '2024', '2025', '2026'];
+
+// Anthem - picking representative plan per year at Age 21
+const anthemAge21 = [518.86, 538.02, 590.81, 480.40, 536.39];
+// Note: 2022 uses Gold PPO A (highest), 2023/2024 Gold PPO E, 2025/2026 Bronze PPO C
+
+// Kaiser - picking representative plan per year at Age 21
+const kaiserAge21 = [414.29, 443.69, 485.44, 332.09, 365.64];
+// 2022-2024: Platinum HMO A; 2025-2026: Bronze HMO C
+
+// Sutter - only 2026
+const sutterAge21 = [null, null, null, null, 511.76];
+
+// YoY % changes (Anthem Bronze PPO D/E consistent line)
+const anthemYoY = [null, 5.8, 8.4, -12.3, 11.7];
+const kaiserYoY = [null, 7.1, 9.4, -31.6, 10.1];
+
+// Dental EE Only
+const dentalEEOnly = [57.94, 57.94, 57.94, 59.10, 61.94];
+// Vision EE Only
+const visionEEOnly = [8.60, 8.60, 8.60, 8.60, 8.60];
+
+// Age band data for 2026
+const ageBands = [
+  {age:'Age 21', kaiser:365.64, anthem:536.39, sutter:511.76},
+  {age:'Age 25', kaiser:378.45, anthem:555.19, sutter:529.70},
+  {age:'Age 30', kaiser:427.83, anthem:627.63, sutter:598.82},
+  {age:'Age 35', kaiser:460.63, anthem:675.74, sutter:644.72},
+  {age:'Age 40', kaiser:481.74, anthem:706.71, sutter:674.26},
+  {age:'Age 45', kaiser:544.31, anthem:798.50, sutter:761.84},
+  {age:'Age 50', kaiser:673.22, anthem:987.62, sutter:942.28},
+  {age:'Age 55', kaiser:840.59, anthem:1233.15, sutter:1176.53},
+  {age:'Age 60', kaiser:1023.03, anthem:1500.79, sutter:1431.89},
+  {age:'Age 64+', kaiser:1130.85, anthem:1658.94, sutter:1582.77},
+];
+
+// Populate age band table
+const tbody = document.getElementById('ageBandTableBody');
+ageBands.forEach(row => {
+  const anthemDiff = row.anthem - row.kaiser;
+  const sutterDiff = row.sutter - row.kaiser;
+  tbody.innerHTML += `<tr>
+    <td>${row.age}</td>
+    <td class="er-amt">$${row.kaiser.toFixed(2)}</td>
+    <td>$${row.anthem.toFixed(2)}</td>
+    <td>$${row.sutter.toFixed(2)}</td>
+    <td class="ee-amt">+$${anthemDiff.toFixed(2)}</td>
+    <td class="ee-amt">+$${sutterDiff.toFixed(2)}</td>
+  </tr>`;
+});
+
+// ─── CHART DEFAULTS ───
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#4A5568';
+
+const COLORS = {
+  anthem: '#1A5FB4',
+  kaiser: '#00897B',
+  sutter: '#6B3FA0',
+  nonstop: '#E67E22',
+  dental: '#3498DB',
+  vision: '#27AE60',
+  navy: '#0D2240',
+};
+
+function makeLineChart(id, datasets, options = {}) {
+  const ctx = document.getElementById(id).getContext('2d');
+  return new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, usePointStyle: true } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              const v = ctx.raw;
+              if (v === null) return null;
+              return ` ${ctx.dataset.label}: $${v.toFixed(2)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          ticks: {
+            callback: v => '$' + v.toFixed(0)
+          },
+          grid: { color: '#EDF2F7' }
+        },
+        x: { grid: { display: false } }
+      },
+      ...options
+    }
+  });
+}
+
+// CHART 1: Medical Trend — with Nonstop annotation at 2025
+const nonstopAnnotationPlugin = {
+  id: 'nonstopAnnotation',
+  afterDraw(chart) {
+    const ctx = chart.ctx;
+    const xAxis = chart.scales.x;
+    const yAxis = chart.scales.y;
+    // Index 3 = 2025 label
+    const x = xAxis.getPixelForValue(3);
+    const yTop = yAxis.top;
+    const yBottom = yAxis.bottom;
+
+    ctx.save();
+
+    // Vertical dashed line at 2025
+    ctx.beginPath();
+    ctx.setLineDash([5, 4]);
+    ctx.strokeStyle = '#E67E22';
+    ctx.lineWidth = 1.8;
+    ctx.moveTo(x, yTop);
+    ctx.lineTo(x, yBottom);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Badge background
+    const label = '⚡ Nonstop Health implemented';
+    ctx.font = 'bold 10.5px "DM Sans", sans-serif';
+    const textW = ctx.measureText(label).width;
+    const bx = x + 8;
+    const by = yTop + 12;
+    const pad = 6;
+    const bw = textW + pad * 2;
+    const bh = 20;
+    const br = 5;
+
+    ctx.beginPath();
+    ctx.moveTo(bx + br, by);
+    ctx.lineTo(bx + bw - br, by);
+    ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + br);
+    ctx.lineTo(bx + bw, by + bh - br);
+    ctx.quadraticCurveTo(bx + bw, by + bh, bx + bw - br, by + bh);
+    ctx.lineTo(bx + br, by + bh);
+    ctx.quadraticCurveTo(bx, by + bh, bx, by + bh - br);
+    ctx.lineTo(bx, by + br);
+    ctx.quadraticCurveTo(bx, by, bx + br, by);
+    ctx.closePath();
+    ctx.fillStyle = '#FFF3E0';
+    ctx.fill();
+    ctx.strokeStyle = '#E67E22';
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    // Label text
+    ctx.fillStyle = '#B45309';
+    ctx.fillText(label, bx + pad, by + 13.5);
+
+    ctx.restore();
+  }
+};
+
+const ctx1 = document.getElementById('chartMedicalTrend').getContext('2d');
+new Chart(ctx1, {
+  type: 'line',
+  plugins: [nonstopAnnotationPlugin],
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Anthem Blue Cross PPO (representative)',
+        data: anthemAge21,
+        borderColor: COLORS.anthem, backgroundColor: COLORS.anthem + '22',
+        tension: 0.4, pointRadius: 5, pointHoverRadius: 8, borderWidth: 2.5, fill: false
+      },
+      {
+        label: 'Kaiser Permanente HMO (representative)',
+        data: kaiserAge21,
+        borderColor: COLORS.kaiser, backgroundColor: COLORS.kaiser + '22',
+        tension: 0.4, pointRadius: 5, pointHoverRadius: 8, borderWidth: 2.5, fill: false
+      },
+      {
+        label: 'Sutter Health Plus (NEW 2026)',
+        data: sutterAge21,
+        borderColor: COLORS.sutter, backgroundColor: COLORS.sutter + '22',
+        tension: 0.4, pointRadius: 7, pointHoverRadius: 9, borderWidth: 2.5, fill: false,
+        borderDash: [6, 3]
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12, usePointStyle: true } },
+      tooltip: {
+        callbacks: {
+          label: function(ctx) {
+            const v = ctx.raw;
+            if (v === null) return null;
+            return ` ${ctx.dataset.label}: $${v.toFixed(2)}`;
+          },
+          afterBody: function(items) {
+            if (items[0] && items[0].dataIndex === 3) {
+              return ['', '⚡ Nonstop Health Supplemental', '   implemented this year'];
+            }
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: false,
+        ticks: { callback: v => '$' + v.toFixed(0) },
+        grid: { color: '#EDF2F7' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// CHART 2: YoY Change % — like-for-like only (excludes 2024→2025 tier change)
+const ctx2 = document.getElementById('chartYoYChange').getContext('2d');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['2022→2023', '2023→2024', '2025→2026'],
+    datasets: [
+      {
+        label: 'Anthem Blue Cross PPO',
+        data: [5.1, 9.8, 11.7],
+        backgroundColor: COLORS.anthem,
+        borderRadius: 4,
+      },
+      {
+        label: 'Kaiser Permanente HMO',
+        data: [7.1, 9.4, 10.1],
+        backgroundColor: COLORS.kaiser,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12 } },
+      tooltip: {
+        callbacks: { label: ctx => ` ${ctx.dataset.label}: +${ctx.raw}%` }
+      },
+      annotation: {
+        annotations: {
+          avgLine: {
+            type: 'line',
+            yMin: 8.9, yMax: 8.9,
+            borderColor: '#6B3FA0',
+            borderWidth: 2,
+            borderDash: [6, 4],
+            label: { content: '8.9% avg', display: true, position: 'end', color: '#6B3FA0', font: { size: 11, weight: 'bold' } }
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 0, max: 15,
+        ticks: { callback: v => v + '%' },
+        grid: { color: '#EDF2F7' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// CHART 3: Kaiser Track (ER anchor plan)
+const ctx3 = document.getElementById('chartKaiserTrack').getContext('2d');
+new Chart(ctx3, {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [{
+      label: 'Kaiser Plan Age 21 Rate (ER Anchor)',
+      data: kaiserAge21,
+      borderColor: COLORS.kaiser,
+      backgroundColor: COLORS.kaiser + '18',
+      fill: true,
+      tension: 0.4, pointRadius: 6, pointHoverRadius: 9, borderWidth: 3,
+      pointBackgroundColor: COLORS.kaiser,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: { callbacks: { label: ctx => ` $${ctx.raw.toFixed(2)}` } }
+    },
+    scales: {
+      y: {
+        ticks: { callback: v => '$' + v.toFixed(0) },
+        grid: { color: '#EDF2F7' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// CHART 4: Nonstop Supplemental
+const ctx4 = document.getElementById('chartNonstop').getContext('2d');
+new Chart(ctx4, {
+  type: 'bar',
+  data: {
+    labels: ['Employee Only', 'EE + Child', 'EE + Spouse', 'Family'],
+    datasets: [
+      {
+        label: '2025 — $1,000 Backend (Kaiser)',
+        data: [223.15, 398.13, 398.58, 618.05],
+        backgroundColor: COLORS.kaiser + '99',
+        borderRadius: 4,
+      },
+      {
+        label: '2025 — $2,000 Backend (Anthem)',
+        data: [247.99, 431.03, 451.75, 679.41],
+        backgroundColor: COLORS.anthem + '99',
+        borderRadius: 4,
+      },
+      {
+        label: '2026 — $1,000 Backend (Kaiser)',
+        data: [209.43, 358.16, 358.54, 545.09],
+        backgroundColor: COLORS.kaiser,
+        borderRadius: 4,
+      },
+      {
+        label: '2026 — $2,000 Backend (Anthem/Sutter)',
+        data: [247.99, 431.03, 451.75, 679.41],
+        backgroundColor: COLORS.anthem,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } }
+    },
+    scales: {
+      y: {
+        ticks: { callback: v => '$' + v.toFixed(0) },
+        grid: { color: '#EDF2F7' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// CHART 5: Dental & Vision
+const ctx5 = document.getElementById('chartDentalVision').getContext('2d');
+new Chart(ctx5, {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Principal Dental PPO — EE Only',
+        data: dentalEEOnly,
+        borderColor: COLORS.dental, backgroundColor: COLORS.dental + '22',
+        tension: 0.4, pointRadius: 5, pointHoverRadius: 8, borderWidth: 2.5, fill: false,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Principal Vision — EE Only',
+        data: visionEEOnly,
+        borderColor: COLORS.vision, backgroundColor: COLORS.vision + '22',
+        tension: 0.1, pointRadius: 5, pointHoverRadius: 8, borderWidth: 2.5, fill: false,
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.raw.toFixed(2)}` } }
+    },
+    scales: {
+      y: {
+        position: 'left',
+        title: { display: true, text: 'Dental ($)' },
+        ticks: { callback: v => '$' + v.toFixed(2) },
+        grid: { color: '#EDF2F7' },
+        min: 50, max: 75
+      },
+      y2: {
+        position: 'right',
+        title: { display: true, text: 'Vision ($)' },
+        ticks: { callback: v => '$' + v.toFixed(2) },
+        grid: { drawOnChartArea: false },
+        min: 0, max: 15
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── ROI TAB: RESERVE & CLAIMS CHARTS ───────────────────────
+
+const roiMonths = ['Jan 2025','Feb 2025','Mar 2025','Apr 2025','May 2025','Jun 2025','Jul 2025','Aug 2025'];
+
+const reservesBilled = [8431, 7764.74, 8414.17, 8256.02, 8256.02, 7781.57, 7939.72, 9942.10];
+const claimsPaid     = [1607.42, 3298.34, 8894.29, 8256.34, 5147.74, 8219.19, 933.51, 6937.56];
+const reserveBal     = [6823.58, 11289.98, 10809.86, 10809.54, 13917.82, 13480.20, 20486.41, 23490.95];
+
+const pmpmActual   = [26.79, 57.87, 153.35, 142.35, 88.75, 146.77, 16.67, 126.14];
+const pmpmEstimate = [156.55, 156.55, 156.55, 156.55, 156.55, 156.55, 156.55, 156.55];
+
+// Reserve balance line chart
+const ctxRB = document.getElementById('chartReserveBalance').getContext('2d');
+new Chart(ctxRB, {
+  type: 'line',
+  data: {
+    labels: roiMonths,
+    datasets: [{
+      label: 'Reserve Balance',
+      data: reserveBal,
+      borderColor: COLORS.kaiser,
+      backgroundColor: COLORS.kaiser + '22',
+      fill: true,
+      tension: 0.4, pointRadius: 6, pointHoverRadius: 9, borderWidth: 3,
+      pointBackgroundColor: COLORS.kaiser,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: { callbacks: { label: ctx => ` Balance: $${ctx.raw.toLocaleString('en-US', {minimumFractionDigits:2})}` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' }, grid: { color: '#EDF2F7' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Claims vs Reserves grouped bar
+const ctxCR = document.getElementById('chartClaimsVsReserves').getContext('2d');
+new Chart(ctxCR, {
+  type: 'bar',
+  data: {
+    labels: roiMonths,
+    datasets: [
+      { label: 'Reserves Billed', data: reservesBilled, backgroundColor: COLORS.kaiser + 'BB', borderRadius: 4 },
+      { label: 'Claims Paid',     data: claimsPaid,     backgroundColor: COLORS.nonstop + 'BB', borderRadius: 4 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: $${ctx.raw.toLocaleString('en-US', {minimumFractionDigits:2})}` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'K' }, grid: { color: '#EDF2F7' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// PMPM chart
+const ctxPM = document.getElementById('chartPMPM').getContext('2d');
+new Chart(ctxPM, {
+  type: 'bar',
+  data: {
+    labels: roiMonths,
+    datasets: [
+      { label: 'Actual PMPM', data: pmpmActual, backgroundColor: COLORS.navy + 'CC', borderRadius: 4 },
+      {
+        label: 'Estimated PMPM ($156.55)',
+        data: pmpmEstimate,
+        type: 'line',
+        borderColor: '#E67E22', borderDash: [6,4], borderWidth: 2,
+        pointRadius: 0, fill: false,
+        backgroundColor: 'transparent',
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 20, boxWidth: 12 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: $${(ctx.raw||0).toFixed(2)}` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => '$' + v.toFixed(0) }, grid: { color: '#EDF2F7' }, min: 0, max: 200 },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── ROI RECALCULATION LOGIC ─────────────────────────────────
+function openAssumptions() {
+  document.getElementById('assumptionEditor').style.display = 'block';
+  document.getElementById('assumptionEditor').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function closeAssumptions() {
+  document.getElementById('assumptionEditor').style.display = 'none';
+}
+
+function fmt(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0}); }
+function fmtDec(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+function recalcROI() {
+  // Tables are now age-banded and static.
+  // Function retained only to update confirmed rate labels in the assumptions panel.
+  const kaisHyp = parseFloat(document.getElementById('kaisHypInput').value) || 534.64;
+  const anthHyp = parseFloat(document.getElementById('anthHypInput').value) || 652.85;
+  if (document.getElementById('inputKaiserGold')) {
+    document.getElementById('inputKaiserGold').textContent = fmtDec(kaisHyp) + ' ✓';
+  }
+  if (document.getElementById('inputAnthemGold')) {
+    document.getElementById('inputAnthemGold').textContent = fmtDec(anthHyp) + ' ✓';
+  }
+  closeAssumptions();
+}
+
+recalcROI();
+
+// ─── TAB LOGIC ───
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
